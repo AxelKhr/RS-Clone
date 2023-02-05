@@ -1,52 +1,53 @@
 const path = require('path');
-const { DefinePlugin } = require('webpack')
+const { DefinePlugin } = require('webpack');
 const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin') ;
-const { CleanWebpackPlugin } = require('clean-webpack-plugin') ;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin'); 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const EslintPlugin = require('eslint-webpack-plugin');
 
 const CSS_LOADERS = [
-    'vue-style-loader', 
+    'vue-style-loader',
     'css-loader',
     {
         loader: 'postcss-loader',
         options: {
             postcssOptions: {
-                path: 'client/'
-            }
-        }
-    }
+                path: 'client/',
+            },
+        },
+    },
 ];
 
 const baseConfig = {
     stats: 'minimal',
     entry: {
-        app: './src/main.ts'
+        app: './src/main.ts',
     },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/',
-        assetModuleFilename: 'assets/[hash][ext][query]'
+        assetModuleFilename: 'assets/[hash][ext][query]',
     },
     performance: {
-        hints: false
-    }, 
+        hints: false,
+    },
     resolve: {
         extensions: ['.ts', '.js', '.vue'],
-        alias: {           
-            'components': path.resolve(__dirname, './src/components'),
-            'constants': path.resolve(__dirname, './src/constants'),
-            'controllers': path.resolve(__dirname, './src/controllers'),
-            'store': path.resolve(__dirname, './src/store'),
+        alias: {
+            components: path.resolve(__dirname, './src/components'),
+            constants: path.resolve(__dirname, './src/constants'),
+            controllers: path.resolve(__dirname, './src/controllers'),
+            store: path.resolve(__dirname, './src/store'),
         },
-        symlinks: false
-    }, 
+        symlinks: false,
+    },
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                use: 'vue-loader'
+                use: 'vue-loader',
             },
             {
                 test: /\.(ts|js)x?$/,
@@ -59,7 +60,7 @@ const baseConfig = {
             },
             {
                 test: /\.css$/,
-                use: CSS_LOADERS
+                use: CSS_LOADERS,
             },
             {
                 test: /\.scss$/,
@@ -70,13 +71,13 @@ const baseConfig = {
                 test: /\.sass$/,
                 use: [].concat(CSS_LOADERS, 'sass-loader?indentedSyntax'),
                 exclude: /node_modules/,
-            }
-        ]
-    }, 
+            },
+        ],
+    },
     plugins: [
         new DefinePlugin({
-            '__VUE_OPTIONS_API__': false, 
-            '__VUE_PROD_DEVTOOLS__': false 
+            __VUE_OPTIONS_API__: false,
+            __VUE_PROD_DEVTOOLS__: false,
         }),
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
@@ -86,8 +87,9 @@ const baseConfig = {
         }),
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].css',
-            chunkFilename: '[name]-[hash].css'
+            chunkFilename: '[name]-[hash].css',
         }),
+        new EslintPlugin({ extensions: ['ts', 'vue', 'js'] }),
     ],
 };
 
