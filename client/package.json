@@ -45,7 +45,11 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "eslint": "^8.33.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
-  }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
