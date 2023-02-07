@@ -19,3 +19,26 @@ export default interface LocationForecastResponse {
     pres: number;
     vis: number;
 }
+
+/* export const GodObject: LocationForecastResponse = {
+    city_name: '',
+    country_code: '',
+    timezone: '',
+    wind_spd: 0,
+    wind_dir: 0,
+    wind_cdir: '',
+    wind_cdir_full: '',
+    clouds: 0,
+    weather: {
+        icon: '',
+        description: '',
+    },
+    temp: 0,
+    app_temp: 0,
+    sunrise: '',
+    sunset: '',
+    ob_time: '',
+    rh: 0,
+    pres: 0,
+    vis: 0,
+}; */

@@ -20,12 +20,12 @@
 
     <div class="details">
         <div class="block__title">Today</div>
-        <div class="details__container">
+        <div v-for="detail in details" :key="detail.id" class="details__container">
             <div>
-                <div class="details__subtitle">Temp</div>
-                <div class="details__value">?? Value</div>
+                <div :key="detail.subtitle" class="details__subtitle">{{ detail.subtitle }}</div>
+                <div :key="detail.value" class="details__value">{{ detail.value }}</div>
             </div>
-            <div>
+            <!-- <div>
                 <div class="details__subtitle">Humidity</div>
                 <div class="details__value">{{ weatherData.rh }} %</div>
             </div>
@@ -56,23 +56,32 @@
             <div>
                 <div class="details__subtitle">Visibility</div>
                 <div class="details__value">{{ weatherData.vis }} km</div>
-            </div>
+            </div> -->
         </div>
+        <daily-view />
     </div>
 </template>
 
 <!--         
-        pres: Pressure (mb).
+    TODAY    
+    pres: Pressure (mb).
         pod: Part of the day (d = day / n = night).
         vis: Visibility (default KM).
         precip: Liquid equivalent precipitation rate (default mm/hr).
         snow: Snowfall (default mm/hr).
         uv: UV Index (0-11+).
-        aqi: Air Quality Index [US - EPA standard 0 - +500] -->
+        aqi: Air Quality Index [US - EPA standard 0 - +500] 
+    -->
 <script lang="ts">
+import DailyView from './DailyView.vue';
+
 import { getForecastByLocation } from '../../api/forecast/weather';
 import type LocationForecastResponse from '../../api/types/response';
 export default {
+    components: {
+        DailyView,
+    },
+
     async setup() {
         const data = await getForecastByLocation({ latitude: 51.5072, longitude: -0.1276 });
         const response = await data.json();
@@ -81,6 +90,18 @@ export default {
         weatherData.weather.icon = require(`../../assets/icons/${weatherData.weather.icon}.png`);
         return { weatherData };
     },
+    data() {
+        let weatherData: LocationForecastResponse;
+        return {
+            details: [
+                { id: 1, subtitle: 'Temp', value: '?? Value' },
+                { id: 2, subtitle: 'Humidity', value: '27%' },
+                { id: 3, subtitle: 'Precipitation', value: '?? % chance' },
+                /* { id: 2, subtitle: 'Humidity', value: `${{ weatherData.rh }} %` }, */
+            ],
+        };
+    },
+    methods: {},
 };
 </script>
 
