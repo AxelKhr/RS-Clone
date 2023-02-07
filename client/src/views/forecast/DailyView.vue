@@ -1,10 +1,10 @@
-<!-- <template>
+<template>
     <div class="daily">
         <div class="day"></div>
     </div>
 </template>
 
-<script lang="ts">
+<!-- <script lang="ts">
 import { getForecastDaily } from '../../api/forecast/weather';
 import type LocationForecastResponse from '../../api/types/response';
 
@@ -25,7 +25,6 @@ export default {
         return {};
     },
 };
-</script>
+</script> -->
 
 <style scoped></style>
- -->
