@@ -30,6 +30,7 @@ module.exports = {
                 ignoreStrings: true,
                 ignoreTemplateLiterals: true,
                 ignoreRegExpLiterals: true,
+                endOfLine: 'auto',
             },
         ],
     },

@@ -1,8 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["node_modules", ".vscode"],
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "commonJS",
+    "target": "ES2016",
+    "lib": ["DOM", "ES2015", "ES2016"],
     "paths": {
       "@/*": ["./src/*"]
     }
