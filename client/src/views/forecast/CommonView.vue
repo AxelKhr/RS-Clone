@@ -20,14 +20,32 @@
 
     <div class="details">
         <div class="block__title">Today</div>
-        <div class="details__container">
-            <div v-for="detail in details" :key="detail.id">
-                <div class="details__subtitle">{{ detail.subtitle }}</div>
-                <div class="details__value">{{ detail.value }}</div>
+        <transition name="mode-fade" mode="out-in">
+            <div class="details__container" v-if="down">
+                <div v-for="detail in details" :key="detail.id">
+                    <div class="details__subtitle">{{ detail.subtitle }}</div>
+                    <div class="details__value">{{ detail.value }}</div>
+                </div>
             </div>
+            <div class="details__container" v-else>
+                <div v-for="detail in details.slice(0, -3)" :key="detail.id">
+                    <div class="details__subtitle">{{ detail.subtitle }}</div>
+                    <div class="details__value">{{ detail.value }}</div>
+                </div>
+            </div>
+        </transition>
+        <div class="details__size">
+            <transition name="mode-fade" mode="out-in">
+                <button class="details__btn" v-if="down" key="down" @click="down = false">
+                    <img src="../../assets/images/chevron-up.svg" alt="arrow" />
+                </button>
+                <button class="details__btn" v-else key="up" @click="down = true">
+                    <img src="../../assets/images/chevron-down.svg" alt="arrow" />
+                </button>
+            </transition>
         </div>
-        <daily-view />
     </div>
+    <daily-view />
 </template>
 
 <!--         
@@ -48,6 +66,11 @@ import type LocationForecastResponse from '../../api/types/response';
 export default {
     components: {
         DailyView,
+    },
+    data() {
+        return {
+            down: false,
+        };
     },
 
     async setup() {
@@ -129,5 +152,21 @@ export default {
 .details__value {
     font-size: 1rem;
     text-align: center;
+}
+
+.details__size {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.mode-fade-enter-active,
+.no-mode-fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.mode-fade-enter-from,
+.no-mode-fade-leave-to {
+    opacity: 0;
 }
 </style>
