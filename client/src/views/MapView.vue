@@ -1,89 +1,125 @@
 <template>
-    <h2>Map</h2>
-    <div style="height: 85vh; width: 100%">
-        <l-map ref="map" v-model:zoom="zoom" :center="center">
+    <div class="lmap">
+        <l-map
+            style="height: 85vh; width: 100%"
+            :zoom="zoom"
+            :center="center"
+            :attribution="attribution"
+            @update:zoom="zoomUpdated"
+            @update:center="centerUpdated"
+            @update:bounds="boundsUpdated"
+            @click="openPopup"
+        >
             <l-tile-layer
-                v-for="tileProvider in tileProviders"
-                :key="tileProvider.name"
-                :name="tileProvider.name"
-                :url="tileProvider.url"
-                :layer-type="tileProvider.layerType"/>
-            <l-tile-layer
-                v-for="weatherTile in weatherTiles"
-                :key="weatherTile.name"
-                :name="weatherTile.name"
-                :url="weatherTile.url"
-                :visible="weatherTile.visible"
-                :layer-type="weatherTile.layerType"/>
-            <l-control-layers />
-            <l-grid-layer :child-render="childRender"></l-grid-layer>
-            <l-geo-json :geojson="geojson"></l-geo-json>
+                v-for="tile in tiles"
+                :key="tile.name"
+                :name="tile.name"
+                :url="tile.url"
+                :layer-type="tile.layerType"
+                :visible="tile.visible"
+            />
+            />
+            <l-control-layers :collapsed="false" />
+            <l-marker ref="marker" :lat-lng="marker">
+                <l-popup ref="popup">PopUp</l-popup>
+            </l-marker>
         </l-map>
     </div>
 </template>
 
 <script>
-import { h } from 'vue';
 import 'leaflet/dist/leaflet.css';
-import { LMap, LTileLayer, LGridLayer, LControlLayers, LGeoJson } from '@vue-leaflet/vue-leaflet';
+import { LMap, LTileLayer, LControlLayers, LPopup, LMarker } from '@vue-leaflet/vue-leaflet';
+import { LType } from './map/enum';
+import * as Api from '../api/constants';
 
 export default {
     components: {
         LMap,
+        LPopup,
+        LMarker,
         LTileLayer,
-        LGridLayer,
         LControlLayers,
-        LGeoJson,
     },
     data() {
         return {
+            zoom: 5,
             center: [51.5072, -0.1276],
-            zoom: 6,
-            tileProviders: [
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            tiles: [
                 {
-                    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    temp_url: 'https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4',
-                    name: 'OpenMap',
+                    name: 'Street-Map',
+                    url: Api.MAP_BASE_URL,
                     layerType: 'base',
+                    bounds: null,
                 },
-            ],
-            weatherTiles: [
                 {
-                    url: 'https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4',
                     name: 'Pressure',
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.PRESSURE),
                     layerType: 'overlay',
+                    bounds: null,
                     visible: false,
                 },
                 {
-                    url: 'https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4',
                     name: 'Clouds',
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.CLOUDS),
                     layerType: 'overlay',
+                    bounds: null,
                     visible: false,
                 },
                 {
-                    url: 'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4',
                     name: 'Precipitation',
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.PRECIPITATION),
                     layerType: 'overlay',
+                    bounds: null,
                     visible: false,
                 },
                 {
-                    url: 'https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4',
                     name: 'Wind',
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.WIND),
                     layerType: 'overlay',
+                    bounds: null,
+                    visible: false,
+                },
+                {
+                    name: 'Temperature',
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.TEMPERATURE),
+                    layerType: 'overlay',
+                    bounds: null,
                     visible: false,
                 },
             ],
-            childRender: (props) => () => {
-                return h(
-                    'div',
-                    { style: 'border: 1px solid grey; height: 100%;' },
-                    `x: ${props.coord.x} y: ${props.coords.y} z: ${props.coords.z}`
-                );
-            },
-            geojson: null,
+            marker: [0, 0],
         };
+    },
+    methods: {
+        zoomUpdated(zoom) {
+            this.zoom = zoom;
+        },
+        centerUpdated(center) {
+            this.center = center;
+        },
+        boundsUpdated(bounds) {
+            this.bounds = bounds;
+        },
+        onClickMap(map) {
+            const latlng = map.latlng;
+            console.log(latlng);
+        },
+        openPopup(e) {
+            this.marker = e.latlng;
+            setTimeout(() => this.$refs.marker.leafletObject.openPopup(), 100);
+        },
     },
 };
 </script>
 
-<style></style>
+<style>
+.lmap {
+    min-width: 100vw;
+    margin-top: 100px;
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+</style>
