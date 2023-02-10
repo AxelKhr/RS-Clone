@@ -162,7 +162,7 @@ export default {
 
 .mode-fade-enter-active,
 .no-mode-fade-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity 0.2s;
 }
 
 .mode-fade-enter-from,
