@@ -1,9 +1,9 @@
-import { createStore } from 'vuex';
+import Vuex from 'vuex';
+import forecastStore from './forecastStore';
+import { IState } from '@/types/state';
 
-export default createStore({
-    state: {},
-    getters: {},
-    mutations: {},
-    actions: {},
-    modules: {},
+export default new Vuex.Store<IState>({
+    modules: {
+        forecast: forecastStore,
+    },
 });

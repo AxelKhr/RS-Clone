@@ -17,3 +17,9 @@ export async function getForecastDaily(response: LocationForecastRequest) {
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${response.latitude}&lon=${response.longitude}&key=${API_KEY}`
     );
 }
+
+export async function getForecastHourly(response: LocationForecastRequest) {
+    return await fetch(
+        `https://api.weatherbit.io/v2.0/forecast/hourly?lat=${response.latitude}&lon=${response.longitude}&key=${API_KEY}&hours=24`
+    );
+}

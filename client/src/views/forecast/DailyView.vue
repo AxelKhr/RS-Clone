@@ -39,8 +39,8 @@
 </template>
 
 <script lang="ts">
-import { getForecastDaily } from '../../api/forecast/weather';
-import type LocationForecastResponse from '../../api/types/response';
+import { getForecastDaily } from '@/api/forecast/weather';
+import { LocationForecastResponse } from '@/api/types/response';
 export default {
     components: {},
     data() {

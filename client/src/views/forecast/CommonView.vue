@@ -62,7 +62,7 @@
 import DailyView from './DailyView.vue';
 
 import { getForecastByLocation } from '../../api/forecast/weather';
-import type LocationForecastResponse from '../../api/types/response';
+import type { LocationForecastResponse } from '../../api/types/response';
 export default {
     components: {
         DailyView,
