@@ -1,4 +1,4 @@
-import LocationForecastResponse from '@/api/types/response';
+import { LocationForecastResponse } from '@/api/types/response';
 import { IForecastCurrent } from '@/types/weather';
 
 export default function transformRespForecastCurrent(response: LocationForecastResponse): IForecastCurrent {

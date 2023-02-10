@@ -1,6 +1,7 @@
-export interface IForecastDaily {
-    data1: number;
-    data2: number;
+export interface IForecast {
+    isLoading: boolean;
+    current: IForecastCurrent;
+    daily: IForecastDaily;
 }
 
 export interface IForecastCurrent {
@@ -28,8 +29,31 @@ export interface IForecastCurrent {
     airQualityIndex: number;
 }
 
-export interface IForecast {
-    isLoading: boolean;
-    current: IForecastCurrent;
-    daily: IForecastDaily;
+export interface IForecastDailyData {
+    timeStamp: number;
+    validDate: string;
+    temperatureAverage: number;
+    temperatureMax: number;
+    temperatureMin: number;
+    temperatureHigh: number;
+    temperatureLow: number;
+    windSpeed: number;
+    windGustSpeed: number;
+    windDirection: number;
+    windDirectionAbbr: string;
+    precipitationProbability: number;
+    pressure: number;
+    humidityRelative: number;
+    cloudCoverage: number;
+    sunRise: number;
+    sunSet: number;
+    indexUV: number;
+    visibility: number;
+    weatherIcon: string;
+    weatherCode: number;
+    weatherDescription: string;
+}
+
+export interface IForecastDaily {
+    days: IForecastDailyData[];
 }
