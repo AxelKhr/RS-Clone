@@ -5,6 +5,7 @@ export default interface LocationForecastResponse {
     country_code: string;
     timezone: string;
     wind_spd: number;
+    gust: number;
     wind_dir: number;
     wind_cdir: string;
     wind_cdir_full: string;
@@ -18,6 +19,10 @@ export default interface LocationForecastResponse {
     rh: number;
     pres: number;
     vis: number;
+    ts: number;
+    uv: number;
+    pod: string;
+    aqi: number;
 }
 
 /* export const GodObject: LocationForecastResponse = {

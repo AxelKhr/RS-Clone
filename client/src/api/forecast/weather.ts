@@ -14,6 +14,6 @@ export async function getForecastByName(response: NameForecastRequest) {
 
 export async function getForecastDaily(response: LocationForecastRequest) {
     return await fetch(
-        `https://api.weatherbit.io/v2.0/forecast/daily??lat=${response.latitude}&lon=${response.longitude}&key=${API_KEY}`
+        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${response.latitude}&lon=${response.longitude}&key=${API_KEY}`
     );
 }
