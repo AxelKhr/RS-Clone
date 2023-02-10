@@ -3,12 +3,12 @@
         <l-map
             style="height: 85vh; width: 100%"
             :zoom="zoom"
+            :minZoom="minZoom"
             :center="center"
             :attribution="attribution"
             @update:zoom="zoomUpdated"
             @update:center="centerUpdated"
             @update:bounds="boundsUpdated"
-            @click="openPopup"
         >
             <l-tile-layer
                 v-for="tile in tiles"
@@ -44,12 +44,20 @@ export default {
     data() {
         return {
             zoom: 5,
+            minZoom: 2,
+            maxBounds: [-90, 90],
             center: [51.5072, -0.1276],
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             tiles: [
                 {
                     name: 'Street-Map',
                     url: Api.MAP_BASE_URL,
+                    layerType: 'base',
+                    bounds: null,
+                },
+                {
+                    name: 'Street-Map',
+                    url: 'http://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
                     layerType: 'base',
                     bounds: null,
                 },
@@ -105,10 +113,6 @@ export default {
         onClickMap(map) {
             const latlng = map.latlng;
             console.log(latlng);
-        },
-        openPopup(e) {
-            this.marker = e.latlng;
-            setTimeout(() => this.$refs.marker.leafletObject.openPopup(), 100);
         },
     },
 };
