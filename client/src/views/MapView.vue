@@ -4,6 +4,7 @@
             style="height: 85vh; width: 100%"
             :zoom="zoom"
             :minZoom="minZoom"
+            :maxBounds="maxBounds"
             :center="center"
             :attribution="attribution"
             @update:zoom="zoomUpdated"
@@ -45,7 +46,7 @@ export default {
         return {
             zoom: 5,
             minZoom: 2,
-            maxBounds: [-90, 90],
+            maxBounds: [[-90, 90], [90, 180]],
             center: [51.5072, -0.1276],
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             tiles: [
