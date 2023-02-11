@@ -1,119 +1,186 @@
+<!-- TODO обработать даты восхода заката и даты в Daily -->
 <template>
     <div class="block__title">Daily</div>
     <div class="days">
         <div class="day">
-            <!-- v-for="day in days" :key="day.id" -->
-            <div class="day-short" @click="show = !show">
-                <img class="day__img" src="../../assets/icons/a02d.png" alt="" />
-                <div class="day-text">
-                    <div class="day__subtitle valid_date">Friday</div>
-                    <div class="day__description data.weather.description">Snow</div>
-                </div>
-                <div class="day__pop data.pop">100%</div>
-                <div class="day__max-temp data.max_temp">-7</div>
-                <div class="day__min-temp data.min_temp">-4</div>
-            </div>
-            <div class="day-short" @click="show = !show">
-                <img class="day__img" src="../../assets/icons/a02d.png" alt="" />
-                <div class="day-text">
-                    <div class="day__subtitle valid_date">Monday</div>
-                    <div class="day__description data.weather.description">Snow</div>
-                </div>
-                <div class="day__pop data.pop">100%</div>
-                <div class="day__max-temp data.max_temp">-7</div>
-                <div class="day__min-temp data.min_temp">-4</div>
-            </div>
-
-            <transition name="mode-fade" mode="out-in">
-                <div class="details__container" v-if="show">
-                    <div v-for="detail in details" :key="detail.id">
-                        <div>
-                            <div class="details__subtitle">{{ detail.subtitle }}</div>
-                            <div class="details__value">{{ detail.value }}</div>
-                        </div>
+            <div
+                @click="toggleChild(index)"
+                v-for="(day, index) in details"
+                :key="index"
+                :class="{ active: index === selected }"
+            >
+                <div class="day__short">
+                    <img class="day__img" :src="day[10].icon" alt="" />
+                    <div class="day-text">
+                        <div class="day__subtitle">{{ day[0].date }}</div>
+                        <div class="day__description">{{ day[11].descriptions }}</div>
+                    </div>
+                    <div class="day__precipitation">
+                        <img class="day__precipitation-img" src="../../assets/images/drop.svg" alt="" />
+                        <div>{{ day[3].precipitation }}</div>
+                    </div>
+                    <div class="day__temp">
+                        {{ day[1].temp }}
                     </div>
                 </div>
-            </transition>
+
+                <transition name="mode-fade" mode="out-in">
+                    <div class="details__container child" v-if="index === selected">
+                        <div>
+                            <img src="../../assets/images/humidity.svg" alt="" />
+                            <div class="details__subtitle">Humidity<br />{{ day[2].humidity }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/sunrise.svg" alt="" />
+                            <div class="details__subtitle">Sunrise<br />{{ day[4].sunrise }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/sunset.svg" alt="" />
+                            <div class="details__subtitle">Sunset<br />{{ day[5].sunset }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/wind.svg" alt="" />
+                            <div class="details__subtitle">Wind Speed<br />{{ day[6].wind }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/pressure.svg" alt="" />
+                            <div class="details__subtitle">Pressure<br />{{ day[7].pressure }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/cloud.svg" alt="" />
+                            <div class="details__subtitle">Cloud Coverage<br />{{ day[8].clouds }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/visibility.svg" alt="" />
+                            <div class="details__subtitle">Visibility<br />{{ day[9].visibility }}</div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { getForecastDaily } from '@/api/forecast/weather';
-import { LocationForecastResponse } from '@/api/types/response';
+import store from '@/store';
 export default {
     components: {},
     data() {
         return {
-            show: false,
+            selected: null as number | null,
         };
     },
-    methods: {},
+    methods: {
+        toggleChild(index: number) {
+            this.selected = this.selected === index ? null : index;
+        },
+    },
+    computed: {},
 
     async setup() {
-        const data = await getForecastDaily({ latitude: 51.5072, longitude: -0.1276 });
-        const response = await data.json();
-        console.log('Dayli :>> ', response);
-        const weatherData: LocationForecastResponse = response.data[0];
-        weatherData.weather.icon = require(`../../assets/icons/${weatherData.weather.icon}.png`);
+        let daysData = store.state.forecast.daily.days;
+        console.log('data :>> ', daysData);
 
-        let details = [
-            { id: 0, subtitle: 'Temp', value: '?? Value' },
-            { id: 1, subtitle: 'Humidity', value: `${weatherData.rh} %` },
-            { id: 2, subtitle: 'Precipitation', value: '?? % chance' },
-            { id: 3, subtitle: 'Sunrise', value: `${weatherData.sunrise}` },
-            { id: 4, subtitle: 'Sunset', value: `${weatherData.sunset}` },
-            { id: 5, subtitle: 'Wind', value: `${weatherData.wind_spd.toFixed(2)} m/s ${weatherData.wind_cdir}` },
-            { id: 6, subtitle: 'Pressure', value: `${Math.round(weatherData.pres / 1.333)} mmHg` },
-            { id: 7, subtitle: 'Clouds Cov.', value: `${weatherData.clouds} %` },
-            { id: 8, subtitle: 'Visibility', value: `${weatherData.vis} km` },
-            /*      { id: 9, subtitle: 'icon', value: `${weatherData.weather.icon}` }, */
-        ];
+        let details = daysData
+            .map((day) => {
+                return [
+                    { date: `${day.validDate}` },
+                    { temp: `${day.temperatureMin} - ${day.temperatureMax}°C` },
+                    { humidity: `${day.humidityRelative} %` },
+                    { precipitation: `${day.precipitationProbability} %` },
+                    { sunrise: `${day.sunRise}` },
+                    { sunset: `${day.sunSet}` },
+                    { wind: `${day.windSpeed} m/s ${day.windDirectionAbbr}` },
+                    { pressure: `${day.pressure} mmHg` },
+                    { clouds: `${day.cloudCoverage} %` },
+                    { visibility: `${day.visibility} km` },
+                    { icon: `${day.weatherIcon}` },
+                    { descriptions: `${day.weatherDescription}` },
+                    { time: `${day.timeStamp}` },
+                ];
+            })
+            .slice(1, 8);
+        console.log('details :>> ', details);
 
-        return { weatherData, details };
+        return { details };
     },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .block__title {
     font-size: 1.5rem;
 }
-.day-short {
-    display: grid;
-    grid-template-columns: 1fr 20fr 2fr 1fr 1fr;
-    align-items: center;
-}
-.day__img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-}
-
-.details__container {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-}
-.details__subtitle {
-    font-size: 0.8rem;
-    text-align: center;
-}
-.details__value {
-    font-size: 1rem;
-    text-align: center;
+.day {
+    &__short {
+        display: grid;
+        grid-template-columns: 1fr 15fr 70px 80px;
+        align-items: center;
+        white-space: nowrap;
+        border-radius: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        &:hover {
+            background-color: rgb(228, 228, 228);
+        }
+    }
+    &__img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
 }
 
-.details__size {
-    margin-top: 10px;
+.details {
+    &__container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        & > div {
+            display: flex;
+            align-items: center;
+            background-color: rgb(228, 228, 228);
+            border-radius: 5px;
+            & > img {
+                width: 30px;
+                height: 30px;
+                margin: 20px;
+            }
+        }
+    }
+
+    &__subtitle {
+        font-size: 0.8rem;
+        text-align: center;
+        width: 80px;
+    }
+    &__value {
+        font-size: 1rem;
+        text-align: center;
+    }
+    &__size {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.day__precipitation {
     display: flex;
-    justify-content: center;
+    &-img {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 .mode-fade-enter-active,
 .no-mode-fade-leave-active {
-    transition: opacity 0.2s;
+    transition: opacity 0.5s;
 }
 
 .mode-fade-enter-from,

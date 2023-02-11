@@ -1,62 +1,44 @@
 <template>
-    <div class="weather-actions">
-        <div class="locations">
-            <img class="locations__img" src="../../assets/images/location.svg" alt="locations" />
-            <div class="locations__text">
-                {{ $store.state.forecast.current.cityName }}
-            </div>
-        </div>
-        <button class="refresh-btn" @click="$store.dispatch('forecast/updateForecast')">
-            <img
-                src="../../assets/images/refresh.svg"
-                alt="refresh"
-                @click="$store.dispatch('forecast/updateForecast')"
-            />
-        </button>
-    </div>
-
-    <div class="weather">
-        <div class="weather__text">
-            <!-- обновлять раз в минутут -->
-            <div class="timezone">Time: TODO время в API не правильное<!-- {{ weatherData.ob_time.slice(-5) }} --></div>
-            <div class="temperature">{{ Math.round($store.state.forecast.current.temperature) }}°C</div>
-            <div class="weather__desc">
-                <div class="feelings">
-                    Feelings like
-                    {{ Math.round($store.state.forecast.current.feelsLikeTemp) }}°C
-                </div>
-                <div>{{ $store.state.forecast.current.weatherDescription }}</div>
-                <div>
-                    Precipitation:
-                    {{ $store.state.forecast.daily.days[1].precipitationProbability }}%
+    <div class="details">
+        <div class="block__title">Today</div>
+        <transition name="mode-fade" mode="out-in">
+            <div class="details__container" v-if="down">
+                <div v-for="detail in details" :key="detail.id">
+                    <div class="details__subtitle">{{ detail.subtitle }}</div>
+                    <div class="details__value">{{ detail.value }}</div>
                 </div>
             </div>
-        </div>
-        <img class="weather__img" :src="$store.state.forecast.current.weatherIcon" />
-    </div>
+            <div class="details__container" v-else>
+                <div v-for="detail in details.slice(0, -6)" :key="detail.id">
+                    <div class="details__subtitle">{{ detail.subtitle }}</div>
+                    <div class="details__value">{{ detail.value }}</div>
+                </div>
+            </div>
+        </transition>
 
-    <today-view />
-    <daily-view />
-    <!--     <test-vue /> -->
+        <div class="details__size">
+            <transition name="mode-fade" mode="out-in">
+                <button class="details__btn" v-if="down" key="down" @click="down = false">
+                    <img src="../../assets/images/chevron-up.svg" alt="arrow" />
+                </button>
+                <button class="details__btn" v-else key="up" @click="down = true">
+                    <img src="../../assets/images/chevron-down.svg" alt="arrow" />
+                </button>
+            </transition>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import store from '@/store';
-import DailyView from './DailyView.vue';
-import TodayView from './TodayView.vue';
-/* import TestVue from './TestVue.vue'; */
+
 export default {
-    components: {
-        TodayView,
-        DailyView,
-        /*   TestVue, */
-    },
+    components: {},
     data() {
         return {
             down: false,
         };
     },
-
     async setup() {
         let details = [
             {
@@ -131,50 +113,42 @@ button {
     }
 }
 
-.weather-actions {
-    display: flex;
-    justify-content: space-between;
+.block__title {
+    font-size: 1.5rem;
 }
-.locations {
-    display: flex;
-    align-items: center;
-
-    &__img {
-        width: 25px;
-        height: 25px;
-        margin-right: 10px;
+.details {
+    &__container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
     }
-
-    &__text {
-        font-size: 1.5rem;
+    &__btn {
+        width: 32px;
+        height: 32px;
     }
-}
-
-.refresh-btn {
-    width: 45px;
-    height: 45px;
-    padding: 10px;
-}
-.weather {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    margin-bottom: 30px;
-
-    &__desc {
+    &__subtitle {
         font-size: 0.8rem;
+        text-align: center;
+    }
+    &__value {
+        font-size: 1rem;
+        text-align: center;
     }
 
-    &__img {
-        margin-top: 20px;
-        width: 150px;
-        height: 150px;
+    &__size {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
     }
 }
-.temperature {
-    font-size: 3rem;
+
+.mode-fade-enter-active,
+.no-mode-fade-leave-active {
+    transition: opacity 0.2s;
 }
-.feelings {
-    font-size: 0.8rem;
+
+.mode-fade-enter-from,
+.no-mode-fade-leave-to {
+    opacity: 0;
 }
 </style>
