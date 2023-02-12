@@ -6,8 +6,12 @@ export default defineComponent({});
 
 <template>
     <div class="block">
-        <div class="block__text">Loading: {{ $store.state.forecast.isLoading }}</div>
-        <button class="block__button" @click="$store.dispatch('forecast/updateForecast')">Update</button>
+        <div class="block__text">{{ $store.state.forecast.isLoading }}</div>
+        <div>
+            <button class="block__button" @click="$store.dispatch('forecast/updateForecast')">Update</button>
+            <button class="block__button" @click="$store.dispatch('location/updateLocation')">Location</button>
+            <button class="block__button" @click="$store.dispatch('location/filtrLocation')">Load</button>
+        </div>
     </div>
 </template>
 
