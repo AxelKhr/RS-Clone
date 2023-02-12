@@ -62,7 +62,7 @@ export default {
                 iconSize: [35, 55],
                 iconAnchor: [5, 50],
                 popupAnchor: [18, -50],
-            }), //require('../../node_modules/leaflet/dist/images/marker-icon.png'),
+            }),
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             tiles: [
                 {
