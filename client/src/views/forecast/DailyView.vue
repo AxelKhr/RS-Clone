@@ -66,26 +66,13 @@ import store from '@/store';
 export default {
     components: {},
     data() {
-        return {
-            selected: null as number | null,
-        };
-    },
-    methods: {
-        toggleChild(index: number) {
-            this.selected = this.selected === index ? null : index;
-        },
-    },
-    computed: {},
-
-    async setup() {
         let daysData = store.state.forecast.daily.days;
-        console.log('data :>> ', daysData);
 
         let details = daysData
             .map((day) => {
                 return [
                     { date: `${day.validDate}` },
-                    { temp: `${day.temperatureMin} - ${day.temperatureMax}°C` },
+                    { temp: `${day.temperatureMin} ... ${day.temperatureMax}°C` },
                     { humidity: `${day.humidityRelative} %` },
                     { precipitation: `${day.precipitationProbability} %` },
                     { sunrise: `${day.sunRise}` },
@@ -102,8 +89,14 @@ export default {
             .slice(1, 8);
         console.log('details :>> ', details);
 
-        return { details };
+        return { details, selected: null as number | null };
     },
+    methods: {
+        toggleChild(index: number) {
+            this.selected = this.selected === index ? null : index;
+        },
+    },
+    computed: {},
 };
 </script>
 
@@ -117,9 +110,11 @@ export default {
         grid-template-columns: 1fr 15fr 70px 80px;
         align-items: center;
         white-space: nowrap;
+        height: 70px;
         border-radius: 5px;
         margin-top: 10px;
         margin-bottom: 10px;
+        cursor: pointer;
         &:hover {
             background-color: rgb(228, 228, 228);
         }

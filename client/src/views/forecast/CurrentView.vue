@@ -1,30 +1,38 @@
 <template>
-    <div class="details">
-        <div class="block__title">Today</div>
-        <transition name="fade" mode="out-in">
-            <div class="details__container" v-if="down">
-                <div v-for="detail in details" :key="detail.id">
-                    <div class="details__subtitle">{{ detail.subtitle }}</div>
-                    <div class="details__value">{{ detail.value }}</div>
-                </div>
+    <div class="weather-actions">
+        <div class="locations">
+            <img class="locations__img" src="../../assets/images/location.svg" alt="locations" />
+            <div class="locations__text">
+                {{ $store.state.forecast.current.cityName }}
             </div>
-            <div class="details__container" v-else>
-                <div v-for="detail in details.slice(0, -6)" :key="detail.id">
-                    <div class="details__subtitle">{{ detail.subtitle }}</div>
-                    <div class="details__value">{{ detail.value }}</div>
-                </div>
-            </div>
-        </transition>
-        <div class="details__size">
-            <transition name="mode-fade" mode="out-in">
-                <button class="details__btn" v-if="down" key="down" @click="down = false">
-                    <img src="../../assets/images/chevron-up.svg" alt="arrow" />
-                </button>
-                <button class="details__btn" v-else key="up" @click="down = true">
-                    <img src="../../assets/images/chevron-down.svg" alt="arrow" />
-                </button>
-            </transition>
         </div>
+        <button class="refresh-btn" @click="$store.dispatch('forecast/updateForecast')">
+            <img
+                src="../../assets/images/refresh.svg"
+                alt="refresh"
+                @click="$store.dispatch('forecast/updateForecast')"
+            />
+        </button>
+    </div>
+
+    <div class="weather">
+        <div class="weather__text">
+            <!-- обновлять раз в минутут -->
+            <div class="timezone">Time: TODO время в API не правильное<!-- {{ weatherData.ob_time.slice(-5) }} --></div>
+            <div class="temperature">{{ Math.round($store.state.forecast.current.temperature) }}°C</div>
+            <div class="weather__desc">
+                <div class="feelings">
+                    Feelings like
+                    {{ Math.round($store.state.forecast.current.feelsLikeTemp) }}°C
+                </div>
+                <div>{{ $store.state.forecast.current.weatherDescription }}</div>
+                <div>
+                    Precipitation:
+                    {{ $store.state.forecast.daily.days[1].precipitationProbability }}%
+                </div>
+            </div>
+        </div>
+        <img class="weather__img" :src="$store.state.forecast.current.weatherIcon" />
     </div>
 </template>
 
@@ -32,7 +40,6 @@
 import store from '@/store';
 
 export default {
-    components: {},
     data() {
         let details = [
             {
@@ -85,7 +92,6 @@ export default {
                 value: `${store.state.forecast.current.visibility} km`,
             },
         ];
-
         return { details, down: false };
     },
 };
@@ -107,56 +113,50 @@ button {
     }
 }
 
-.block__title {
-    font-size: 1.5rem;
+.weather-actions {
+    display: flex;
+    justify-content: space-between;
 }
-.details {
-    &__container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 10px;
+.locations {
+    display: flex;
+    align-items: center;
+
+    &__img {
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
     }
-    &__btn {
-        width: 32px;
-        height: 32px;
+
+    &__text {
+        font-size: 1.5rem;
     }
-    &__subtitle {
+}
+
+.refresh-btn {
+    width: 45px;
+    height: 45px;
+    padding: 10px;
+}
+.weather {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    &__desc {
         font-size: 0.8rem;
-        text-align: center;
-    }
-    &__value {
-        font-size: 1rem;
-        text-align: center;
     }
 
-    &__size {
-        margin-top: 10px;
-        display: flex;
-        justify-content: center;
+    &__img {
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
     }
 }
-
-.mode-fade-enter-active,
-.no-mode-fade-leave-active {
-    transition: opacity 0.5s;
+.temperature {
+    font-size: 3rem;
 }
-
-.mode-fade-enter-from,
-.no-mode-fade-leave-to {
-    opacity: 0;
-}
-
-.slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-    transform: translateY(20px);
-    opacity: 0;
+.feelings {
+    font-size: 0.8rem;
 }
 </style>
