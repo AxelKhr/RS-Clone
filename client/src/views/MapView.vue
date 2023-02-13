@@ -22,7 +22,7 @@
                 :layer-type="tile.layerType"
                 :visible="tile.visible"
             />
-            <l-control-layers :collapsed="false" />
+            <l-control-layers class="layer-control" :collapsed="true" />
             <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
                 <l-popup ref="popup" :lat-lng="markerLatLng">
                     {{ markerLatLng }}
@@ -166,8 +166,8 @@ export default defineComponent({
                     .setContent(
                         `<div class="header__weather">
                             <div class="left">
-                                <h2>${weather.city_name}</h2>
-                                <h3>${weather.temp}°C</h3>
+                                <h2 class="header__city">${weather.city_name}</h2>
+                                <h3 class="header__temp">${weather.temp}°C</h3>
                             </div>
                             <div class="right">
                                 <img class="weather_img" src="${weather.weather.icon}" />
@@ -243,6 +243,7 @@ export default defineComponent({
 .header__weather {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     column-gap: 5px;
     padding-bottom: 5px;
     margin-bottom: 5px;
@@ -251,9 +252,56 @@ export default defineComponent({
     border-bottom: 1px solid gray;
 }
 
+.header__city,
+.header__temp {
+    font-size: 1.4rem;
+}
+
+.leaflet-control-layers-expanded {
+    padding: 20px;
+    background: whitesmoke;
+}
+
+.leaflet-control-layers-base label,
+.leaflet-control-layers-overlays label {
+    color: #181818;
+    font-size: 1.2rem;
+}
+
+.leaflet-control-layers-selector {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.leaflet-control-layers-selector + span {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+.leaflet-control-layers-selector + span::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+.leaflet-control-layers-selector:checked + span::before {
+    border-color: #41b883;
+    background-color: #41b883;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
 .weather_img {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
 }
 
 .desc {
