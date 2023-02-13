@@ -31,7 +31,8 @@
 <script lang="ts">
 import store from '@/store';
 
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
     components: {},
     data() {
         let details = [
@@ -88,7 +89,7 @@ export default {
 
         return { details, down: false };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <!-- TODO обработать даты восхода заката и даты в Daily -->
 <template>
-    <div class="block__title">Daily</div>
+    <div class="block__title">Daily Forecast</div>
     <div class="days">
         <div class="day">
             <div
@@ -63,7 +63,8 @@
 
 <script lang="ts">
 import store from '@/store';
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
     components: {},
     data() {
         let daysData = store.state.forecast.daily.days;
@@ -97,7 +98,7 @@ export default {
         },
     },
     computed: {},
-};
+});
 </script>
 
 <style lang="scss" scoped>
