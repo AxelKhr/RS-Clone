@@ -28,11 +28,21 @@
                     {{ markerLatLng }}
                 </l-popup>
             </l-marker>
-            <temp-legend v-if="showTemp" />
-            <wind-legend v-if="showWind" />
-            <precipitation-legend v-if="showPrec" />
-            <clouds-legend v-if="showClouds" />
-            <pressure-legend v-if="showPress" />
+            <transition name="bounce">
+                <pressure-legend v-show="showPress" />
+            </transition>
+            <transition name="bounce">
+                <clouds-legend v-show="showClouds" />
+            </transition>
+            <transition name="bounce">
+                <precipitation-legend v-show="showPrec" />
+            </transition>
+            <transition name="bounce">
+                <wind-legend v-show="showWind" />
+            </transition>
+            <transition name="bounce">
+                <temp-legend v-show="showTemp" />
+            </transition>
         </l-map>
     </div>
 </template>
@@ -167,7 +177,10 @@ export default defineComponent({
                         `<div class="header__weather">
                             <div class="left">
                                 <h2 class="header__city">${weather.city_name}</h2>
-                                <h3 class="header__temp">${weather.temp}°C</h3>
+                                <div class="temp">
+                                    <img class="temp_logo" src="${require(`../assets/temp.png`)}">
+                                    <span class="header__temp">${weather.temp}°C</span>
+                                </div>
                             </div>
                             <div class="right">
                                 <img class="weather_img" src="${weather.weather.icon}" />
@@ -177,10 +190,22 @@ export default defineComponent({
                             <span>${weather.weather.description}</span>
                         </div>
                         <div class="info">
-                            <div>Wind: ${weather.wind_spd.toFixed(2)} m/s ${weather.wind_cdir}</div>
-                            <div>Pressure: ${Math.round(weather.pres / 1.333)} mmHg</div>
-                            <div>Clouds Cov: ${weather.clouds} %</div>
-                            <div>Visibility: ${weather.vis} km</div>
+                            <div class="wind">
+                                <img class="wind_logo" src="${require(`../assets/wind.png`)}">
+                                <span>${weather.wind_spd.toFixed(2)} m/s ${weather.wind_cdir}</span>
+                            </div>
+                            <div class="pressure">
+                                <img class="pressure_logo" src="${require(`../assets/pressure.png`)}">
+                                <span>${Math.round(weather.pres / 1.333)} mmHg</span>
+                            </div>
+                            <div class="cloud">
+                                <img class="cloud_logo" src="${require(`../assets/cloud.png`)}">
+                                <span>${weather.clouds} %</span>
+                            </div>
+                            <div class="visibility">
+                                <img class="visibility_logo" src="${require(`../assets/visibility.png`)}">
+                                <span>${weather.vis} km</span>
+                            </div>
                         </div>
                         `
                     )
@@ -257,9 +282,16 @@ export default defineComponent({
     font-size: 1.4rem;
 }
 
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+    border: none;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
 .leaflet-control-layers-expanded {
     padding: 20px;
     background: whitesmoke;
+    border-color: whitesmoke;
 }
 
 .leaflet-control-layers-base label,
@@ -272,6 +304,10 @@ export default defineComponent({
     position: absolute;
     z-index: -1;
     opacity: 0;
+}
+
+.leaflet-control-layers-selector + span:hover {
+    cursor: pointer;
 }
 
 .leaflet-control-layers-selector + span {
@@ -299,9 +335,65 @@ export default defineComponent({
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
 }
 
+.leaflet-control-layers-selector:not(:disabled):not(:checked) + span:hover::before {
+    border-color: #40b882;
+}
+
+.leaflet-control-layers-selector:not(:disabled):active + span::before {
+    background-color: #40b882;
+    border-color: #40b882;
+}
+
+.leaflet-control-layers-selector:focus + label::before {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.leaflet-control-layers-selector:focus:not(:checked) + span::before {
+    border-color: #40b882;
+}
+
+.bounce-enter-active {
+    animation: bounce-in 0.9s;
+}
+.bounce-leave-active {
+    animation: bounce-in 0.9s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .weather_img {
     width: 60px;
     height: 60px;
+}
+
+.wind,
+.pressure,
+.cloud,
+.visibility {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+    margin-bottom: 5px;
+}
+
+.temp_logo,
+.wind_logo,
+.pressure_logo,
+.cloud_logo,
+.visibility_logo {
+    display: inline;
+    width: 20px;
+    height: 20px;
 }
 
 .desc {
