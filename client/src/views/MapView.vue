@@ -11,6 +11,8 @@
             @update:zoom="zoomUpdated"
             @update:center="centerUpdated"
             @click="onMapClick"
+            @overlayadd="overlayAdd"
+            @overlayremove="overlayRemove"
         >
             <l-tile-layer
                 v-for="tile in tiles"
@@ -26,21 +28,37 @@
                     {{ markerLatLng }}
                 </l-popup>
             </l-marker>
+            <temp-legend v-if="showTemp" />
+            <wind-legend v-if="showWind" />
+            <precipitation-legend v-if="showPrec" />
+            <clouds-legend v-if="showClouds" />
+            <pressure-legend v-if="showPress" />
         </l-map>
     </div>
 </template>
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
-import { LatLng } from 'leaflet';
+import { LatLng, LayersControlEvent } from 'leaflet';
+import TempLegend from './map/legend/TempLegend.vue';
+import PressureLegend from './map/legend/PressureLegend.vue';
+import CloudsLegend from './map/legend/CloudsLegend.vue';
+import WindLegend from './map/legend/WindLegend.vue';
+import PrecipitationLegend from './map/legend/PrecipitationLegend.vue';
 import { getForecastByLocation } from '@/api/forecast/weather';
 import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/vue-leaflet';
 import { LType } from './map/enum';
 import * as Api from '../api/constants';
 import { Icon } from 'leaflet';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     components: {
+        PrecipitationLegend,
+        WindLegend,
+        PressureLegend,
+        CloudsLegend,
+        TempLegend,
         LMap,
         LMarker,
         LPopup,
@@ -49,6 +67,11 @@ export default {
     },
     data() {
         return {
+            showTemp: false,
+            showWind: false,
+            showClouds: false,
+            showPress: false,
+            showPrec: false,
             zoom: 6,
             minZoom: 2,
             maxBounds: [
@@ -59,9 +82,9 @@ export default {
             markerLatLng: new LatLng(51.5072, -0.1276),
             icon: new Icon({
                 iconUrl: require('../assets/marker.png'),
-                iconSize: [35, 55],
-                iconAnchor: [5, 50],
-                popupAnchor: [18, -50],
+                iconSize: [35, 50],
+                iconAnchor: [5, 45],
+                popupAnchor: [18, -45],
             }),
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             tiles: [
@@ -130,7 +153,7 @@ export default {
         centerUpdated(center: LatLng) {
             this.center = center;
         },
-        async onMapClick(map: LMap) {
+        async onMapClick(map: typeof LMap) {
             const latlng = map.latlng;
             if (latlng != undefined) {
                 this.markerLatLng = new LatLng(latlng.lat, latlng.lng);
@@ -139,8 +162,7 @@ export default {
                 );
                 const weather = data.data[0];
                 weather.weather.icon = require(`../assets/icons/${weather.weather.icon}.png`);
-                console.log(weather.weather.icon);
-                (this.$refs.popup as LPopup).leafletObject
+                (this.$refs.popup as typeof LPopup).leafletObject
                     .setContent(
                         `<div class="header__weather">
                             <div class="left">
@@ -162,11 +184,51 @@ export default {
                         </div>
                         `
                     )
-                    .openOn((this.$refs.weatherMap as LMap).leafletObject);
+                    .openOn((this.$refs.weatherMap as typeof LMap).leafletObject);
+            }
+        },
+        overlayAdd(event: LayersControlEvent) {
+            const overlay = event.name;
+            switch (overlay) {
+                case 'Temperature':
+                    this.showTemp = true;
+                    break;
+                case 'Wind':
+                    this.showWind = true;
+                    break;
+                case 'Pressure':
+                    this.showPress = true;
+                    break;
+                case 'Clouds':
+                    this.showClouds = true;
+                    break;
+                case 'Precipitation':
+                    this.showPrec = true;
+                    break;
+            }
+        },
+        overlayRemove(event: LayersControlEvent) {
+            const overlay = event.name;
+            switch (overlay) {
+                case 'Temperature':
+                    this.showTemp = false;
+                    break;
+                case 'Wind':
+                    this.showWind = false;
+                    break;
+                case 'Pressure':
+                    this.showPress = false;
+                    break;
+                case 'Clouds':
+                    this.showClouds = false;
+                    break;
+                case 'Precipitation':
+                    this.showPrec = false;
+                    break;
             }
         },
     },
-};
+});
 </script>
 
 <style>
