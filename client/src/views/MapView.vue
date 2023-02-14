@@ -21,27 +21,13 @@
                 :layer-type="tile.layerType"
                 :visible="tile.visible"
             />
-            <l-control-layers class="layer-control" :collapsed="true" />
+            <!--<l-control-layers class="layer-control" :collapsed="true" />   TURN OFF TEMPORARY -->
             <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
                 <l-popup ref="popup" :lat-lng="markerLatLng">
                     {{ markerLatLng }}
                 </l-popup>
             </l-marker>
-            <transition name="bounce">
-                <pressure-legend v-show="showPress" />
-            </transition>
-            <transition name="bounce">
-                <clouds-legend v-show="showClouds" />
-            </transition>
-            <transition name="bounce">
-                <precipitation-legend v-show="showPrec" />
-            </transition>
-            <transition name="bounce">
-                <wind-legend v-show="showWind" />
-            </transition>
-            <transition name="bounce">
-                <temp-legend v-show="showTemp" />
-            </transition>
+            <map-legend :temp="temp" :press="press" :cloud="cloud" :wind="wind" :prec="prec" />
         </l-map>
     </div>
 </template>
@@ -49,14 +35,10 @@
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
 import MapControl from './map/MapControl.vue';
+import MapLegend from './map/MapLegend.vue';
 import { LatLng, Icon } from 'leaflet';
-import TempLegend from './map/legend/TempLegend.vue';
-import PressureLegend from './map/legend/PressureLegend.vue';
-import CloudsLegend from './map/legend/CloudsLegend.vue';
-import WindLegend from './map/legend/WindLegend.vue';
-import PrecipitationLegend from './map/legend/PrecipitationLegend.vue';
 import { getForecastByLocation } from '@/api/forecast/weather';
-import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/vue-leaflet';
+import { LMap, LPopup, LTileLayer, /*LControlLayers,*/ LMarker } from '@vue-leaflet/vue-leaflet';
 import { LUrlType, LTypeId } from './map/enum';
 import * as Api from '../api/constants';
 import { defineComponent } from 'vue';
@@ -64,24 +46,20 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     components: {
         MapControl,
-        PrecipitationLegend,
-        WindLegend,
-        PressureLegend,
-        CloudsLegend,
-        TempLegend,
+        MapLegend,
         LMap,
         LMarker,
         LPopup,
         LTileLayer,
-        LControlLayers,
+        //LControlLayers,
     },
     data() {
         return {
-            showTemp: false,
-            showWind: false,
-            showClouds: false,
-            showPress: false,
-            showPrec: false,
+            temp: false,
+            press: false,
+            cloud: false,
+            wind: false,
+            prec: false,
             zoom: 6,
             minZoom: 2,
             maxBounds: [
@@ -218,25 +196,25 @@ export default defineComponent({
                     target.classList.remove('active');
                     switch (target.id) {
                         case LTypeId.TEMPERATURE: {
-                            this.showTemp = false;
+                            this.temp = false;
                             this.hideLayer(LTypeId.TEMPERATURE);
                             break;
                         }
                         case LTypeId.WIND: {
-                            this.showWind = false;
+                            this.wind = false;
                             this.hideLayer(LTypeId.WIND);
                             break;
                         }
                         case LTypeId.PRESSURE:
-                            this.showPress = false;
+                            this.press = false;
                             this.hideLayer(LTypeId.PRESSURE);
                             break;
                         case LTypeId.CLOUDS:
-                            this.showClouds = false;
+                            this.cloud = false;
                             this.hideLayer(LTypeId.CLOUDS);
                             break;
                         case LTypeId.PRECIPITATION:
-                            this.showPrec = false;
+                            this.prec = false;
                             this.hideLayer(LTypeId.PRECIPITATION);
                             break;
                     }
@@ -244,25 +222,25 @@ export default defineComponent({
                     target.classList.add('active');
                     switch (target.id) {
                         case LTypeId.TEMPERATURE: {
-                            this.showTemp = true;
+                            this.temp = true;
                             this.showLayer(LTypeId.TEMPERATURE);
                             break;
                         }
                         case LTypeId.WIND: {
-                            this.showWind = true;
+                            this.wind = true;
                             this.showLayer(LTypeId.WIND);
                             break;
                         }
                         case LTypeId.PRESSURE:
-                            this.showPress = true;
+                            this.press = true;
                             this.showLayer(LTypeId.PRESSURE);
                             break;
                         case LTypeId.CLOUDS:
-                            this.showClouds = true;
+                            this.cloud = true;
                             this.showLayer(LTypeId.CLOUDS);
                             break;
                         case LTypeId.PRECIPITATION:
-                            this.showPrec = true;
+                            this.prec = true;
                             this.showLayer(LTypeId.PRECIPITATION);
                             break;
                     }
@@ -412,24 +390,6 @@ export default defineComponent({
 
 .leaflet-control-layers-selector:focus:not(:checked) + span::before {
     border-color: #40b882;
-}
-
-.bounce-enter-active {
-    animation: bounce-in 0.9s;
-}
-.bounce-leave-active {
-    animation: bounce-in 0.9s reverse;
-}
-@keyframes bounce-in {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
 }
 
 .weather_img {

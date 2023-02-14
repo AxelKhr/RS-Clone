@@ -23,9 +23,6 @@ export default {
     components: {
         LControl,
     },
-    data: () => ({
-        show: false,
-    }),
 };
 </script>
 
