@@ -1,8 +1,27 @@
 <template>
-    <div class="lmap">
+    <div class="map-control">
+        <ul class="map-buttons">
+            <li @click="toggleOverlay">
+                <div id="temp" class="map_logo temp"></div>
+            </li>
+            <li @click="toggleOverlay">
+                <div id="pressure" class="map_logo pressure"></div>
+            </li>
+            <li @click="toggleOverlay">
+                <div id="cloud" class="map_logo cloud"></div>
+            </li>
+            <li @click="toggleOverlay">
+                <div id="wind" class="map_logo wind"></div>
+            </li>
+            <li @click="toggleOverlay">
+                <div id="precipitation" class="map_logo precipitation"></div>
+            </li>
+        </ul>
+    </div>
+    <div id="lmap" class="lmap">
         <l-map
             ref="weatherMap"
-            style="height: 85vh; width: 100%"
+            style="height: 83vh; width: 100%"
             :zoom="zoom"
             :minZoom="minZoom"
             :maxBounds="maxBounds"
@@ -49,7 +68,7 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
-import { LatLng, LayersControlEvent } from 'leaflet';
+import { LatLng, LayersControlEvent, Icon } from 'leaflet';
 import TempLegend from './map/legend/TempLegend.vue';
 import PressureLegend from './map/legend/PressureLegend.vue';
 import CloudsLegend from './map/legend/CloudsLegend.vue';
@@ -57,9 +76,8 @@ import WindLegend from './map/legend/WindLegend.vue';
 import PrecipitationLegend from './map/legend/PrecipitationLegend.vue';
 import { getForecastByLocation } from '@/api/forecast/weather';
 import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/vue-leaflet';
-import { LType } from './map/enum';
+import { LUrlType, LTypeId } from './map/enum';
 import * as Api from '../api/constants';
-import { Icon } from 'leaflet';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -119,36 +137,36 @@ export default defineComponent({
                     bounds: null,
                 },
                 {
-                    name: 'Pressure',
-                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.PRESSURE),
+                    name: LTypeId.PRESSURE,
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LUrlType.PRESSURE),
                     layerType: 'overlay',
                     bounds: null,
                     visible: false,
                 },
                 {
-                    name: 'Clouds',
-                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.CLOUDS),
+                    name: LTypeId.CLOUDS,
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LUrlType.CLOUDS),
                     layerType: 'overlay',
                     bounds: null,
                     visible: false,
                 },
                 {
-                    name: 'Precipitation',
-                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.PRECIPITATION),
+                    name: LTypeId.PRECIPITATION,
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LUrlType.PRECIPITATION),
                     layerType: 'overlay',
                     bounds: null,
                     visible: false,
                 },
                 {
-                    name: 'Wind',
-                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.WIND),
+                    name: LTypeId.WIND,
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LUrlType.WIND),
                     layerType: 'overlay',
                     bounds: null,
                     visible: false,
                 },
                 {
-                    name: 'Temperature',
-                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LType.TEMPERATURE),
+                    name: LTypeId.TEMPERATURE,
+                    url: Api.MAP_OVERLAY_URL.replace('{layer}', LUrlType.TEMPERATURE),
                     layerType: 'overlay',
                     bounds: null,
                     visible: false,
@@ -177,8 +195,8 @@ export default defineComponent({
                         `<div class="header__weather">
                             <div class="left">
                                 <h2 class="header__city">${weather.city_name}</h2>
-                                <div class="temp">
-                                    <img class="temp_logo" src="${require(`../assets/temp.png`)}">
+                                <div class="temp_wrap">
+                                    <div class="temp_logo"></div>
                                     <span class="header__temp">${weather.temp}°C</span>
                                 </div>
                             </div>
@@ -190,24 +208,23 @@ export default defineComponent({
                             <span>${weather.weather.description}</span>
                         </div>
                         <div class="info">
-                            <div class="wind">
-                                <img class="wind_logo" src="${require(`../assets/wind.png`)}">
+                            <div class="wind_wrap">
+                                <div class="wind_logo"></div>
                                 <span>${weather.wind_spd.toFixed(2)} m/s ${weather.wind_cdir}</span>
                             </div>
-                            <div class="pressure">
-                                <img class="pressure_logo" src="${require(`../assets/pressure.png`)}">
+                            <div class="pressure_wrap">
+                                <div class="pressure_logo"></div>
                                 <span>${Math.round(weather.pres / 1.333)} mmHg</span>
                             </div>
-                            <div class="cloud">
-                                <img class="cloud_logo" src="${require(`../assets/cloud.png`)}">
+                            <div class="cloud_wrap">
+                                <div class="cloud_logo"></div>
                                 <span>${weather.clouds} %</span>
                             </div>
-                            <div class="visibility">
-                                <img class="visibility_logo" src="${require(`../assets/visibility.png`)}">
+                            <div class="visibility_wrap">
+                                <div class="visibility_logo"></div>
                                 <span>${weather.vis} km</span>
                             </div>
-                        </div>
-                        `
+                        </div>`
                     )
                     .openOn((this.$refs.weatherMap as typeof LMap).leafletObject);
             }
@@ -252,14 +269,156 @@ export default defineComponent({
                     break;
             }
         },
+        toggleOverlay(event: Event) {
+            const target = event.target as HTMLElement;
+            if (target.classList.contains('active')) {
+                target.classList.remove('active');
+                switch (target.id) {
+                    case LTypeId.TEMPERATURE: {
+                        this.showTemp = false;
+                        this.hideLayer(LTypeId.TEMPERATURE);
+                        break;
+                    }
+                    case LTypeId.WIND: {
+                        this.showWind = false;
+                        this.hideLayer(LTypeId.WIND);
+                        break;
+                    }
+                    case LTypeId.PRESSURE:
+                        this.showPress = false;
+                        this.hideLayer(LTypeId.PRESSURE);
+                        break;
+                    case LTypeId.CLOUDS:
+                        this.showClouds = false;
+                        this.hideLayer(LTypeId.CLOUDS);
+                        break;
+                    case LTypeId.PRECIPITATION:
+                        this.showPrec = false;
+                        this.hideLayer(LTypeId.PRECIPITATION);
+                        break;
+                }
+            } else {
+                target.classList.add('active');
+                switch (target.id) {
+                    case LTypeId.TEMPERATURE: {
+                        this.showTemp = true;
+                        this.showLayer(LTypeId.TEMPERATURE);
+                        break;
+                    }
+                    case LTypeId.WIND: {
+                        this.showWind = true;
+                        this.showLayer(LTypeId.WIND);
+                        break;
+                    }
+                    case LTypeId.PRESSURE:
+                        this.showPress = true;
+                        this.showLayer(LTypeId.PRESSURE);
+                        break;
+                    case LTypeId.CLOUDS:
+                        this.showClouds = true;
+                        this.showLayer(LTypeId.CLOUDS);
+                        break;
+                    case LTypeId.PRECIPITATION:
+                        this.showPrec = true;
+                        this.showLayer(LTypeId.PRECIPITATION);
+                        break;
+                }
+            }
+        },
+        showLayer(layer: string) {
+            this.tiles.forEach((el) => {
+                if (el.name == layer) {
+                    el.visible = true;
+                }
+            });
+        },
+        hideLayer(layer: string) {
+            this.tiles.forEach((el) => {
+                if (el.name == layer) {
+                    el.visible = false;
+                }
+            });
+        },
     },
 });
 </script>
 
 <style>
+.map-control {
+    height: 80px;
+}
+
+.map-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.map_logo {
+    width: 40px;
+    height: 40px;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    background-color: white;
+}
+
+.active {
+    background-color: #40b882;
+}
+
+.map_logo:hover {
+    transition: 0.5s;
+    background-color: #40b882;
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.pressure,
+.pressure_logo {
+    mask-image: url('../assets/map-icons/pressure.svg');
+    -webkit-mask-image: url('../assets/map-icons/pressure.svg');
+}
+
+.cloud,
+.cloud_logo {
+    mask-image: url('../assets/map-icons/cloud.svg');
+    -webkit-mask-image: url('../assets/map-icons/cloud.svg');
+}
+
+.wind,
+.wind_logo {
+    mask-image: url('../assets/map-icons/wind.svg');
+    -webkit-mask-image: url('../assets/map-icons/wind.svg');
+}
+
+.temp,
+.temp_logo {
+    mask-image: url('../assets/map-icons/temp.svg');
+    -webkit-mask-image: url('../assets/map-icons/temp.svg');
+}
+
+.precipitation,
+.precipitation_logo {
+    mask-image: url('../assets/map-icons/precipitation.svg');
+    -webkit-mask-image: url('../assets/map-icons/precipitation.svg');
+}
+
+.visibility_logo {
+    mask-image: url('../assets/map-icons/visibility.svg');
+    -webkit-mask-image: url('../assets/map-icons/visibility.svg');
+}
+
 .lmap {
     min-width: 100vw;
-    margin-top: 100px;
+    height: 83vh;
+    margin-top: 165px;
     position: fixed;
     left: 0;
     right: 0;
@@ -375,10 +534,11 @@ export default defineComponent({
     height: 60px;
 }
 
-.wind,
-.pressure,
-.cloud,
-.visibility {
+.temp_wrap,
+.wind_wrap,
+.pressure_wrap,
+.cloud_wrap,
+.visibility_wrap {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -394,6 +554,13 @@ export default defineComponent({
     display: inline;
     width: 20px;
     height: 20px;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    background-color: black;
 }
 
 .desc {
