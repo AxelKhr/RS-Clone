@@ -1,5 +1,4 @@
 const API_KEY_LOCATION = '87b9f08fb1mshfc8b07ee4985fe9p1e1199jsnaa7a18fdfdda';
-//const API_KEY_LOCATION = '1234';
 
 export interface LocationRequest {
     query: string;
@@ -44,7 +43,7 @@ export interface LocationResponse {
     };
 }
 
-export async function getLocationByQuery(request: LocationRequest): Promise<Array<LocationResponse>> {
+export async function searchLocationByQuery(request: LocationRequest): Promise<Array<LocationResponse>> {
     const options = {
         method: 'GET',
         headers: {
