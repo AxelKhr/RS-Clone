@@ -7,6 +7,7 @@ export interface LocationForecastRequest {
 
 export interface Weather {
     icon: string;
+    code: number;
     description: string;
 }
 
