@@ -53,7 +53,6 @@ export default {
     async setup() {
         const data = await getForecastByLocation({ latitude: 51.5072, longitude: -0.1276 });
         const response = await data.json();
-        console.log('response :>> ', response);
         const weatherData: LocationForecastResponse = response.data[0];
         weatherData.weather.icon = require(`../../assets/icons/${weatherData.weather.icon}.png`);
         let details = [
