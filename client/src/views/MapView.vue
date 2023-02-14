@@ -21,7 +21,7 @@
                 :layer-type="tile.layerType"
                 :visible="tile.visible"
             />
-            <!--<l-control-layers class="layer-control" :collapsed="true" />   TURN OFF TEMPORARY -->
+            <l-control-layers class="layer-control" :collapsed="true" />
             <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
                 <l-popup ref="popup" :lat-lng="markerLatLng">
                     {{ markerLatLng }}
@@ -38,7 +38,7 @@ import MapControl from './map/MapControl.vue';
 import MapLegend from './map/MapLegend.vue';
 import { LatLng, Icon } from 'leaflet';
 import { getForecastByLocation } from '@/api/forecast/weather';
-import { LMap, LPopup, LTileLayer, /*LControlLayers,*/ LMarker } from '@vue-leaflet/vue-leaflet';
+import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/vue-leaflet';
 import { LUrlType, LTypeId } from './map/enum';
 import * as Api from '../api/constants';
 import { defineComponent } from 'vue';
@@ -51,7 +51,7 @@ export default defineComponent({
         LMarker,
         LPopup,
         LTileLayer,
-        //LControlLayers,
+        LControlLayers,
     },
     data() {
         return {
@@ -303,6 +303,7 @@ export default defineComponent({
     position: fixed;
     left: 0;
     right: 0;
+    z-index: 0;
 }
 
 .header__weather {
@@ -320,6 +321,15 @@ export default defineComponent({
 .header__city,
 .header__temp {
     font-size: 1.4rem;
+}
+
+.leaflet-control-layers-separator,
+.leaflet-control-layers-overlays {
+    display: none;
+}
+
+.leaflet-control-layers-toggle {
+    background-image: url('@/assets/map-icons/map.svg');
 }
 
 .leaflet-touch .leaflet-control-layers,
