@@ -1,23 +1,5 @@
 <template>
-    <div class="map-control">
-        <ul class="map-buttons">
-            <li @click="toggleOverlay">
-                <div id="temp" class="map_logo temp"></div>
-            </li>
-            <li @click="toggleOverlay">
-                <div id="pressure" class="map_logo pressure"></div>
-            </li>
-            <li @click="toggleOverlay">
-                <div id="cloud" class="map_logo cloud"></div>
-            </li>
-            <li @click="toggleOverlay">
-                <div id="wind" class="map_logo wind"></div>
-            </li>
-            <li @click="toggleOverlay">
-                <div id="precipitation" class="map_logo precipitation"></div>
-            </li>
-        </ul>
-    </div>
+    <map-control @click="toggleOverlay" />
     <div id="lmap" class="lmap">
         <l-map
             ref="weatherMap"
@@ -30,8 +12,6 @@
             @update:zoom="zoomUpdated"
             @update:center="centerUpdated"
             @click="onMapClick"
-            @overlayadd="overlayAdd"
-            @overlayremove="overlayRemove"
         >
             <l-tile-layer
                 v-for="tile in tiles"
@@ -68,7 +48,8 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
-import { LatLng, LayersControlEvent, Icon } from 'leaflet';
+import MapControl from './map/MapControl.vue';
+import { LatLng, Icon } from 'leaflet';
 import TempLegend from './map/legend/TempLegend.vue';
 import PressureLegend from './map/legend/PressureLegend.vue';
 import CloudsLegend from './map/legend/CloudsLegend.vue';
@@ -82,6 +63,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     components: {
+        MapControl,
         PrecipitationLegend,
         WindLegend,
         PressureLegend,
@@ -229,99 +211,61 @@ export default defineComponent({
                     .openOn((this.$refs.weatherMap as typeof LMap).leafletObject);
             }
         },
-        overlayAdd(event: LayersControlEvent) {
-            const overlay = event.name;
-            switch (overlay) {
-                case 'Temperature':
-                    this.showTemp = true;
-                    break;
-                case 'Wind':
-                    this.showWind = true;
-                    break;
-                case 'Pressure':
-                    this.showPress = true;
-                    break;
-                case 'Clouds':
-                    this.showClouds = true;
-                    break;
-                case 'Precipitation':
-                    this.showPrec = true;
-                    break;
-            }
-        },
-        overlayRemove(event: LayersControlEvent) {
-            const overlay = event.name;
-            switch (overlay) {
-                case 'Temperature':
-                    this.showTemp = false;
-                    break;
-                case 'Wind':
-                    this.showWind = false;
-                    break;
-                case 'Pressure':
-                    this.showPress = false;
-                    break;
-                case 'Clouds':
-                    this.showClouds = false;
-                    break;
-                case 'Precipitation':
-                    this.showPrec = false;
-                    break;
-            }
-        },
         toggleOverlay(event: Event) {
             const target = event.target as HTMLElement;
-            if (target.classList.contains('active')) {
-                target.classList.remove('active');
-                switch (target.id) {
-                    case LTypeId.TEMPERATURE: {
-                        this.showTemp = false;
-                        this.hideLayer(LTypeId.TEMPERATURE);
-                        break;
+            if (target.closest('li')) {
+                if (target.classList.contains('active')) {
+                    target.classList.remove('active');
+                    switch (target.id) {
+                        case LTypeId.TEMPERATURE: {
+                            this.showTemp = false;
+                            this.hideLayer(LTypeId.TEMPERATURE);
+                            break;
+                        }
+                        case LTypeId.WIND: {
+                            this.showWind = false;
+                            this.hideLayer(LTypeId.WIND);
+                            break;
+                        }
+                        case LTypeId.PRESSURE:
+                            this.showPress = false;
+                            this.hideLayer(LTypeId.PRESSURE);
+                            break;
+                        case LTypeId.CLOUDS:
+                            this.showClouds = false;
+                            this.hideLayer(LTypeId.CLOUDS);
+                            break;
+                        case LTypeId.PRECIPITATION:
+                            this.showPrec = false;
+                            this.hideLayer(LTypeId.PRECIPITATION);
+                            break;
                     }
-                    case LTypeId.WIND: {
-                        this.showWind = false;
-                        this.hideLayer(LTypeId.WIND);
-                        break;
+                } else {
+                    target.classList.add('active');
+                    switch (target.id) {
+                        case LTypeId.TEMPERATURE: {
+                            this.showTemp = true;
+                            this.showLayer(LTypeId.TEMPERATURE);
+                            break;
+                        }
+                        case LTypeId.WIND: {
+                            this.showWind = true;
+                            this.showLayer(LTypeId.WIND);
+                            break;
+                        }
+                        case LTypeId.PRESSURE:
+                            this.showPress = true;
+                            this.showLayer(LTypeId.PRESSURE);
+                            break;
+                        case LTypeId.CLOUDS:
+                            this.showClouds = true;
+                            this.showLayer(LTypeId.CLOUDS);
+                            break;
+                        case LTypeId.PRECIPITATION:
+                            this.showPrec = true;
+                            this.showLayer(LTypeId.PRECIPITATION);
+                            break;
                     }
-                    case LTypeId.PRESSURE:
-                        this.showPress = false;
-                        this.hideLayer(LTypeId.PRESSURE);
-                        break;
-                    case LTypeId.CLOUDS:
-                        this.showClouds = false;
-                        this.hideLayer(LTypeId.CLOUDS);
-                        break;
-                    case LTypeId.PRECIPITATION:
-                        this.showPrec = false;
-                        this.hideLayer(LTypeId.PRECIPITATION);
-                        break;
-                }
-            } else {
-                target.classList.add('active');
-                switch (target.id) {
-                    case LTypeId.TEMPERATURE: {
-                        this.showTemp = true;
-                        this.showLayer(LTypeId.TEMPERATURE);
-                        break;
-                    }
-                    case LTypeId.WIND: {
-                        this.showWind = true;
-                        this.showLayer(LTypeId.WIND);
-                        break;
-                    }
-                    case LTypeId.PRESSURE:
-                        this.showPress = true;
-                        this.showLayer(LTypeId.PRESSURE);
-                        break;
-                    case LTypeId.CLOUDS:
-                        this.showClouds = true;
-                        this.showLayer(LTypeId.CLOUDS);
-                        break;
-                    case LTypeId.PRECIPITATION:
-                        this.showPrec = true;
-                        this.showLayer(LTypeId.PRECIPITATION);
-                        break;
                 }
             }
         },
@@ -344,67 +288,26 @@ export default defineComponent({
 </script>
 
 <style>
-.map-control {
-    height: 80px;
-}
-
-.map-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.map_logo {
-    width: 40px;
-    height: 40px;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    mask-position: center;
-    -webkit-mask-position: center;
-    mask-size: contain;
-    -webkit-mask-size: contain;
-    background-color: white;
-}
-
-.active {
-    background-color: #40b882;
-}
-
-.map_logo:hover {
-    transition: 0.5s;
-    background-color: #40b882;
-    cursor: pointer;
-    transform: scale(1.5);
-}
-
-.pressure,
 .pressure_logo {
     mask-image: url('../assets/map-icons/pressure.svg');
     -webkit-mask-image: url('../assets/map-icons/pressure.svg');
 }
 
-.cloud,
 .cloud_logo {
     mask-image: url('../assets/map-icons/cloud.svg');
     -webkit-mask-image: url('../assets/map-icons/cloud.svg');
 }
 
-.wind,
 .wind_logo {
     mask-image: url('../assets/map-icons/wind.svg');
     -webkit-mask-image: url('../assets/map-icons/wind.svg');
 }
 
-.temp,
 .temp_logo {
     mask-image: url('../assets/map-icons/temp.svg');
     -webkit-mask-image: url('../assets/map-icons/temp.svg');
 }
 
-.precipitation,
 .precipitation_logo {
     mask-image: url('../assets/map-icons/precipitation.svg');
     -webkit-mask-image: url('../assets/map-icons/precipitation.svg');
