@@ -50,7 +50,6 @@ export default defineComponent({
 
         watch(isShow, (isShow: boolean) => {
             if (isShow) {
-                console.log('reset');
                 searchQuery.value = '';
                 resultSearch.value = [];
             }
