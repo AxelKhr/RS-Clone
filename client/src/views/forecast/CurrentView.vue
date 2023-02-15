@@ -18,7 +18,9 @@
     <div class="weather">
         <div class="weather__text">
             <!-- обновлять раз в минутут -->
-            <div class="timezone">Time: TODO время в API не правильное<!-- {{ weatherData.ob_time.slice(-5) }} --></div>
+            <div class="timezone">
+                Time: TODO получиь время в соответсвтии с Local IANA Timezone<!-- {{ weatherData.ob_time.slice(-5) }} -->
+            </div>
             <div class="temperature">{{ Math.round($store.state.forecast.current.temperature) }}°C</div>
             <div class="weather__desc">
                 <div class="feelings">
@@ -37,64 +39,7 @@
 </template>
 
 <script lang="ts">
-import store from '@/store';
-
-export default {
-    data() {
-        let details = [
-            {
-                id: 0,
-                subtitle: 'Temp',
-                value: `${Math.round(store.state.forecast.daily.days[1].temperatureMin)} ... ${Math.round(
-                    store.state.forecast.daily.days[1].temperatureMax
-                )}°C`,
-            },
-            {
-                id: 1,
-                subtitle: 'Humidity',
-                value: `${store.state.forecast.current.humidityRelative} %`,
-            },
-            {
-                id: 2,
-                subtitle: 'Precipitation',
-                value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
-            },
-            {
-                id: 3,
-                subtitle: 'Sunrise',
-                value: `${store.state.forecast.current.sunRise}`,
-            },
-            {
-                id: 4,
-                subtitle: 'Sunset',
-                value: `${store.state.forecast.current.sunSet}`,
-            },
-            {
-                id: 5,
-                subtitle: 'Wind',
-                value: `${store.state.forecast.current.windSpeed.toFixed(2)} m/s ${
-                    store.state.forecast.current.windDirectionAbbr
-                }`,
-            },
-            {
-                id: 6,
-                subtitle: 'Pressure',
-                value: `${Math.round(store.state.forecast.current.pressure / 1.333)} mmHg`,
-            },
-            {
-                id: 7,
-                subtitle: 'Clouds Cov.',
-                value: `${store.state.forecast.current.cloudCoverage} %`,
-            },
-            {
-                id: 8,
-                subtitle: 'Visibility',
-                value: `${store.state.forecast.current.visibility} km`,
-            },
-        ];
-        return { details, down: false };
-    },
-};
+export default {};
 </script>
 
 <style lang="scss" scoped>

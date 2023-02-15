@@ -4,7 +4,6 @@
 </template>
 
 <script lang="ts">
-import store from '@/store';
 import chartHourly from '@/views/forecast/chartHourly.vue';
 import { defineComponent } from 'vue';
 export default defineComponent({

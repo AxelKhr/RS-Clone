@@ -46,24 +46,25 @@ const labels = [
     '23:00',
 ];
 
+const generateData = () => {
+    let randomNumbers = [];
+    for (let i = 0; i < 24; i++) {
+        let randomNumber = Math.floor(Math.random() * (25 - -10 + 1)) + -10;
+        randomNumbers.push(randomNumber);
+    }
+    return randomNumbers;
+};
+
 const data = {
     labels: labels,
     datasets: [
         {
             label: 'Temperature',
-            data: [-5, -5, -2, -2, -2, 0, 0, 0, 3, 7, 7, 7, 12, 16, 16, 15, 12, 12, 12, 10, 8, 8, 8, 7],
+            data: generateData(),
             fill: true,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.4,
         },
-
-        /*      {
-            label: 'Wind',
-            data: [5, 5, 6, 7, 7, 10, 8, 8, 7, 7, 7, 6, 7],
-            fill: true,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.4,
-        }, */
     ],
 };
 
