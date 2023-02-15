@@ -1,6 +1,6 @@
 import type { LocationForecastRequest, NameForecastRequest } from '../types/request';
 
-const API_KEY = 'c4c63b3795e6470caacf3c609cdeaaac';
+import { API_KEY } from '../constants';
 
 export async function getForecastByLocation(response: LocationForecastRequest) {
     return await fetch(

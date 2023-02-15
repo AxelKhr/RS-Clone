@@ -2,6 +2,7 @@ export interface IForecast {
     isLoading: boolean;
     current: IForecastCurrent;
     daily: IForecastDaily;
+    hourly: IForecastHourly;
 }
 
 export interface IForecastCurrent {
@@ -56,4 +57,31 @@ export interface IForecastDailyData {
 
 export interface IForecastDaily {
     days: IForecastDailyData[];
+}
+
+export interface IForecastHourlyData {
+    timeStamp: number;
+    timeStampLocal: string;
+    timeStampUTC: string;
+    partOfDay: string;
+    temperature: number;
+    feelsLikeTemp: number;
+    windSpeed: number;
+    windGustSpeed: number;
+    windDirection: number;
+    windDirectionAbbr: string;
+    precipitationProbability: number;
+    precipitationLiquid: number;
+    pressure: number;
+    humidityRelative: number;
+    cloudCoverage: number;
+    indexUV: number;
+    visibility: number;
+    weatherIcon: string;
+    weatherCode: number;
+    weatherDescription: string;
+}
+
+export interface IForecastHourly {
+    hours: IForecastHourlyData[];
 }
