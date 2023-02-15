@@ -28,27 +28,29 @@
         </div>
         <daily-view />
     </div>
+    <current-view />
+    <today-view />
+    <daily-view />
+    <hourly-view />
+    <!--     <test-vue /> -->
 </template>
 
-<!--         
-    TODAY    
-    pres: Pressure (mb).
-        pod: Part of the day (d = day / n = night).
-        vis: Visibility (default KM).
-        precip: Liquid equivalent precipitation rate (default mm/hr).
-        snow: Snowfall (default mm/hr).
-        uv: UV Index (0-11+).
-        aqi: Air Quality Index [US - EPA standard 0 - +500] 
-    -->
 <script lang="ts">
 import DailyView from './DailyView.vue';
-
-import { getForecastByLocation } from '../../api/forecast/weather';
-import type { LocationForecastResponse } from '../../api/types/response';
-export default {
+import TodayView from './TodayView.vue';
+import CurrentView from './CurrentView.vue';
+import HourlyView from './HourlyView.vue';
+/* import TestVue from './TestVue.vue'; */
+import { defineComponent } from 'vue';
+export default defineComponent({
     components: {
+        TodayView,
         DailyView,
+        CurrentView,
+        HourlyView,
+        /*   TestVue, */
     },
+});
 
     async setup() {
         const data = await getForecastByLocation({ latitude: 51.5072, longitude: -0.1276 });
