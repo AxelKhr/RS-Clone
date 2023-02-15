@@ -78,6 +78,13 @@ export default defineComponent({
                         @click="setCurrentLocation(location)"
                     >
                         <div class="item__text">{{ location.nameFull }}</div>
+                        <img
+                            class="item__icon"
+                            alt="Searchsearch icon"
+                            src="@/assets/icons/star.svg"
+                            width="24"
+                            height="24"
+                        />
                     </div>
                 </template>
             </div>
