@@ -1,22 +1,24 @@
 <template>
-    <div class="map-control">
-        <ul class="map-buttons">
-            <li>
-                <div id="temp" class="map_logo temp"></div>
-            </li>
-            <li>
-                <div id="pressure" class="map_logo pressure"></div>
-            </li>
-            <li>
-                <div id="cloud" class="map_logo cloud"></div>
-            </li>
-            <li>
-                <div id="wind" class="map_logo wind"></div>
-            </li>
-            <li>
-                <div id="precipitation" class="map_logo precipitation"></div>
-            </li>
-        </ul>
+    <div class="container">
+        <div class="map-control">
+            <ul class="map-buttons">
+                <li>
+                    <div id="temp" class="map_logo temp"></div>
+                </li>
+                <li>
+                    <div id="pressure" class="map_logo pressure"></div>
+                </li>
+                <li>
+                    <div id="cloud" class="map_logo cloud"></div>
+                </li>
+                <li>
+                    <div id="wind" class="map_logo wind"></div>
+                </li>
+                <li>
+                    <div id="precipitation" class="map_logo precipitation"></div>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 

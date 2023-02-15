@@ -3,7 +3,7 @@
     <div id="lmap" class="lmap">
         <l-map
             ref="weatherMap"
-            style="height: 83vh; width: 100%"
+            style="height: 80vh; width: 100%"
             :zoom="zoom"
             :minZoom="minZoom"
             :maxBounds="maxBounds"
@@ -298,8 +298,8 @@ export default defineComponent({
 
 .lmap {
     min-width: 100vw;
-    height: 83vh;
-    margin-top: 165px;
+    height: 80vh;
+    margin-top: 175px;
     position: fixed;
     left: 0;
     right: 0;

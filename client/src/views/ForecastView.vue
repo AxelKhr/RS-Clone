@@ -1,10 +1,12 @@
 <template>
-    <div class="forecast">
-        <Suspense>
-            <template #default>
-                <CommonVue />
-            </template>
-        </Suspense>
+    <div class="container">
+        <div class="forecast">
+            <Suspense>
+                <template #default>
+                    <CommonVue />
+                </template>
+            </Suspense>
+        </div>
     </div>
 </template>
 
@@ -16,3 +18,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.forecast {
+    padding-top: 40px;
+    width: 100%;
+}
+</style>
