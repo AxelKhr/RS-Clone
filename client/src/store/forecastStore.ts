@@ -6,6 +6,8 @@ import transformRespForecastCurrent from '@/store/transformApi/forecast';
 import transformRespForecastDaily from '@/store/transformApi/forecastDaily';
 import transformRespForecastHourly from '@/store/transformApi/forecastHourly';
 import * as def from '@/store/default/forecastDef';
+import { ILocationPlace } from '@/types/location';
+import { LocationForecastRequest } from '@/api/types/request';
 
 type Context = ActionContext<IForecast, IState>;
 
@@ -33,9 +35,13 @@ export default {
         },
     },
     actions: {
-        async updateForecast(context: Context) {
+        async updateForecast(context: Context, location: ILocationPlace) {
+            const query: LocationForecastRequest = {
+                latitude: location.position.latitude,
+                longitude: location.position.longitude,
+            };
             context.commit('setLoading', true);
-            const dataCurrent = await getForecastByLocation({ latitude: 51.5072, longitude: -0.1276 });
+            const dataCurrent = await getForecastByLocation(query);
             const respCurrent = await dataCurrent.json();
             context.commit('setForecastCurrent', transformRespForecastCurrent(respCurrent.data[0]));
             const dataDaily = await getForecastDaily({ latitude: 51.5072, longitude: -0.1276 });
