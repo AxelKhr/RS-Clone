@@ -42,16 +42,19 @@ export default defineComponent({
 
 <style lang="scss">
 .search-box {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    width: 100%;
 
     &__input {
-        flex: 1 1 auto;
+        flex: 1 0 0%;
+        width: 100%;
         font-size: 1rem;
         padding: 5px;
         border: none;
         outline: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 </style>

@@ -7,7 +7,7 @@ export async function searchLocations(query: string): Promise<ILocationPlace[]> 
         return <ILocationPlace>{
             id: item.id,
             name: item.name,
-            nameFull: item.name,
+            nameFull: `${item.name}, ${item.adminDivision1.name} , ${item.country.name}`,
             position: item.coordinates,
         };
     });

@@ -1,5 +1,5 @@
-import { searchLocationByQuery } from '@/api/location/locationApi';
-import { ILocation } from '@/types/location';
+// import { searchLocationByQuery } from '@/api/location/locationApi';
+import { ILocation, ILocationPlace } from '@/types/location';
 import { ActionContext } from 'vuex';
 import { IState } from '@/types/state';
 
@@ -24,19 +24,17 @@ export default {
         setShowModal(state: ILocation, isShowModal: boolean) {
             state.isShowModal = isShowModal;
         },
+        setCurrentLocation(state: ILocation, location: ILocationPlace) {
+            state.currentLocation = location;
+        },
     },
     actions: {
         showModal(context: Context) {
             context.commit('setShowModal', true);
         },
-        async searchLocations() {
-            console.log('searchLocations');
-            await new Promise((resolve) => setTimeout(resolve, 3000));
-            console.log('searchLocations end');
-        },
-        async updateLocation() {
-            const dataLocation = await searchLocationByQuery({ query: 'min', limit: 100, language: 'en' });
-            console.log(dataLocation);
+        updateCurrentLocation(context: Context, location: ILocationPlace) {
+            context.commit('setCurrentLocation', location);
+            context.dispatch('forecast/updateForecast', location, { root: true });
         },
     },
 };

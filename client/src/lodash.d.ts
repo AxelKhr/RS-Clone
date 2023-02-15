@@ -1,1 +1,1 @@
-declare module '@types/lodash';
+declare module 'lodash-es/debounce';
