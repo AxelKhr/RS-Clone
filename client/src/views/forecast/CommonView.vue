@@ -1,10 +1,10 @@
 <template>
     <div class="weather-actions">
         <div class="locations">
-            <img class="locations__img" src="../../assets/images/location.svg" alt="locations" />
+            <div class="locations__img"></div>
             <div class="locations__text">{{ weatherData.city_name }}</div>
         </div>
-        <img class="refresh" src="../../assets/images/refresh.svg" alt="refresh" />
+        <div class="refresh"></div>
     </div>
 
     <div class="weather">
@@ -28,32 +28,33 @@
         </div>
         <daily-view />
     </div>
+    <current-view />
+    <today-view />
+    <daily-view />
+    <hourly-view />
+    <!--     <test-vue /> -->
 </template>
 
-<!--         
-    TODAY    
-    pres: Pressure (mb).
-        pod: Part of the day (d = day / n = night).
-        vis: Visibility (default KM).
-        precip: Liquid equivalent precipitation rate (default mm/hr).
-        snow: Snowfall (default mm/hr).
-        uv: UV Index (0-11+).
-        aqi: Air Quality Index [US - EPA standard 0 - +500] 
-    -->
 <script lang="ts">
 import DailyView from './DailyView.vue';
-
-import { getForecastByLocation } from '../../api/forecast/weather';
-import type { LocationForecastResponse } from '../../api/types/response';
-export default {
+import TodayView from './TodayView.vue';
+import CurrentView from './CurrentView.vue';
+import HourlyView from './HourlyView.vue';
+/* import TestVue from './TestVue.vue'; */
+import { defineComponent } from 'vue';
+export default defineComponent({
     components: {
+        TodayView,
         DailyView,
+        CurrentView,
+        HourlyView,
+        /*   TestVue, */
     },
+});
 
     async setup() {
         const data = await getForecastByLocation({ latitude: 51.5072, longitude: -0.1276 });
         const response = await data.json();
-        console.log('response :>> ', response);
         const weatherData: LocationForecastResponse = response.data[0];
         weatherData.weather.icon = require(`../../assets/icons/${weatherData.weather.icon}.png`);
         let details = [
@@ -77,23 +78,36 @@ export default {
 .weather-actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 .locations {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
 }
+
+.refresh,
 .locations__img {
     width: 25px;
     height: 25px;
+    background-color: white;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
     margin-right: 10px;
+}
+
+.locations__img {
+    mask-image: url('@/assets/images/location.svg');
+    -webkit-mask-image: url('@/assets/images/location.svg');
+}
+.refresh {
+    mask-image: url('@/assets/images/refresh.svg');
+    -webkit-mask-image: url('@/assets/images/refresh.svg');
 }
 .locations__text {
     font-size: 1.5rem;
-}
-.refresh {
-    width: 25px;
-    height: 25px;
 }
 .weather {
     display: flex;
