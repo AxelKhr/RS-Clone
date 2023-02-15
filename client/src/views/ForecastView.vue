@@ -1,11 +1,13 @@
-<template>
+<template class="container">
     <div class="container">
-        <div class="forecast">
-            <Suspense>
-                <template #default>
-                    <CommonVue />
-                </template>
-            </Suspense>
+        <div class="wrap">
+            <div class="forecast">
+                <Suspense>
+                    <template #default>
+                        <CommonVue />
+                    </template>
+                </Suspense>
+            </div>
         </div>
     </div>
 </template>
@@ -21,7 +23,13 @@ export default {
 
 <style scoped>
 .forecast {
-    padding-top: 40px;
+    margin-top: 40px;
+    padding: 25px;
     width: 100%;
+    background-color: #222222;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.6);
+    border: none;
 }
 </style>

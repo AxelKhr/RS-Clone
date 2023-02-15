@@ -1,10 +1,10 @@
 <template>
     <div class="weather-actions">
         <div class="locations">
-            <img class="locations__img" src="../../assets/images/location.svg" alt="locations" />
+            <div class="locations__img"></div>
             <div class="locations__text">{{ weatherData.city_name }}</div>
         </div>
-        <img class="refresh" src="../../assets/images/refresh.svg" alt="refresh" />
+        <div class="refresh"></div>
     </div>
 
     <div class="weather">
@@ -76,23 +76,36 @@ export default {
 .weather-actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 .locations {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
 }
+
+.refresh,
 .locations__img {
     width: 25px;
     height: 25px;
+    background-color: white;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
     margin-right: 10px;
+}
+
+.locations__img {
+    mask-image: url('@/assets/images/location.svg');
+    -webkit-mask-image: url('@/assets/images/location.svg');
+}
+.refresh {
+    mask-image: url('@/assets/images/refresh.svg');
+    -webkit-mask-image: url('@/assets/images/refresh.svg');
 }
 .locations__text {
     font-size: 1.5rem;
-}
-.refresh {
-    width: 25px;
-    height: 25px;
 }
 .weather {
     display: flex;
