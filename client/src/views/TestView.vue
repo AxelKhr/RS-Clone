@@ -5,9 +5,19 @@ import TestCurrent from '@/components/TestCurrent.vue';
 </script>
 
 <template>
-    <div>
-        <TestStorage />
-        <TestLocation />
-        <TestCurrent />
+    <div class="container">
+        <div class="wrap">
+            <div>
+                <TestStorage />
+                <TestLocation />
+                <TestCurrent />
+            </div>
+        </div>
     </div>
 </template>
+
+<style scoped>
+.container {
+    padding-top: 40px;
+}
+</style>

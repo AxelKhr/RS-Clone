@@ -1,34 +1,38 @@
 <template>
-    <map-control @click="toggleOverlay" />
-    <div id="lmap" class="lmap">
-        <l-map
-            ref="weatherMap"
-            style="height: 83vh; width: 100%"
-            :zoom="zoom"
-            :minZoom="minZoom"
-            :maxBounds="maxBounds"
-            :center="center"
-            :attribution="attribution"
-            @update:zoom="zoomUpdated"
-            @update:center="centerUpdated"
-            @click="onMapClick"
-        >
-            <l-tile-layer
-                v-for="tile in tiles"
-                :key="tile.name"
-                :name="tile.name"
-                :url="tile.url"
-                :layer-type="tile.layerType"
-                :visible="tile.visible"
-            />
-            <l-control-layers class="layer-control" :collapsed="true" />
-            <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
-                <l-popup ref="popup" :lat-lng="markerLatLng">
-                    {{ markerLatLng }}
-                </l-popup>
-            </l-marker>
-            <map-legend :temp="temp" :press="press" :cloud="cloud" :wind="wind" :prec="prec" />
-        </l-map>
+    <div class="container">
+        <div class="wrap">
+            <map-control @click="toggleOverlay" />
+            <div id="lmap" class="lmap">
+                <l-map
+                    ref="weatherMap"
+                    style="height: 80vh; width: 100%"
+                    :zoom="zoom"
+                    :minZoom="minZoom"
+                    :maxBounds="maxBounds"
+                    :center="center"
+                    :attribution="attribution"
+                    @update:zoom="zoomUpdated"
+                    @update:center="centerUpdated"
+                    @click="onMapClick"
+                >
+                    <l-tile-layer
+                        v-for="tile in tiles"
+                        :key="tile.name"
+                        :name="tile.name"
+                        :url="tile.url"
+                        :layer-type="tile.layerType"
+                        :visible="tile.visible"
+                    />
+                    <l-control-layers class="layer-control" :collapsed="true" />
+                    <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
+                        <l-popup ref="popup" :lat-lng="markerLatLng">
+                            {{ markerLatLng }}
+                        </l-popup>
+                    </l-marker>
+                    <map-legend :temp="temp" :press="press" :cloud="cloud" :wind="wind" :prec="prec" />
+                </l-map>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -298,8 +302,7 @@ export default defineComponent({
 
 .lmap {
     min-width: 100vw;
-    height: 83vh;
-    margin-top: 165px;
+    height: 80vh;
     position: fixed;
     left: 0;
     right: 0;
