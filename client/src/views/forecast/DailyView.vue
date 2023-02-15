@@ -1,30 +1,186 @@
+<!-- TODO обработать даты восхода заката и даты в Daily -->
 <template>
-    <div class="daily">
-        <div class="day"></div>
+    <div class="block__title">Daily Forecast</div>
+    <div class="days">
+        <div class="day">
+            <div
+                @click="toggleChild(index)"
+                v-for="(day, index) in details"
+                :key="index"
+                :class="{ active: index === selected }"
+            >
+                <div class="day__short">
+                    <img class="day__img" :src="day[10].icon" alt="" />
+                    <div class="day-text">
+                        <div class="day__subtitle">{{ day[0].date }}</div>
+                        <div class="day__description">{{ day[11].descriptions }}</div>
+                    </div>
+                    <div class="day__precipitation">
+                        <img class="day__precipitation-img" src="../../assets/images/drop.svg" alt="" />
+                        <div>{{ day[3].precipitation }}</div>
+                    </div>
+                    <div class="day__temp">
+                        {{ day[1].temp }}
+                    </div>
+                </div>
+
+                <transition name="mode-fade" mode="out-in">
+                    <div class="details__container child" v-if="index === selected">
+                        <div>
+                            <img src="../../assets/images/humidity.svg" alt="" />
+                            <div class="details__subtitle">Humidity<br />{{ day[2].humidity }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/sunrise.svg" alt="" />
+                            <div class="details__subtitle">Sunrise<br />{{ day[4].sunrise }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/sunset.svg" alt="" />
+                            <div class="details__subtitle">Sunset<br />{{ day[5].sunset }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/wind.svg" alt="" />
+                            <div class="details__subtitle">Wind Speed<br />{{ day[6].wind }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/pressure.svg" alt="" />
+                            <div class="details__subtitle">Pressure<br />{{ day[7].pressure }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/cloud.svg" alt="" />
+                            <div class="details__subtitle">Cloud Coverage<br />{{ day[8].clouds }}</div>
+                        </div>
+                        <div>
+                            <img src="../../assets/images/visibility.svg" alt="" />
+                            <div class="details__subtitle">Visibility<br />{{ day[9].visibility }}</div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </div>
     </div>
 </template>
 
-<!-- <script lang="ts">
-import { getForecastDaily } from '../../api/forecast/weather';
-import type LocationForecastResponse from '../../api/types/response';
-
-export default {
-/*   props: {
-
-  }, */
-    async setup() {
-        const data = await getForecastDaily({ latitude: 51.5072, longitude: -0.1276 });
-        const response = await data.json();
-        console.log('response :>> ', response);
-        const weatherDataDaily: LocationForecastResponse = response.data[0];
-        weatherDataDaily.weather.icon = require(`../../assets/icons/${weatherDataDaily.weather.icon}.png`);
-        return { weatherDataDaily };
-    },
-
+<script lang="ts">
+import store from '@/store';
+import { defineComponent } from 'vue';
+export default defineComponent({
+    components: {},
     data() {
-        return {};
-    },
-};
-</script> -->
+        let daysData = store.state.forecast.daily.days;
 
-<style scoped></style>
+        let details = daysData
+            .map((day) => {
+                return [
+                    { date: `${day.validDate}` },
+                    { temp: `${day.temperatureMin} ... ${day.temperatureMax}°C` },
+                    { humidity: `${day.humidityRelative} %` },
+                    { precipitation: `${day.precipitationProbability} %` },
+                    { sunrise: `${day.sunRise}` },
+                    { sunset: `${day.sunSet}` },
+                    { wind: `${day.windSpeed} m/s ${day.windDirectionAbbr}` },
+                    { pressure: `${day.pressure} mmHg` },
+                    { clouds: `${day.cloudCoverage} %` },
+                    { visibility: `${day.visibility} km` },
+                    { icon: `${day.weatherIcon}` },
+                    { descriptions: `${day.weatherDescription}` },
+                    { time: `${day.timeStamp}` },
+                ];
+            })
+            .slice(1, 8);
+        console.log('details :>> ', details);
+
+        return { details, selected: null as number | null };
+    },
+    methods: {
+        toggleChild(index: number) {
+            this.selected = this.selected === index ? null : index;
+        },
+    },
+    computed: {},
+});
+</script>
+
+<style lang="scss" scoped>
+.block__title {
+    font-size: 1.5rem;
+}
+.day {
+    &__short {
+        display: grid;
+        grid-template-columns: 1fr 15fr 70px 80px;
+        align-items: center;
+        white-space: nowrap;
+        height: 70px;
+        border-radius: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:hover {
+            background-color: rgb(228, 228, 228);
+        }
+    }
+    &__img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+}
+
+.details {
+    &__container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        & > div {
+            display: flex;
+            align-items: center;
+            background-color: rgb(228, 228, 228);
+            border-radius: 5px;
+            & > img {
+                width: 30px;
+                height: 30px;
+                margin: 20px;
+            }
+        }
+    }
+
+    &__subtitle {
+        font-size: 0.8rem;
+        text-align: center;
+        width: 80px;
+    }
+    &__value {
+        font-size: 1rem;
+        text-align: center;
+    }
+    &__size {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.day__precipitation {
+    display: flex;
+    &-img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.mode-fade-enter-active,
+.no-mode-fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.mode-fade-enter-from,
+.no-mode-fade-leave-to {
+    opacity: 0;
+}
+</style>
