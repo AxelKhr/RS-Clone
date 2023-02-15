@@ -1,4 +1,5 @@
 import type { LocationForecastRequest, NameForecastRequest } from '../types/request';
+
 import { API_KEY } from '../constants';
 
 export async function getForecastByLocation(response: LocationForecastRequest) {
