@@ -1,21 +1,19 @@
-import { ISettings } from '@/types/setting';
+import { ISettings } from '@/types/settings';
 import mergeWith from 'lodash-es/mergeWith';
 
 const STORAGE_SETTINGS_KEY = 'RS-Weather-Settings';
 
 const SETTINGS_DEF: ISettings = {
-    location: {
-        current: {
-            id: '2643743',
-            name: 'London',
-            nameFull: 'London, England , United Kingdom',
-            position: {
-                latitude: 51.5085,
-                longitude: -0.12574,
-            },
+    locationCurrent: {
+        id: '2643743',
+        name: 'London',
+        nameFull: 'London, England , United Kingdom',
+        position: {
+            latitude: 51.5085,
+            longitude: -0.12574,
         },
-        favorites: [],
     },
+    locationFavorites: [],
 };
 
 export function saveSettings(settings: ISettings) {

@@ -35,6 +35,7 @@ export default {
         updateCurrentLocation(context: Context, location: ILocationPlace) {
             context.commit('setCurrentLocation', location);
             context.dispatch('forecast/updateForecast', location, { root: true });
+            context.dispatch('settings/updateSettings', { locationCurrent: location }, { root: true });
         },
     },
 };
