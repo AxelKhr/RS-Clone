@@ -44,8 +44,8 @@ export default defineComponent({
             },
         });
         function setCurrentLocation(location: ILocationPlace) {
-            store.dispatch('location/updateCurrentLocation', location);
-            store.commit('location/setShowModal', false);
+            store.dispatch('forecast/updateLocation', location);
+            store.commit('forecast/setShowModal', false);
         }
 
         watch(isShow, (isShow: boolean) => {

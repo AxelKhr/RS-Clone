@@ -5,24 +5,37 @@ import { IState } from '@/types/state';
 import transformRespForecastCurrent from '@/store/transformApi/forecast';
 import transformRespForecastDaily from '@/store/transformApi/forecastDaily';
 import transformRespForecastHourly from '@/store/transformApi/forecastHourly';
-import * as def from '@/store/default/forecastDef';
 import { ILocationPlace } from '@/types/location';
 import { LocationForecastRequest } from '@/api/types/request';
+import SETTINGS from '@/constants/settings';
+import FORECAST_CURRENT_DEF from '@/constants/forecast/current';
+import FORECAST_DAILY_DEF from '@/constants/forecast/daily';
+import FORECAST_HOURLY_DEF from '@/constants/forecast/hourly';
 
 type Context = ActionContext<IForecast, IState>;
 
 export default {
     namespaced: true,
-    state: (): IForecast => ({
-        isLoading: false,
-        current: def.getForecastCurrentDef(),
-        daily: def.getForecastDailyDef(),
-        hourly: def.getForecastHourlyDef(),
-    }),
+    state: (): IForecast => {
+        return {
+            isLoading: false,
+            isShowModal: false,
+            location: SETTINGS.default.locationCurrent,
+            current: FORECAST_CURRENT_DEF,
+            daily: FORECAST_DAILY_DEF,
+            hourly: FORECAST_HOURLY_DEF,
+        };
+    },
     getters: {},
     mutations: {
         setLoading(state: IForecast, isLoading: boolean) {
             state.isLoading = isLoading;
+        },
+        setShowModal(state: IForecast, isShowModal: boolean) {
+            state.isShowModal = isShowModal;
+        },
+        setLocation(state: IForecast, location: ILocationPlace) {
+            state.location = location;
         },
         setForecastCurrent(state: IForecast, forecastCurrent: IForecastCurrent) {
             state.current = forecastCurrent;
@@ -35,6 +48,14 @@ export default {
         },
     },
     actions: {
+        showModal(context: Context) {
+            context.commit('setShowModal', true);
+        },
+        updateLocation(context: Context, location: ILocationPlace) {
+            context.commit('setLocation', location);
+            context.dispatch('updateForecast', location);
+            context.dispatch('settings/updateSettings', { locationCurrent: location }, { root: true });
+        },
         async updateForecast(context: Context, location: ILocationPlace) {
             const query: LocationForecastRequest = {
                 latitude: location.position.latitude,

@@ -17,7 +17,7 @@ export default defineComponent({
                 <TestStorage />
                 <TestLocation />
                 <TestCurrent />
-                <location-modal v-model:isShow="$store.state.location.isShowModal" />
+                <location-modal v-model:isShow="$store.state.forecast.isShowModal" />
             </div>
         </div>
     </div>
