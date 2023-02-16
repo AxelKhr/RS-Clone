@@ -8,9 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue-leaflet/vue-leaflet": "^0.8.2",
     "chart.js": "^4.2.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "@vue-leaflet/vue-leaflet": "^0.8.2",
     "core-js": "^3.8.3",
     "leaflet": "^1.9.3",
     "vue": "^3.2.13",
