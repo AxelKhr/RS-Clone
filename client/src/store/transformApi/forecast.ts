@@ -7,6 +7,7 @@ export default function transformRespForecastCurrent(response: LocationForecastR
         timeObservation: response.ob_time,
         cityName: response.city_name,
         countryCode: response.country_code,
+        timeZone: response.timezone,
         temperature: response.temp,
         feelsLikeTemp: response.app_temp,
         windSpeed: response.wind_spd,

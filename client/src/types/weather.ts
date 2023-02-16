@@ -10,6 +10,7 @@ export interface IForecastCurrent {
     timeObservation: string;
     cityName: string;
     countryCode: string;
+    timeZone: string;
     temperature: number;
     feelsLikeTemp: number;
     windSpeed: number;

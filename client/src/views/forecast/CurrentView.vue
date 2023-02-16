@@ -18,9 +18,7 @@
     <div class="weather">
         <div class="weather__text">
             <!-- обновлять раз в минутут -->
-            <div class="timezone">
-                Time: TODO получиь время в соответсвтии с Local IANA Timezone<!-- {{ weatherData.ob_time.slice(-5) }} -->
-            </div>
+            <time-view />
             <div class="temperature">{{ Math.round($store.state.forecast.current.temperature) }}°C</div>
             <div class="weather__desc">
                 <div class="feelings">
@@ -39,7 +37,13 @@
 </template>
 
 <script lang="ts">
-export default {};
+import TimeView from './TimeView.vue';
+import { defineComponent } from 'vue';
+export default defineComponent({
+    components: {
+        TimeView,
+    },
+});
 </script>
 
 <style lang="scss" scoped>

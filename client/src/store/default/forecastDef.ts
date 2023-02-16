@@ -12,6 +12,7 @@ export function getForecastCurrentDef(): IForecastCurrent {
         timeObservation: '',
         cityName: '',
         countryCode: '',
+        timeZone: '',
         temperature: 0,
         feelsLikeTemp: 0,
         windSpeed: 0,
