@@ -66,10 +66,8 @@
 
 <script lang="ts">
 import store from '@/store';
-
 import { defineComponent } from 'vue';
 export default defineComponent({
-    components: {},
     data() {
         let details = [
             {
@@ -90,7 +88,7 @@ export default defineComponent({
                 id: 2,
                 subtitle: 'Precipitation',
                 value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
-                desc: 'Test desc',
+                desc: 'In meteorology, precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.',
             },
             {
                 id: 3,
@@ -116,7 +114,7 @@ export default defineComponent({
                 id: 6,
                 subtitle: 'Pressure',
                 value: `${Math.round(store.state.forecast.current.pressure / 1.333)} mmHg`,
-                desc: 'Test desc',
+                desc: 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.',
             },
             {
                 id: 7,

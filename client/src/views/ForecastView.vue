@@ -2,11 +2,7 @@
     <div class="container">
         <div class="wrap">
             <div class="forecast">
-                <Suspense>
-                    <template #default>
-                        <CommonVue />
-                    </template>
-                </Suspense>
+                <common-vue />
             </div>
         </div>
     </div>
@@ -24,7 +20,6 @@ export default {
 <style scoped>
 .forecast {
     margin-top: 40px;
-    padding: 25px;
     width: 100%;
     background-color: #222222;
     border: 1px solid black;
