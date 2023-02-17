@@ -11,6 +11,7 @@ import SETTINGS from '@/constants/settings';
 import FORECAST_CURRENT_DEF from '@/constants/forecast/current';
 import FORECAST_DAILY_DEF from '@/constants/forecast/daily';
 import FORECAST_HOURLY_DEF from '@/constants/forecast/hourly';
+import uniqBy from 'lodash/uniqBy';
 
 type Context = ActionContext<IForecast, IState>;
 
@@ -55,6 +56,18 @@ export default {
             context.commit('setLocation', location);
             context.dispatch('updateForecast', location);
             context.dispatch('settings/updateSettings', { locationCurrent: location }, { root: true });
+        },
+        addLocation(context: Context, location: ILocationPlace) {
+            const locations = context.rootState.settings.locationFavorites;
+            context.dispatch(
+                'settings/updateSettings',
+                { locationFavorites: uniqBy([...locations, location], ({ id }) => id) },
+                { root: true }
+            );
+        },
+        removeLocation(context: Context, location: ILocationPlace) {
+            const locations = context.rootState.settings.locationFavorites.filter((item) => item.id !== location.id);
+            context.dispatch('settings/updateSettings', { locationFavorites: locations }, { root: true });
         },
         async updateForecast(context: Context, location: ILocationPlace) {
             const query: LocationForecastRequest = {

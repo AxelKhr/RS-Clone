@@ -5,8 +5,8 @@ import settingsStore from './settingsStore';
 
 const store = createStore<IState>({
     modules: {
-        settings: settingsStore,
         forecast: forecastStore,
+        settings: settingsStore,
     },
 });
 
