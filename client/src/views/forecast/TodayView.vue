@@ -39,8 +39,8 @@ export default defineComponent({
             {
                 id: 0,
                 subtitle: 'Temp',
-                value: `${Math.round(store.state.forecast.daily.days[1].temperatureMin)} ... ${Math.round(
-                    store.state.forecast.daily.days[1].temperatureMax
+                value: `${Math.round(store.state.forecast.daily.days[0].temperatureMin)} ... ${Math.round(
+                    store.state.forecast.daily.days[0].temperatureMax
                 )}°C`,
             },
             {
@@ -51,17 +51,17 @@ export default defineComponent({
             {
                 id: 2,
                 subtitle: 'Precipitation',
-                value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
+                value: `${store.state.forecast.daily.days[0].precipitationProbability} %`,
             },
             {
                 id: 3,
                 subtitle: 'Sunrise',
-                value: `${store.state.forecast.current.sunRise}`,
+                value: `${store.state.forecast.daily.days[0].sunRise}`,
             },
             {
                 id: 4,
                 subtitle: 'Sunset',
-                value: `${store.state.forecast.current.sunSet}`,
+                value: `${store.state.forecast.daily.days[0].sunSet}`,
             },
             {
                 id: 5,

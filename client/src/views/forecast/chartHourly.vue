@@ -1,12 +1,12 @@
 <template>
     <div class="btn-container">
-        <div class="btn-chart">
+        <div class="btn-chart" @click="selectedCategory = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
-        <div class="btn-chart">
+        <div class="btn-chart" @click="selectedCategory = 'precipitation'">
             <img src="@/assets/images/precipitation.svg" alt="" />
         </div>
-        <div class="btn-chart">
+        <div class="btn-chart" @click="selectedCategory = 'wind'">
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
@@ -15,9 +15,11 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { ChartConfiguration } from 'chart.js';
 import 'chartjs-plugin-datalabels';
+import store from '@/store';
+let hoursData = store.state.forecast.hourly.hours;
 
 const labels = [
     '00:00',
@@ -46,31 +48,51 @@ const labels = [
     '23:00',
 ];
 
-const generateData = () => {
-    let randomNumbers = [];
-    for (let i = 0; i < 24; i++) {
-        let randomNumber = Math.floor(Math.random() * (25 - -10 + 1)) + -10;
-        randomNumbers.push(randomNumber);
-    }
-    return randomNumbers;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const chartData: { [key: string]: any } = {
+    temperature: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Temperature',
+                data: hoursData.map((el) => el.temperature),
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.4,
+            },
+        ],
+    },
+    precipitation: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Precipitation',
+                data: hoursData.map((el) => el.precipitationProbability),
+                fill: true,
+                borderColor: 'rgb(255, 99, 132)',
+                tension: 0.4,
+            },
+        ],
+    },
+    wind: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Wind',
+                data: hoursData.map((el) => el.windSpeed),
+                fill: true,
+                borderColor: 'rgb(54, 162, 235)',
+                tension: 0.4,
+            },
+        ],
+    },
 };
 
-const data = {
-    labels: labels,
-    datasets: [
-        {
-            label: 'Temperature',
-            data: generateData(),
-            fill: true,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.4,
-        },
-    ],
-};
+const selectedCategory = ref('temperature');
 
-const config: ChartConfiguration = {
+const chartConfig = ref<ChartConfiguration>({
     type: 'line',
-    data: data,
+    data: chartData[selectedCategory.value],
     options: {
         plugins: {
             datalabels: {
@@ -105,11 +127,22 @@ const config: ChartConfiguration = {
             intersect: false,
         },
     },
-};
+});
 
 onMounted(() => {
     const canvasTag = document.getElementById('MyChart') as HTMLCanvasElement;
-    new Chart(canvasTag, config);
+    const chart = new Chart(canvasTag, chartConfig.value);
+
+    // Watch for changes in selectedCategory and update the chart data
+    watch(
+        function () {
+            return selectedCategory.value;
+        },
+        function () {
+            chart.data = chartData[selectedCategory.value];
+            chart.update();
+        }
+    );
 });
 </script>
 <style lang="scss" scoped>
