@@ -48,8 +48,20 @@ const labels = [
     '23:00',
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const chartData: { [key: string]: any } = {
+interface ChartData {
+    [key: string]: {
+        labels: string[];
+        datasets: {
+            label: string;
+            data: number[];
+            fill: boolean;
+            borderColor: string;
+            tension: number;
+        }[];
+    };
+}
+
+const chartData: ChartData = {
     temperature: {
         labels: labels,
         datasets: [
