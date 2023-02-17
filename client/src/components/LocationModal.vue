@@ -170,11 +170,17 @@ export default defineComponent({
         width: 100%;
         padding: 15px;
         overflow-y: auto;
+        .search-line {
+            margin: 5px 0;
+        }
+        .list {
+            overflow-y: auto;
+            max-height: 200px;
+        }
         .list__item {
             display: flex;
             align-items: center;
             padding: 2px 5px 2px 10px;
-            margin-top: 10px;
             border-radius: 5px;
             overflow: hidden;
 
