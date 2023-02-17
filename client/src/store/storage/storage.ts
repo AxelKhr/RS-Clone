@@ -17,5 +17,6 @@ export function loadSettings(): ISettings {
             }
         });
     }
+    saveSettings(SETTINGS.default);
     return SETTINGS.default;
 }
