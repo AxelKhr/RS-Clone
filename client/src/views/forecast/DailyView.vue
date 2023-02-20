@@ -1,4 +1,4 @@
-<!-- TODO обработать даты восхода заката и даты в Daily -->
+<!-- TODO все время отображает лондонскую погоду-->
 <template>
     <div class="block__title">Daily Forecast</div>
     <div class="days">

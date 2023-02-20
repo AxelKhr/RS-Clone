@@ -10,6 +10,7 @@ export interface IForecastCurrent {
     timeObservation: string;
     cityName: string;
     countryCode: string;
+    timeZone: string;
     temperature: number;
     feelsLikeTemp: number;
     windSpeed: number;
@@ -46,8 +47,8 @@ export interface IForecastDailyData {
     pressure: number;
     humidityRelative: number;
     cloudCoverage: number;
-    sunRise: number;
-    sunSet: number;
+    sunRise: string;
+    sunSet: string;
     indexUV: number;
     visibility: number;
     weatherIcon: string;

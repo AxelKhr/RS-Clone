@@ -20,7 +20,6 @@
                 />
             </button>
         </div>
-
         <div class="weather">
             <div class="weather__text">
                 <!-- обновлять раз в минутут -->

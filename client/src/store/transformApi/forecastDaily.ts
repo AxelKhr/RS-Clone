@@ -20,8 +20,16 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
                 pressure: Math.round(day.pres / 1.333),
                 humidityRelative: day.rh,
                 cloudCoverage: day.clouds,
-                sunRise: day.sunrise_ts,
-                sunSet: day.sunset_ts,
+                sunRise: new Date((day.sunrise_ts - 3 * 60 * 60) * 1000).toLocaleTimeString('en-US', {
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }),
+                sunSet: new Date((day.sunset_ts - 3 * 60 * 60) * 1000).toLocaleTimeString('en-US', {
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }),
                 indexUV: day.uv,
                 visibility: Math.round(day.vis),
                 weatherIcon: require(`../../assets/icons/${day.weather.icon}.png`),
