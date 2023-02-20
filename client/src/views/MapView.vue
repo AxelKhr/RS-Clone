@@ -105,12 +105,12 @@ export default defineComponent({
                 [90, 180],
             ],
             center: new LatLng(
-                store.state.location.currentLocation.position.latitude,
-                store.state.location.currentLocation.position.longitude
+                store.state.forecast.location.position.latitude,
+                store.state.forecast.location.position.longitude
             ),
             markerLatLng: new LatLng(
-                store.state.location.currentLocation.position.latitude,
-                store.state.location.currentLocation.position.longitude
+                store.state.forecast.location.position.latitude,
+                store.state.forecast.location.position.longitude
             ),
             icon: new Icon({
                 iconUrl: require('../assets/marker.png'),
