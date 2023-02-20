@@ -2,9 +2,10 @@
 import { defineComponent } from 'vue';
 import SettingsBlock from './settings/SettingsBlock.vue';
 import SettingsGeneral from './settings/SettingsGeneral.vue';
+import SettingsForecast from './settings/SettingsForecast.vue';
 
 export default defineComponent({
-    components: { SettingsBlock, SettingsGeneral },
+    components: { SettingsBlock, SettingsGeneral, SettingsForecast },
 });
 </script>
 
@@ -15,7 +16,9 @@ export default defineComponent({
                 <settings-block title="GENERAL">
                     <settings-general />
                 </settings-block>
-                <settings-block title="FORECAST"></settings-block>
+                <settings-block title="FORECAST">
+                    <settings-forecast />
+                </settings-block>
                 <settings-block title="MAP"></settings-block>
             </div>
         </div>

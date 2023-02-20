@@ -1,10 +1,12 @@
 import { LANG } from '@/types/language';
 import { ISettings } from '@/types/settings';
+import { UNITS } from '@/types/units';
 
 const SETTINGS = {
     storageKey: 'RS-Weather-Settings',
     default: <ISettings>{
         languageCurrent: LANG.en,
+        units: UNITS.metric,
         locationCurrent: {
             id: '2643743',
             name: 'London',

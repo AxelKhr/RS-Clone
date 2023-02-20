@@ -37,7 +37,7 @@ export default defineComponent({
 
 <template>
     <div class="settings">
-        <settings-item titleParam="Language" valueParam="EN" v-model:isDrop="isDropLanguage">
+        <settings-item titleParam="Language" :valueParam="langSelected" v-model:isDrop="isDropLanguage">
             <div class="settings__language">
                 <params-list class="language__params" :items="langList" v-model:selected="langSelected">
                     <!-- <template #itemSlot="{ item }">
