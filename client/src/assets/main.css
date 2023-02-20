@@ -18,6 +18,10 @@
   margin: 0 40px;
 }
 
+dt {
+  display: block;
+}
+
 a,
 .green {
   text-decoration: none;

@@ -16,6 +16,7 @@
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",
     "vue-class-component": "^8.0.0-0",
+    "vue-collapsed": "^1.1.2",
     "vue-router": "^4.0.3",
     "vue-transition-expand": "^0.1.0",
     "vuex": "^4.0.0"
