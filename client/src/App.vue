@@ -69,7 +69,7 @@ header {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1450px;
 }
 
 .wrapper {

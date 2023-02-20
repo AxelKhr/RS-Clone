@@ -33,3 +33,11 @@ export async function getForecastHourly(request: LocationForecastRequest) {
         `https://api.weatherbit.io/v2.0/forecast/hourly?lat=${request.latitude}&lon=${request.longitude}&units=${units}&key=${API_KEY}&hours=24`
     );
 }
+
+export async function getForecastDayHourly(response: LocationForecastRequest) {
+    //2023-02-20:00 -start
+    //2023-02-20:24 - end
+    return await fetch(
+        `https://api.weatherbit.io/v2.0/history/hourly?lat=${response.latitude}&lon=${response.longitude}&start_date=${response.start_date}&end_date=${response.end_date}&key=${API_KEY}`
+    );
+}
