@@ -5,6 +5,7 @@ import ParamsList from '@/components/ParamsList.vue';
 import LANGUAGES from '@/constants/langs/langs';
 import { LANG } from '@/types/language';
 import store from '@/store';
+import { mapState } from 'vuex';
 
 export default defineComponent({
     name: 'settings-general',
@@ -14,6 +15,11 @@ export default defineComponent({
             isDropLanguage: false,
             isDropTheme: false,
         };
+    },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
     },
     setup() {
         const langKeys = Object.values(LANG);
@@ -37,7 +43,11 @@ export default defineComponent({
 
 <template>
     <div class="settings">
-        <settings-item titleParam="Language" :valueParam="langSelected" v-model:isDrop="isDropLanguage">
+        <settings-item
+            :titleParam="langData.settingsLanguage"
+            :valueParam="langSelected"
+            v-model:isDrop="isDropLanguage"
+        >
             <div class="settings__language">
                 <params-list class="language__params" :items="langList" v-model:selected="langSelected">
                     <!-- <template #itemSlot="{ item }">
@@ -46,8 +56,8 @@ export default defineComponent({
                 </params-list>
             </div>
         </settings-item>
-        <settings-item titleParam="Theme" v-model:isDrop="isDropTheme">
-            <div class="test-style">fghjy</div>
+        <settings-item :titleParam="langData.settingsTheme" v-model:isDrop="isDropTheme">
+            <div class="test-style">Default</div>
         </settings-item>
     </div>
 </template>

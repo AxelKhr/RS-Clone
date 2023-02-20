@@ -7,6 +7,12 @@ const RUSSIAN: ILang = {
         menuForecast: 'Прогноз',
         menuMap: 'Карта',
         menuSettings: 'Настройки',
+        settingsGeneralTitle: 'ОБЩИЕ',
+        settingsForecastTitle: 'ПРОГНОЗ',
+        settingsMapTitle: 'КАРТА',
+        settingsLanguage: 'Язык',
+        settingsTheme: 'Тема',
+        settingsUnits: 'Единицы измерения',
     },
 };
 

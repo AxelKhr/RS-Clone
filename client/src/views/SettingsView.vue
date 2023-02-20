@@ -3,9 +3,15 @@ import { defineComponent } from 'vue';
 import SettingsBlock from './settings/SettingsBlock.vue';
 import SettingsGeneral from './settings/SettingsGeneral.vue';
 import SettingsForecast from './settings/SettingsForecast.vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
     components: { SettingsBlock, SettingsGeneral, SettingsForecast },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
+    },
 });
 </script>
 
@@ -13,13 +19,13 @@ export default defineComponent({
     <div class="container">
         <div class="wrap">
             <div class="settings">
-                <settings-block title="GENERAL">
+                <settings-block :title="langData.settingsGeneralTitle">
                     <settings-general />
                 </settings-block>
-                <settings-block title="FORECAST">
+                <settings-block :title="langData.settingsForecastTitle">
                     <settings-forecast />
                 </settings-block>
-                <settings-block title="MAP"></settings-block>
+                <settings-block :title="langData.settingsMapTitle"></settings-block>
             </div>
         </div>
     </div>

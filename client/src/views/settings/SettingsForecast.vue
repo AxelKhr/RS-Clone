@@ -4,6 +4,7 @@ import SettingsItem from './SettingsItem.vue';
 import ParamsList from '@/components/ParamsList.vue';
 import { UNITS } from '@/types/units';
 import store from '@/store';
+import { mapState } from 'vuex';
 
 export default defineComponent({
     name: 'settings-forecast',
@@ -12,6 +13,11 @@ export default defineComponent({
         return {
             isDropUnits: false,
         };
+    },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
     },
     setup() {
         const unitsList = Object.values(UNITS);
@@ -31,7 +37,7 @@ export default defineComponent({
 
 <template>
     <div class="settings">
-        <settings-item titleParam="Units" :valueParam="unitsSelected" v-model:isDrop="isDropUnits">
+        <settings-item :titleParam="langData.settingsUnits" :valueParam="unitsSelected" v-model:isDrop="isDropUnits">
             <div class="settings__units">
                 <params-list class="units__params" :items="unitsList" v-model:selected="unitsSelected"> </params-list>
             </div>

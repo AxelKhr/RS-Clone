@@ -7,6 +7,12 @@ const ENGLISH: ILang = {
         menuForecast: 'Forecast',
         menuMap: 'Map',
         menuSettings: 'Settings',
+        settingsGeneralTitle: 'GENERAL',
+        settingsForecastTitle: 'FORECAST',
+        settingsMapTitle: 'MAP',
+        settingsLanguage: 'Language',
+        settingsTheme: 'Theme',
+        settingsUnits: 'Units',
     },
 };
 
