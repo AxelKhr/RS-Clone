@@ -73,15 +73,16 @@ export default {
             const query: LocationForecastRequest = {
                 latitude: location.position.latitude,
                 longitude: location.position.longitude,
+                units: context.rootState.settings.units,
             };
             context.commit('setLoading', true);
             const dataCurrent = await getForecastByLocation(query);
             const respCurrent = await dataCurrent.json();
             context.commit('setForecastCurrent', transformRespForecastCurrent(respCurrent.data[0]));
-            const dataDaily = await getForecastDaily({ latitude: 51.5072, longitude: -0.1276 });
+            const dataDaily = await getForecastDaily(query);
             const respDaily = await dataDaily.json();
             context.commit('setForecastDaily', transformRespForecastDaily(respDaily));
-            const dataHourly = await getForecastHourly({ latitude: 51.5072, longitude: -0.1276 });
+            const dataHourly = await getForecastHourly(query);
             const respHourly = await dataHourly.json();
             context.commit('setForecastHourly', transformRespForecastHourly(respHourly));
             context.commit('setLoading', false);
