@@ -33,8 +33,8 @@
         </collapse>
         <div class="details__size">
             <transition name="mode-fade" mode="out-in">
-                <button @click="isExpanded = !isExpanded" class="details__btn">
-                    <div class="expand__btn"></div>
+                <button @click="switchButton" class="details__btn">
+                    <div ref="exBtn" class="collapse__btn"></div>
                 </button>
             </transition>
         </div>
@@ -58,8 +58,10 @@ export default defineComponent({
         };
     },
     methods: {
-        toggleCollapse() {
-            (this.$refs.collapse as HTMLElement).classList.toggle('collapse');
+        switchButton() {
+            this.isExpanded = !this.isExpanded;
+            (this.$refs.exBtn as HTMLElement).classList.toggle('collapse__btn');
+            (this.$refs.exBtn as HTMLElement).classList.toggle('expand__btn');
         },
     },
 });
@@ -169,6 +171,20 @@ button {
     background-color: white;
     mask-image: url('@/assets/images/chevron-down.svg');
     --webkit-mask-image: url('@/assets/images/chevron-down.svg');
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+}
+
+.collapse__btn {
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    mask-image: url('@/assets/images/chevron-up.svg');
+    --webkit-mask-image: url('@/assets/images/chevron-up.svg');
     mask-repeat: no-repeat;
     -webkit-mask-repeat: no-repeat;
     mask-position: center;

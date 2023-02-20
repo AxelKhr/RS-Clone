@@ -72,6 +72,7 @@ import store from '@/store';
 import { WeatherCodes } from './weatherCodes/weatherCodes';
 import { defineComponent } from 'vue';
 import { Wind } from './weatherData/wind';
+import { Visibility } from './weatherData/visibility';
 export default defineComponent({
     components: {},
     data() {
@@ -106,13 +107,13 @@ export default defineComponent({
                 id: 4,
                 subtitle: 'Clouds Cov.',
                 value: `${store.state.forecast.current.cloudCoverage} %`,
-                desc: 'Test desc',
+                desc: 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.',
             },
             {
                 id: 5,
                 subtitle: 'Visibility',
                 value: `${store.state.forecast.current.visibility} km`,
-                desc: 'Test desc',
+                desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
             },
         ];
         return {
@@ -131,6 +132,12 @@ export default defineComponent({
         getWindDesc(speed: number) {
             const wind = Wind.filter((el) => Number(speed) >= el.min_speed && Number(speed) <= el.max_speed);
             return wind[0].name;
+        },
+        getVisibilityDesc(visibility: number) {
+            const data = Visibility.filter(
+                (el) => Number(visibility) >= el.min_visibility && Number(visibility) <= el.max_visibility
+            );
+            return data[0].desc;
         },
     },
 });
