@@ -1,11 +1,15 @@
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import { IState } from '@/types/state';
 import forecastStore from './forecastStore';
-import locationStore from './locationStore';
+import settingsStore from './settingsStore';
+import langStore from './langStore';
 
-export default new Vuex.Store<IState>({
+const store = createStore<IState>({
     modules: {
         forecast: forecastStore,
-        location: locationStore,
+        settings: settingsStore,
+        language: langStore,
     },
 });
+
+export default store;

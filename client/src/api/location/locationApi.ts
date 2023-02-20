@@ -53,8 +53,7 @@ export async function searchLocationByQuery(request: LocationRequest): Promise<A
     };
 
     return await fetch(
-        `https://spott.p.rapidapi.com/places/autocomplete?limit=${request.limit}
-        &skip=0&language=%20${request.language}&q=${request.query}&type=CITY`,
+        `https://spott.p.rapidapi.com/places/autocomplete?limit=${request.limit}&skip=0&language=%20${request.language}&q=${request.query}&type=CITY`,
         options
     )
         .then((response) => response.json())

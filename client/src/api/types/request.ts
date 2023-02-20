@@ -1,7 +1,7 @@
 export interface LocationForecastRequest {
     latitude: number;
     longitude: number;
-    metric?: string;
+    units?: string;
     lang?: string;
 }
 
@@ -13,4 +13,6 @@ export interface Weather {
 
 export interface NameForecastRequest {
     city_name: string;
+    units?: string;
+    lang?: string;
 }

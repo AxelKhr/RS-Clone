@@ -1,5 +1,9 @@
+import { ILocationPlace } from './location';
+
 export interface IForecast {
     isLoading: boolean;
+    isShowModal: boolean;
+    location: ILocationPlace;
     current: IForecastCurrent;
     daily: IForecastDaily;
     hourly: IForecastHourly;
