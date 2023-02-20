@@ -4,6 +4,7 @@ export interface LocationForecastRequest {
     start_date?: string;
     end_date?: string;
     metric?: string;
+    units?: string;
     lang?: string;
 }
 
@@ -15,4 +16,6 @@ export interface Weather {
 
 export interface NameForecastRequest {
     city_name: string;
+    units?: string;
+    lang?: string;
 }

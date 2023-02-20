@@ -1,8 +1,31 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import SettingsBlock from './settings/SettingsBlock.vue';
+import SettingsGeneral from './settings/SettingsGeneral.vue';
+import SettingsForecast from './settings/SettingsForecast.vue';
+import { mapState } from 'vuex';
+
+export default defineComponent({
+    components: { SettingsBlock, SettingsGeneral, SettingsForecast },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
+    },
+});
+</script>
+
 <template>
     <div class="container">
         <div class="wrap">
             <div class="settings">
-                <h2>Settings page</h2>
+                <settings-block :title="langData.settingsGeneralTitle">
+                    <settings-general />
+                </settings-block>
+                <settings-block :title="langData.settingsForecastTitle">
+                    <settings-forecast />
+                </settings-block>
+                <settings-block :title="langData.settingsMapTitle"></settings-block>
             </div>
         </div>
     </div>

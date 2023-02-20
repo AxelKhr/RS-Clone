@@ -9,7 +9,7 @@ export default defineComponent({});
         <div class="block__text">{{ $store.state.forecast.isLoading }}</div>
         <div>
             <button class="block__button" @click="$store.dispatch('forecast/updateForecast')">Update</button>
-            <button class="block__button" @click="$store.dispatch('location/showModal')">Location</button>
+            <button class="block__button" @click="$store.dispatch('forecast/showModal')">Location</button>
             <button class="block__button" @click="$store.dispatch('location/filtrLocation')">Load</button>
         </div>
     </div>

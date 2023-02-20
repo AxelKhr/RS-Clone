@@ -26,8 +26,8 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="search-box" layout="row center-justify">
-        <img class="search-box__icon" alt="Searchsearch icon" src="@/assets/icons/search.svg" width="24" height="24" />
+    <div class="search-box">
+        <icon-svg class="search-box__icon" :iconPath="require('@/assets/icons/_search.svg')" />
         <input
             class="search-box__input"
             type="text"
