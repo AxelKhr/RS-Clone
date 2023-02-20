@@ -1,7 +1,10 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import SettingsItem from './SettingsItem.vue';
 import ParamsList from '@/components/ParamsList.vue';
+import LANGUAGES from '@/constants/langs/langs';
+import { LANG } from '@/types/language';
+import store from '@/store';
 
 export default defineComponent({
     name: 'settings-general',
@@ -10,9 +13,24 @@ export default defineComponent({
         return {
             isDropLanguage: false,
             isDropTheme: false,
-            languagesList: ['123', '456'],
-            languageCurrent: '456',
         };
+    },
+    setup() {
+        const langKeys = Object.values(LANG);
+        const langList = langKeys.map((key) => LANGUAGES[key].name);
+        const langSelected = computed({
+            get: () => {
+                const langKeyCurrent = ref(store.state.settings.languageCurrent);
+                return LANGUAGES[langKeyCurrent.value].name;
+            },
+            set: (value) => {
+                const key = langKeys.find((item) => {
+                    return LANGUAGES[item].name === value;
+                });
+                store.dispatch('language/updateLanguage', key);
+            },
+        });
+        return { langList, langSelected };
     },
 });
 </script>
@@ -21,7 +39,7 @@ export default defineComponent({
     <div class="settings">
         <settings-item titleParam="Language" valueParam="EN" v-model:isDrop="isDropLanguage">
             <div class="settings__language">
-                <params-list class="language__params" :items="languagesList" v-model:selected="languageCurrent">
+                <params-list class="language__params" :items="langList" v-model:selected="langSelected">
                     <!-- <template #itemSlot="{ item }">
                         <p>{{ item }}</p>
                     </template> -->
