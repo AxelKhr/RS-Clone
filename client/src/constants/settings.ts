@@ -1,3 +1,4 @@
+import { THEME } from '@/themes/themes';
 import { LANG } from '@/types/language';
 import { ISettings } from '@/types/settings';
 import { UNITS } from '@/types/units';
@@ -7,6 +8,7 @@ const SETTINGS = {
     default: <ISettings>{
         languageCurrent: LANG.en,
         units: UNITS.metric,
+        theme: THEME.default,
         locationCurrent: {
             id: '2643743',
             name: 'London',

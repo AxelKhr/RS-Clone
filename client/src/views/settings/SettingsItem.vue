@@ -64,8 +64,11 @@ export default defineComponent({
             padding: 5px 10px;
             border-radius: 5px;
             &:hover {
-                background-color: var(--color-background-mute);
+                background-color: var(--background__color--hover);
                 cursor: pointer;
+            }
+            &:active {
+                background-color: var(--background__color--active);
             }
         }
         &__text {

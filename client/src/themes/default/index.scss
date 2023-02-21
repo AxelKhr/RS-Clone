@@ -1,0 +1,12 @@
+@import "../light/index.scss";
+@import "../dark/index.scss"; 
+
+.theme--default {
+    @include light
+}
+
+@media (prefers-color-scheme: dark) {
+    .theme--default {
+        @include dark
+    }
+}
