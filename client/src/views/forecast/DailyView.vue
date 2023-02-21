@@ -88,8 +88,6 @@ export default defineComponent({
                 ];
             })
             .slice(1, 8);
-        console.log('details :>> ', details);
-
         return { details, selected: null as number | null };
     },
     methods: {

@@ -1,9 +1,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import { mapState } from 'vuex';
+import store from './store';
 
 export default defineComponent({
     components: { RouterLink, RouterView },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
+    },
+    mounted() {
+        store.dispatch('language/loadLanguage');
+    },
 });
 </script>
 
@@ -18,9 +28,9 @@ export default defineComponent({
                     </div>
                     <div class="wrapper">
                         <nav>
-                            <RouterLink to="/">Forecast</RouterLink>
-                            <RouterLink to="/map">Map</RouterLink>
-                            <RouterLink to="/settings">Settings</RouterLink>
+                            <RouterLink to="/">{{ langData.menuForecast }}</RouterLink>
+                            <RouterLink to="/map">{{ langData.menuMap }}</RouterLink>
+                            <RouterLink to="/settings">{{ langData.menuSettings }}</RouterLink>
                             <RouterLink to="/test">Test</RouterLink>
                         </nav>
                     </div>
@@ -59,7 +69,7 @@ header {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1450px;
 }
 
 .wrapper {

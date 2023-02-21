@@ -1,21 +1,22 @@
 /* eslint-disable */
+
 declare module '@vue-leaflet/vue-leaflet' {
-  import type { DefineComponent } from 'vue';
-  export const LMap: DefineComponent;
-  export const LIcon: DefineComponent;
-  export const LTileLayer: DefineComponent;
-  export const LMarker: DefineComponent;
-  export const LControl: DefineComponent;
-  export const LControlLayers: DefineComponent;
-  export const LTooltip: DefineComponent;
-  export const LPopup: DefineComponent;
-  export const LPolyline: DefineComponent;
-  export const LPolygon: DefineComponent;
-  export const LRectangle: DefineComponent;
+    import type { DefineComponent } from 'vue';
+    export const LMap: DefineComponent;
+    export const LIcon: DefineComponent;
+    export const LTileLayer: DefineComponent;
+    export const LMarker: DefineComponent;
+    export const LControl: DefineComponent;
+    export const LControlLayers: DefineComponent;
+    export const LTooltip: DefineComponent;
+    export const LPopup: DefineComponent;
+    export const LPolyline: DefineComponent;
+    export const LPolygon: DefineComponent;
+    export const LRectangle: DefineComponent;
 }
 
 declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
-  const component: DefineComponent<{}, {}, any>
-  export default component
+    import type { DefineComponent } from 'vue';
+    const component: DefineComponent<{}, {}, any>;
+    export default component;
 }

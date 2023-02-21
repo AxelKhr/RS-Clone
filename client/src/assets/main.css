@@ -15,7 +15,11 @@
 }
 
 .wrap {
-  margin: 0 120px;
+  margin: 0 40px;
+}
+
+dt {
+  display: block;
 }
 
 a,

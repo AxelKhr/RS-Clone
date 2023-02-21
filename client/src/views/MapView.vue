@@ -26,7 +26,39 @@
                     <l-control-layers class="layer-control" :collapsed="true" />
                     <l-marker ref="marker" :lat-lng="markerLatLng" :icon="icon">
                         <l-popup ref="popup" :lat-lng="markerLatLng">
-                            {{ markerLatLng }}
+                            <div class="header__weather">
+                                <div class="left">
+                                    <h2 class="header__city">{{ weather.cityName }}</h2>
+                                    <div class="temp_wrap">
+                                        <div class="temp_logo"></div>
+                                        <span class="header__temp">{{ weather.temperature }}°C</span>
+                                    </div>
+                                </div>
+                                <div class="right">
+                                    <img class="weather_img" :src="weather.weatherIcon" />
+                                </div>
+                            </div>
+                            <div class="desc">
+                                <span>{{ weather.weatherDescription }}</span>
+                            </div>
+                            <div class="info">
+                                <div class="wind_wrap">
+                                    <div class="wind_logo"></div>
+                                    <span>{{ weather.windSpeed.toFixed(2) }} m/s {{ weather.windDirection }}</span>
+                                </div>
+                                <div class="pressure_wrap">
+                                    <div class="pressure_logo"></div>
+                                    <span>{{ Math.round(weather.pressure / 1.333) }} mmHg</span>
+                                </div>
+                                <div class="cloud_wrap">
+                                    <div class="cloud_logo"></div>
+                                    <span>{{ weather.cloudCoverage }} %</span>
+                                </div>
+                                <div class="visibility_wrap">
+                                    <div class="visibility_logo"></div>
+                                    <span>{{ weather.visibility }} km</span>
+                                </div>
+                            </div>
                         </l-popup>
                     </l-marker>
                     <map-legend :temp="temp" :press="press" :cloud="cloud" :wind="wind" :prec="prec" />
@@ -38,6 +70,7 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
+import store from '@/store';
 import MapControl from './map/MapControl.vue';
 import MapLegend from './map/MapLegend.vue';
 import { LatLng, Icon } from 'leaflet';
@@ -59,6 +92,7 @@ export default defineComponent({
     },
     data() {
         return {
+            weather: store.state.forecast.current,
             temp: false,
             press: false,
             cloud: false,
@@ -70,8 +104,14 @@ export default defineComponent({
                 [-90, -180],
                 [90, 180],
             ],
-            center: new LatLng(51.5072, -0.1276),
-            markerLatLng: new LatLng(51.5072, -0.1276),
+            center: new LatLng(
+                store.state.forecast.location.position.latitude,
+                store.state.forecast.location.position.longitude
+            ),
+            markerLatLng: new LatLng(
+                store.state.forecast.location.position.latitude,
+                store.state.forecast.location.position.longitude
+            ),
             icon: new Icon({
                 iconUrl: require('../assets/marker.png'),
                 iconSize: [35, 50],

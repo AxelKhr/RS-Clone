@@ -1,7 +1,9 @@
 import { IForecast } from './weather';
-import { ILocation } from './location';
+import { ISettings } from './settings';
+import { ILang } from './language';
 
 export interface IState {
+    settings: ISettings;
     forecast: IForecast;
-    location: ILocation;
+    language: ILang;
 }
