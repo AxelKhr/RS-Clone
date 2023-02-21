@@ -77,6 +77,7 @@ export default defineComponent({
     components: {
         TimeView,
     },
+
     data() {
         let details = [
             {

@@ -1,71 +1,90 @@
-<!-- TODO все время отображает лондонскую погоду-->
 <template>
     <div class="block__title">Daily Forecast</div>
-    <div class="days">
-        <div class="day">
-            <div
-                @click="toggleChild(index)"
-                v-for="(day, index) in details"
-                :key="index"
-                :class="{ active: index === selected }"
-            >
-                <div class="day__short">
-                    <img class="day__img" :src="day[10].icon" alt="" />
-                    <div class="day-text">
-                        <div class="day__subtitle">{{ day[0].date }}</div>
-                        <div class="day__description">{{ day[11].descriptions }}</div>
+    <Carousel :settings="settings" :breakpoints="breakpoints">
+        <Slide
+            @click="toggleChild(index)"
+            v-for="(day, index) in details"
+            :key="index"
+            :class="{ active: index === selected }"
+        >
+            <div class="carousel__item day__short">
+                <img class="day__img" :src="day[10].icon" alt="" />
+                <div class="day-text">
+                    <div class="day__subtitle">{{ day[0].date }}</div>
+                    <div class="day__description">{{ day[11].descriptions }}</div>
+                </div>
+                <div class="day__precipitation">
+                    <img class="day__precipitation-img" src="../../assets/images/drop.svg" alt="" />
+                    <div>{{ day[3].precipitation }}</div>
+                </div>
+                <div class="day__temp">
+                    {{ day[1].temp }}
+                </div>
+            </div>
+
+            <transition name="mode-fade" mode="out-in">
+                <div class="details__container child" v-if="index === selected">
+                    <div>
+                        <img src="../../assets/images/humidity.svg" alt="" />
+                        <div class="details__subtitle">Humidity<br />{{ day[2].humidity }}</div>
                     </div>
-                    <div class="day__precipitation">
-                        <img class="day__precipitation-img" src="../../assets/images/drop.svg" alt="" />
-                        <div>{{ day[3].precipitation }}</div>
+                    <div>
+                        <img src="../../assets/images/sunrise.svg" alt="" />
+                        <div class="details__subtitle">Sunrise<br />{{ day[4].sunrise }}</div>
                     </div>
-                    <div class="day__temp">
-                        {{ day[1].temp }}
+                    <div>
+                        <img src="../../assets/images/sunset.svg" alt="" />
+                        <div class="details__subtitle">Sunset<br />{{ day[5].sunset }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/wind.svg" alt="" />
+                        <div class="details__subtitle">Wind Speed<br />{{ day[6].wind }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/pressure.svg" alt="" />
+                        <div class="details__subtitle">Pressure<br />{{ day[7].pressure }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cloud.svg" alt="" />
+                        <div class="details__subtitle">Cloud Coverage<br />{{ day[8].clouds }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/visibility.svg" alt="" />
+                        <div class="details__subtitle">Visibility<br />{{ day[9].visibility }}</div>
                     </div>
                 </div>
-
-                <transition name="mode-fade" mode="out-in">
-                    <div class="details__container child" v-if="index === selected">
-                        <div>
-                            <img src="../../assets/images/humidity.svg" alt="" />
-                            <div class="details__subtitle">Humidity<br />{{ day[2].humidity }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/sunrise.svg" alt="" />
-                            <div class="details__subtitle">Sunrise<br />{{ day[4].sunrise }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/sunset.svg" alt="" />
-                            <div class="details__subtitle">Sunset<br />{{ day[5].sunset }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/wind.svg" alt="" />
-                            <div class="details__subtitle">Wind Speed<br />{{ day[6].wind }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/pressure.svg" alt="" />
-                            <div class="details__subtitle">Pressure<br />{{ day[7].pressure }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/cloud.svg" alt="" />
-                            <div class="details__subtitle">Cloud Coverage<br />{{ day[8].clouds }}</div>
-                        </div>
-                        <div>
-                            <img src="../../assets/images/visibility.svg" alt="" />
-                            <div class="details__subtitle">Visibility<br />{{ day[9].visibility }}</div>
-                        </div>
-                    </div>
-                </transition>
+            </transition>
+            <div class="days">
+                <div class="day">
+                    <div
+                        @click="toggleChild(index)"
+                        v-for="(day, index) in details"
+                        :key="index"
+                        :class="{ active: index === selected }"
+                    ></div>
+                </div>
             </div>
-        </div>
-    </div>
+        </Slide>
+
+        <template #addons>
+            <Navigation />
+        </template>
+    </Carousel>
 </template>
 
 <script lang="ts">
 import store from '@/store';
 import { defineComponent } from 'vue';
+import { Carousel, Navigation, Slide } from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css';
 export default defineComponent({
-    components: {},
+    // eslint-disable-next-line vue/multi-word-component-names
+    name: 'Breakpoints',
+    components: {
+        Carousel,
+        Slide,
+        Navigation,
+    },
     data() {
         let daysData = store.state.forecast.daily.days;
 
@@ -87,8 +106,27 @@ export default defineComponent({
                     { time: `${day.timeStamp}` },
                 ];
             })
-            .slice(1, 8);
-        return { details, selected: null as number | null };
+            .slice(1, 16);
+        let settings = {
+            itemsToShow: 1,
+            snapAlign: 'center',
+        };
+        // breakpoints are mobile first
+        // any settings not specified will fallback to the carousel settings
+        let breakpoints = {
+            // 700px and up
+            700: {
+                itemsToShow: 3.5,
+                snapAlign: 'center',
+            },
+            // 1024 and up
+            1024: {
+                itemsToShow: 5,
+                snapAlign: 'start',
+            },
+        };
+
+        return { settings, breakpoints, details, selected: null as number | null };
     },
     methods: {
         toggleChild(index: number) {
@@ -103,7 +141,7 @@ export default defineComponent({
 .block__title {
     font-size: 1.5rem;
 }
-.day {
+/* .day {
     &__short {
         display: grid;
         grid-template-columns: 1fr 15fr 70px 80px;
@@ -124,7 +162,7 @@ export default defineComponent({
         margin-right: 10px;
     }
 }
-
+*/
 .details {
     &__container {
         margin-top: 20px;
@@ -166,6 +204,7 @@ export default defineComponent({
 
 .day__precipitation {
     display: flex;
+    justify-content: center;
     &-img {
         width: 18px;
         height: 18px;
