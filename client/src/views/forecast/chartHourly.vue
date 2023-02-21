@@ -20,8 +20,19 @@ import { ChartConfiguration } from 'chart.js';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
 let hoursData = store.state.forecast.hourly.hours;
-
+console.log('hoursData :>> ', hoursData);
 const labels = [
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00',
+    '23:00',
     '00:00',
     '01:00',
     '02:00',
@@ -35,17 +46,6 @@ const labels = [
     '10:00',
     '11:00',
     '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',
-    '23:00',
 ];
 
 interface ChartData {
