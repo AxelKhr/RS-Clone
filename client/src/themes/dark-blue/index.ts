@@ -5,7 +5,7 @@ import type ITheme from '@/types/theme';
 export default {
     id: 'darkBlue',
     name: 'Dark blue',
-    color: '#333333',
-    fontColor: '#F7F7F7',
+    color: '#212f55',
+    fontColor: '#cee2fc',
     class: 'theme--dark-blue',
 } as ITheme;
