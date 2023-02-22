@@ -2,14 +2,16 @@
 import { defineComponent, ref, computed } from 'vue';
 import SettingsItem from './SettingsItem.vue';
 import ParamsList from '@/components/ParamsList.vue';
+import ThemesList from '@/components/ThemesList.vue';
 import LANGUAGES from '@/constants/langs/langs';
 import { LANG } from '@/types/language';
 import store from '@/store';
 import { mapState } from 'vuex';
+import { THEME, Themes } from '@/themes/themes';
 
 export default defineComponent({
     name: 'settings-general',
-    components: { SettingsItem, ParamsList },
+    components: { SettingsItem, ParamsList, ThemesList },
     data() {
         return {
             isDropLanguage: false,
@@ -36,7 +38,19 @@ export default defineComponent({
                 store.dispatch('language/updateLanguage', key);
             },
         });
-        return { langList, langSelected };
+        const themeKeys = Object.values(THEME);
+        const themeList = themeKeys.map((key) => Themes[key]);
+        const themeSelected = computed({
+            get: () => {
+                const themeKeyCurrent = ref(store.state.settings.theme);
+                return Themes[themeKeyCurrent.value];
+            },
+            set: (value) => {
+                store.dispatch('settings/updateSettings', { theme: value.id });
+            },
+        });
+
+        return { langList, langSelected, themeList, themeSelected };
     },
 });
 </script>
@@ -49,15 +63,17 @@ export default defineComponent({
             v-model:isDrop="isDropLanguage"
         >
             <div class="settings__language">
-                <params-list class="language__params" :items="langList" v-model:selected="langSelected">
-                    <!-- <template #itemSlot="{ item }">
-                        <p>{{ item }}</p>
-                    </template> -->
-                </params-list>
+                <params-list class="language__params" :items="langList" v-model:selected="langSelected"> </params-list>
             </div>
         </settings-item>
-        <settings-item :titleParam="langData.settingsTheme" v-model:isDrop="isDropTheme">
-            <div class="test-style">Default</div>
+        <settings-item
+            :titleParam="langData.settingsTheme"
+            :valueParam="themeSelected.name"
+            v-model:isDrop="isDropTheme"
+        >
+            <div class="settings__theme">
+                <themes-list class="theme__params" :items="themeList" v-model:selected="themeSelected"> </themes-list>
+            </div>
         </settings-item>
     </div>
 </template>
