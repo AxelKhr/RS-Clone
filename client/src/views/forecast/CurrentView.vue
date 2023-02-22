@@ -22,7 +22,6 @@
         </div>
         <div class="weather">
             <div class="weather__text">
-                <!-- обновлять раз в минутут -->
                 <time-view />
                 <div class="temperature">
                     <img class="weather__img" :src="$store.state.forecast.current.weatherIcon" />

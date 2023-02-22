@@ -21,7 +21,7 @@ export default function transformRespForecastCurrent(response: LocationForecastR
         sunSet: response.sunset,
         visibility: response.vis,
         indexUV: response.uv,
-        weatherIcon: require(`../../assets/icons/${response.weather.icon}.png`),
+        weatherIcon: require(`@/assets/icons/${response.weather.icon}.png`),
         weatherCode: response.weather.code,
         weatherDescription: response.weather.description,
         partOfDay: response.pod,

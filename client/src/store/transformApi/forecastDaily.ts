@@ -32,7 +32,7 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
                 }),
                 indexUV: day.uv,
                 visibility: Math.round(day.vis),
-                weatherIcon: require(`../../assets/icons/${day.weather.icon}.png`),
+                weatherIcon: require(`@/assets/icons/${day.weather.icon}.png`),
                 weatherCode: day.weather.code,
                 weatherDescription: day.weather.description,
             };

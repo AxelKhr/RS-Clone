@@ -7,6 +7,7 @@ export interface IForecast {
     current: IForecastCurrent;
     daily: IForecastDaily;
     hourly: IForecastHourly;
+    dayHourly: IForecastHourly;
 }
 
 export interface IForecastCurrent {
