@@ -23,7 +23,7 @@
         <div class="weather">
             <div class="weather__text">
                 <!-- обновлять раз в минутут -->
-                <div class="timezone">Time: TODO</div>
+                <time-view />
                 <div class="temperature">
                     <img class="weather__img" :src="$store.state.forecast.current.weatherIcon" />
                     <span class="temperature__cur">{{ Math.round($store.state.forecast.current.temperature) }}°C</span>
@@ -68,12 +68,15 @@
 
 <script lang="ts">
 import store from '@/store';
+import TimeView from './TimeView.vue';
 import { WeatherCodes } from './weatherCodes/weatherCodes';
 import { defineComponent } from 'vue';
 import { Wind } from './weatherData/wind';
 import { Visibility } from './weatherData/visibility';
 export default defineComponent({
-    components: {},
+    components: {
+        TimeView,
+    },
     data() {
         let details = [
             {
