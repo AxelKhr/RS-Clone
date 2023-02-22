@@ -21,20 +21,24 @@
                 </dl>
                 <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
                     <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
-                    <dd class="sunrise-sunset__value">10&nbsp;ч 8&nbsp;мин</dd>
+                    <dd class="sunrise-sunset__value">{{ dayLength }}</dd>
                 </dl>
             </div>
             <div class="daily">
-                <div class="morning">Morning</div>
-                <div class="day">Day</div>
-                <div class="evening">Evening</div>
-                <div class="night">Night</div>
+                <div class="daily__weather" v-for="w in dayWeather" :key="w.id">
+                    <span>{{ w.name }}</span>
+                    <img class="daily__icon" :src="w.weather.weatherIcon" />
+                    <span>{{ w.weather.temperature }} °C</span>
+                    <span>{{ w.weather.windSpeed.toFixed(2) }} m/s</span>
+                    <span>{{ Math.round(w.weather.pressure / 1.333) }} mmHg</span>
+                    <span>{{ w.weather.humidityRelative }} %</span>
+                </div>
             </div>
         </collapse>
         <div class="details__size">
             <transition name="mode-fade" mode="out-in">
                 <button @click="switchButton" class="details__btn">
-                    <div ref="exBtn" class="collapse__btn"></div>
+                    <div ref="exBtn" class="expand__btn"></div>
                 </button>
             </transition>
         </div>
@@ -50,11 +54,41 @@ export default defineComponent({
         Collapse,
     },
     data() {
+        const forecast = store.state.forecast.hourly.hours;
+        const dayForecast = store.state.forecast.dayHourly.hours;
+        for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
+            dayForecast.push(forecast[j]);
+        }
+        //console.log(dayForecast);
         return {
             down: false,
-            isExpanded: true,
-            sunrise: store.state.forecast.current.sunRise,
-            sunset: store.state.forecast.current.sunSet,
+            isExpanded: false,
+            sunrise: this.getWithUtc(store.state.forecast.current.sunRise),
+            sunset: this.getWithUtc(store.state.forecast.current.sunSet),
+            dayLength: this.getDayLength(store.state.forecast.current.sunRise, store.state.forecast.current.sunSet),
+            weather: dayForecast,
+            dayWeather: [
+                {
+                    id: 1,
+                    name: 'Morning',
+                    weather: dayForecast[5],
+                },
+                {
+                    id: 2,
+                    name: 'Day',
+                    weather: dayForecast[11],
+                },
+                {
+                    id: 3,
+                    name: 'Evening',
+                    weather: dayForecast[17],
+                },
+                {
+                    id: 4,
+                    name: 'Night',
+                    weather: dayForecast[22],
+                },
+            ],
         };
     },
     methods: {
@@ -62,6 +96,20 @@ export default defineComponent({
             this.isExpanded = !this.isExpanded;
             (this.$refs.exBtn as HTMLElement).classList.toggle('collapse__btn');
             (this.$refs.exBtn as HTMLElement).classList.toggle('expand__btn');
+        },
+        getWithUtc(value: string) {
+            const utc = new Date().getTimezoneOffset() / 60;
+            const timeArr = value.split(':');
+            timeArr[0] = (+timeArr[0] - utc).toString();
+            return timeArr.join(':');
+        },
+        getDayLength(start: string, end: string) {
+            const startArr = start.split(':');
+            const startLength = +startArr[0] * 60 + +startArr[1];
+            const endArr = end.split(':');
+            const endLength = +endArr[0] * 60 + +endArr[1];
+            const length = endLength - startLength;
+            return `${(length / 60).toFixed(0)} h ${length % 60} min`;
         },
     },
 });
@@ -77,8 +125,13 @@ export default defineComponent({
     transition: height var(--vc-auto-duration) ease-out;
 }
 
+.daily__icon {
+    width: 35px;
+    height: 35px;
+}
+
 .sunrise-sunset {
-    width: 25%;
+    width: 210px;
     margin: auto 0;
 
     &__chart {
@@ -144,10 +197,16 @@ export default defineComponent({
 }
 
 .daily {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 200px;
+
+    &__weather {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+    }
 }
 
 button {
@@ -197,11 +256,10 @@ button {
     font-size: 1.5rem;
 }
 .details {
-    padding: 0 80px;
+    padding: 20px 80px;
     height: 100%;
     transition: all 2s;
     margin-bottom: 20px;
-    padding-bottom: 20px;
     box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.6);
     &__collapsed {
         max-height: 100px;
