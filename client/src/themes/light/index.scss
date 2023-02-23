@@ -1,0 +1,11 @@
+@mixin light {
+    --font__color: #353539;
+    --background__color: #FFFFFF;
+    --background__color--hover: #EEEEEE;
+    --background__color--active: #96cf7f;
+    --border__color: #EDEDED;
+}
+
+.theme--light {
+    @include light
+}

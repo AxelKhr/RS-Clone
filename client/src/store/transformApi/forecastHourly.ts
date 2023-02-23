@@ -22,7 +22,7 @@ export default function transformRespForecastHourly(response: apiForecastHourly)
                 cloudCoverage: hour.clouds,
                 indexUV: hour.uv,
                 visibility: hour.vis,
-                weatherIcon: hour.weather.icon,
+                weatherIcon: require(`@/assets/icons/${hour.weather.icon}.png`),
                 weatherCode: hour.weather.code,
                 weatherDescription: hour.weather.description,
             };

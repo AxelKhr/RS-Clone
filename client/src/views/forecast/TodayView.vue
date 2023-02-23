@@ -21,20 +21,24 @@
                 </dl>
                 <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
                     <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
-                    <dd class="sunrise-sunset__value">10&nbsp;ч 8&nbsp;мин</dd>
+                    <dd class="sunrise-sunset__value">{{ dayLength }}</dd>
                 </dl>
             </div>
             <div class="daily">
-                <div class="morning">Morning</div>
-                <div class="day">Day</div>
-                <div class="evening">Evening</div>
-                <div class="night">Night</div>
+                <div class="daily__weather" v-for="w in dayWeather" :key="w.id">
+                    <span>{{ w.name }}</span>
+                    <img class="daily__icon" :src="w.weather.weatherIcon" />
+                    <span>{{ w.weather.temperature + ' ' + unit.temperature }}</span>
+                    <span>{{ w.weather.windSpeed.toFixed(2) + ' ' + unit.speed }}</span>
+                    <span>{{ Math.round(w.weather.pressure / 1.333) + ' ' + unit.pressure }}</span>
+                    <span>{{ w.weather.humidityRelative }} %</span>
+                </div>
             </div>
         </collapse>
         <div class="details__size">
             <transition name="mode-fade" mode="out-in">
                 <button @click="switchButton" class="details__btn">
-                    <div ref="exBtn" class="collapse__btn"></div>
+                    <div ref="exBtn" class="expand__btn"></div>
                 </button>
             </transition>
         </div>
@@ -45,16 +49,54 @@
 import store from '@/store';
 import { defineComponent } from 'vue';
 import { Collapse } from 'vue-collapsed';
+import { IUnit, unitData } from '../utils/metricUtils';
+import { langData } from '../utils/langUtils';
 export default defineComponent({
     components: {
         Collapse,
     },
     data() {
+        let unit = unitData();
+        let lang = langData();
+        const forecast = store.state.forecast.hourly.hours;
+        const dayForecast = store.state.forecast.dayHourly.hours;
+        for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
+            dayForecast.push(forecast[j]);
+        }
         return {
+            unit,
             down: false,
-            isExpanded: true,
-            sunrise: store.state.forecast.current.sunRise,
-            sunset: store.state.forecast.current.sunSet,
+            isExpanded: false,
+            sunrise: this.getWithUtc(store.state.forecast.current.sunRise),
+            sunset: this.getWithUtc(store.state.forecast.current.sunSet),
+            dayLength: this.getDayLength(
+                store.state.forecast.current.sunRise,
+                store.state.forecast.current.sunSet,
+                unit
+            ),
+            weather: dayForecast,
+            dayWeather: [
+                {
+                    id: 1,
+                    name: lang.morning,
+                    weather: dayForecast[5],
+                },
+                {
+                    id: 2,
+                    name: lang.day,
+                    weather: dayForecast[11],
+                },
+                {
+                    id: 3,
+                    name: lang.evening,
+                    weather: dayForecast[17],
+                },
+                {
+                    id: 4,
+                    name: lang.night,
+                    weather: dayForecast[22],
+                },
+            ],
         };
     },
     methods: {
@@ -62,6 +104,20 @@ export default defineComponent({
             this.isExpanded = !this.isExpanded;
             (this.$refs.exBtn as HTMLElement).classList.toggle('collapse__btn');
             (this.$refs.exBtn as HTMLElement).classList.toggle('expand__btn');
+        },
+        getWithUtc(value: string) {
+            const utc = new Date().getTimezoneOffset() / 60;
+            const timeArr = value.split(':');
+            timeArr[0] = (+timeArr[0] - utc).toString();
+            return timeArr.join(':');
+        },
+        getDayLength(start: string, end: string, unit: IUnit) {
+            const startArr = start.split(':');
+            const startLength = +startArr[0] * 60 + +startArr[1];
+            const endArr = end.split(':');
+            const endLength = +endArr[0] * 60 + +endArr[1];
+            const length = endLength - startLength;
+            return `${(length / 60).toFixed(0)} ${unit.hour} ${length % 60} ${unit.minute}`;
         },
     },
 });
@@ -77,8 +133,13 @@ export default defineComponent({
     transition: height var(--vc-auto-duration) ease-out;
 }
 
+.daily__icon {
+    width: 35px;
+    height: 35px;
+}
+
 .sunrise-sunset {
-    width: 25%;
+    width: 210px;
     margin: auto 0;
 
     &__chart {
@@ -144,10 +205,16 @@ export default defineComponent({
 }
 
 .daily {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 200px;
+
+    &__weather {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+    }
 }
 
 button {
@@ -168,7 +235,8 @@ button {
 .expand__btn {
     height: 15px;
     width: 15px;
-    background-color: white;
+    margin: 0 auto;
+    background-color: var(--font__color);
     mask-image: url('@/assets/images/chevron-down.svg');
     --webkit-mask-image: url('@/assets/images/chevron-down.svg');
     mask-repeat: no-repeat;
@@ -182,7 +250,8 @@ button {
 .collapse__btn {
     height: 15px;
     width: 15px;
-    background-color: white;
+    margin: 0 auto;
+    background-color: var(--font__color);
     mask-image: url('@/assets/images/chevron-up.svg');
     --webkit-mask-image: url('@/assets/images/chevron-up.svg');
     mask-repeat: no-repeat;
@@ -197,11 +266,10 @@ button {
     font-size: 1.5rem;
 }
 .details {
-    padding: 0 80px;
+    padding: 20px 80px;
     height: 100%;
     transition: all 2s;
     margin-bottom: 20px;
-    padding-bottom: 20px;
     box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.6);
     &__collapsed {
         max-height: 100px;
@@ -218,11 +286,14 @@ button {
     }
     &__btn {
         position: absolute;
-        background-color: #222222;
+        background-color: var(--background__color);
         top: 10px;
         width: 32px;
         height: 25px;
         box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.6);
+        &:hover {
+            background-color: var(--background__color);
+        }
     }
     &__subtitle {
         text-decoration: underline;

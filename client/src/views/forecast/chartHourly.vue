@@ -20,10 +20,12 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted, ref, watch } from 'vue';
 import { ChartConfiguration } from 'chart.js';
+import { langData } from '../utils/langUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
 let hoursData = store.state.forecast.hourly.hours;
-console.log('hoursData :>> ', hoursData);
+let lang = langData();
+
 const labels = [
     '13:00',
     '14:00',
@@ -70,7 +72,7 @@ const chartData: ChartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Temperature',
+                label: lang.temperature,
                 data: hoursData.map((el) => el.temperature),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
@@ -85,8 +87,8 @@ const chartData: ChartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Pressure',
-                data: hoursData.map((el) => el.pressure),
+                label: lang.precipitation,
+                data: hoursData.map((el) => el.precipitationProbability),
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.4,
@@ -97,7 +99,7 @@ const chartData: ChartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Wind',
+                label: lang.wind,
                 data: hoursData.map((el) => el.windSpeed),
                 fill: true,
                 borderColor: 'rgb(54, 162, 235)',

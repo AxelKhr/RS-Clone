@@ -43,7 +43,7 @@
     -webkit-mask-position: center;
     mask-size: contain;
     -webkit-mask-size: contain;
-    background-color: white;
+    background-color: var(--font__color);
 }
 
 .active {

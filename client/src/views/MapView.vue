@@ -31,7 +31,9 @@
                                     <h2 class="header__city">{{ weather.cityName }}</h2>
                                     <div class="temp_wrap">
                                         <div class="temp_logo"></div>
-                                        <span class="header__temp">{{ weather.temperature }}°C</span>
+                                        <span class="header__temp">{{
+                                            weather.temperature + ' ' + unit.temperature
+                                        }}</span>
                                     </div>
                                 </div>
                                 <div class="right">
@@ -44,11 +46,17 @@
                             <div class="info">
                                 <div class="wind_wrap">
                                     <div class="wind_logo"></div>
-                                    <span>{{ weather.windSpeed.toFixed(2) }} m/s {{ weather.windDirection }}</span>
+                                    <span>{{
+                                        weather.windSpeed.toFixed(2) +
+                                        ' ' +
+                                        unit.speed +
+                                        ' ' +
+                                        weather.windDirectionAbbr
+                                    }}</span>
                                 </div>
                                 <div class="pressure_wrap">
                                     <div class="pressure_logo"></div>
-                                    <span>{{ Math.round(weather.pressure / 1.333) }} mmHg</span>
+                                    <span>{{ Math.round(weather.pressure / 1.333) + ' ' + unit.pressure }}</span>
                                 </div>
                                 <div class="cloud_wrap">
                                     <div class="cloud_logo"></div>
@@ -56,7 +64,7 @@
                                 </div>
                                 <div class="visibility_wrap">
                                     <div class="visibility_logo"></div>
-                                    <span>{{ weather.visibility }} km</span>
+                                    <span>{{ weather.visibility + ' ' + unit.length }}</span>
                                 </div>
                             </div>
                         </l-popup>
@@ -79,6 +87,7 @@ import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/
 import { LUrlType, LTypeId } from './map/enum';
 import * as Api from '../api/constants';
 import { defineComponent } from 'vue';
+import { unitData } from './utils/metricUtils';
 
 export default defineComponent({
     components: {
@@ -91,7 +100,9 @@ export default defineComponent({
         LControlLayers,
     },
     data() {
+        let unit = unitData();
         return {
+            unit,
             weather: store.state.forecast.current,
             temp: false,
             press: false,
@@ -201,7 +212,7 @@ export default defineComponent({
                                 <h2 class="header__city">${weather.city_name}</h2>
                                 <div class="temp_wrap">
                                     <div class="temp_logo"></div>
-                                    <span class="header__temp">${weather.temp}°C</span>
+                                    <span class="header__temp">${weather.temp} ${this.unit.temperature}</span>
                                 </div>
                             </div>
                             <div class="right">
@@ -214,11 +225,11 @@ export default defineComponent({
                         <div class="info">
                             <div class="wind_wrap">
                                 <div class="wind_logo"></div>
-                                <span>${weather.wind_spd.toFixed(2)} m/s ${weather.wind_cdir}</span>
+                                <span>${weather.wind_spd.toFixed(2)} ${this.unit.speed} ${weather.wind_cdir}</span>
                             </div>
                             <div class="pressure_wrap">
                                 <div class="pressure_logo"></div>
-                                <span>${Math.round(weather.pres / 1.333)} mmHg</span>
+                                <span>${Math.round(weather.pres / 1.333) + ' ' + this.unit.pressure}</span>
                             </div>
                             <div class="cloud_wrap">
                                 <div class="cloud_logo"></div>
@@ -226,7 +237,7 @@ export default defineComponent({
                             </div>
                             <div class="visibility_wrap">
                                 <div class="visibility_logo"></div>
-                                <span>${weather.vis} km</span>
+                                <span>${weather.vis} ${this.unit.length}</span>
                             </div>
                         </div>`
                     )
