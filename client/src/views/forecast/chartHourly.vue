@@ -60,6 +60,7 @@ interface ChartData {
             fill: boolean;
             borderColor: string;
             tension: number;
+            pointLabel?: any;
         }[];
     };
 }
@@ -74,6 +75,9 @@ const chartData: ChartData = {
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.4,
+                pointLabel: function (context: any) {
+                    return context.parsed.y;
+                },
             },
         ],
     },
