@@ -78,6 +78,7 @@ export default defineComponent({
     components: {
         TimeView,
     },
+
     data() {
         let unit = unitData();
         let lang = langData();
