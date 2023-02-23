@@ -1,7 +1,7 @@
 <template>
     <l-control position="bottomleft">
         <div class="scale-details">
-            <div>Wind speed, m/s</div>
+            <div>{{ lang.wind + ', ' + unit.speed }}</div>
             <div class="scale-gradient" style="width: 260px">
                 <div class="scale-dividers">
                     <div>0</div>
@@ -21,10 +21,20 @@
 
 <script lang="ts">
 import { LControl } from '@vue-leaflet/vue-leaflet';
+import { unitData } from '@/views/utils/metricUtils';
+import { langData } from '@/views/utils/langUtils';
 
 export default {
     components: {
         LControl,
+    },
+    data() {
+        let unit = unitData();
+        let lang = langData();
+        return {
+            unit,
+            lang,
+        };
     },
 };
 </script>

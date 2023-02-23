@@ -1,5 +1,10 @@
 import { IForecast, IForecastCurrent, IForecastDaily, IForecastHourly } from '@/types/weather';
-import { getForecastByLocation, getForecastDaily, getForecastHourly } from '@/api/forecast/weather';
+import {
+    getForecastByLocation,
+    getForecastDaily,
+    getForecastHourly,
+    getForecastDayHourly,
+} from '@/api/forecast/weather';
 import { ActionContext } from 'vuex';
 import { IState } from '@/types/state';
 import transformRespForecastCurrent from '@/store/transformApi/forecast';
@@ -25,6 +30,7 @@ export default {
             current: FORECAST_CURRENT_DEF,
             daily: FORECAST_DAILY_DEF,
             hourly: FORECAST_HOURLY_DEF,
+            dayHourly: FORECAST_HOURLY_DEF,
         };
     },
     getters: {},
@@ -46,6 +52,9 @@ export default {
         },
         setForecastHourly(state: IForecast, forecastHourly: IForecastHourly) {
             state.hourly = forecastHourly;
+        },
+        setForecastDayHourly(state: IForecast, forecastHourly: IForecastHourly) {
+            state.dayHourly = forecastHourly;
         },
     },
     actions: {
@@ -70,10 +79,17 @@ export default {
             context.dispatch('settings/updateSettings', { locationFavorites: locations }, { root: true });
         },
         async updateForecast(context: Context, location: ILocationPlace) {
+            const date = new Date();
+            const history = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            const offset = new Date(history.setHours(history.getHours() + date.getTimezoneOffset() / 60));
+
             const query: LocationForecastRequest = {
                 latitude: location.position.latitude,
                 longitude: location.position.longitude,
+                start_date: `${offset.getFullYear()}-${offset.getMonth() + 1}-${offset.getDate()}:${offset.getHours()}`,
+                end_date: `${new Date().toISOString().slice(0, 10)}:${new Date().getHours() - 2}`,
                 units: context.rootState.settings.units,
+                lang: context.rootState.settings.languageCurrent,
             };
             context.commit('setLoading', true);
             const dataCurrent = await getForecastByLocation(query);
@@ -85,6 +101,9 @@ export default {
             const dataHourly = await getForecastHourly(query);
             const respHourly = await dataHourly.json();
             context.commit('setForecastHourly', transformRespForecastHourly(respHourly));
+            const dataDayHourly = await getForecastDayHourly(query);
+            const respDayHourly = await dataDayHourly.json();
+            context.commit('setForecastDayHourly', transformRespForecastHourly(respDayHourly));
             context.commit('setLoading', false);
         },
         async saveApiForecastToStorage() {

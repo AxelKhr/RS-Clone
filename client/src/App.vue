@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { mapState } from 'vuex';
 import store from './store';
+import { setTheme } from '@/themes/themes';
 
 export default defineComponent({
     components: { RouterLink, RouterView },
@@ -10,6 +11,12 @@ export default defineComponent({
         ...mapState('language', {
             langData: 'data',
         }),
+        getTheme() {
+            const theme = store.state.settings.theme;
+            console.log(theme);
+            setTheme(theme);
+            return theme;
+        },
     },
     mounted() {
         store.dispatch('language/loadLanguage');
@@ -38,7 +45,6 @@ export default defineComponent({
             </div>
         </div>
     </header>
-
     <RouterView />
 </template>
 

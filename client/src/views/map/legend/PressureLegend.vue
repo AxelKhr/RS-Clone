@@ -1,14 +1,14 @@
 <template>
     <l-control position="bottomleft">
         <div class="scale-details">
-            <div>Pressure, hPa</div>
+            <div>{{ lang.pressure + ', ' + unit.pressure }}</div>
             <div class="scale-gradient" style="width: 260px">
                 <div class="scale-dividers">
-                    <div>950</div>
-                    <div>980</div>
-                    <div>1010</div>
-                    <div>1040</div>
-                    <div>1070</div>
+                    <div>740</div>
+                    <div>745</div>
+                    <div>750</div>
+                    <div>755</div>
+                    <div>760</div>
                 </div>
                 <div class="horizontal-gradient-line"></div>
             </div>
@@ -18,10 +18,20 @@
 
 <script lang="ts">
 import { LControl } from '@vue-leaflet/vue-leaflet';
+import { unitData } from '@/views/utils/metricUtils';
+import { langData } from '@/views/utils/langUtils';
 
 export default {
     components: {
         LControl,
+    },
+    data() {
+        let unit = unitData();
+        let lang = langData();
+        return {
+            unit,
+            lang,
+        };
     },
 };
 </script>
