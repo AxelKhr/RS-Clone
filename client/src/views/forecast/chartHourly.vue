@@ -1,10 +1,13 @@
+<!-- Поковыряться с настройками графика что б был более пологий  и с текущего времени-->
+<!-- слайдер докрутить добавить коллапс-->
+<!-- маленькие окна сделать  -->
 <template>
     <div class="btn-container">
         <div class="btn-chart" @click="selectedCategory = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
-        <div class="btn-chart" @click="selectedCategory = 'precipitation'">
-            <img src="@/assets/images/precipitation.svg" alt="" />
+        <div class="btn-chart" @click="selectedCategory = 'pressure'">
+            <img src="@/assets/images/pressure.svg" alt="" />
         </div>
         <div class="btn-chart" @click="selectedCategory = 'wind'">
             <img src="@/assets/images/wind.svg" alt="" />
@@ -74,12 +77,12 @@ const chartData: ChartData = {
             },
         ],
     },
-    precipitation: {
+    pressure: {
         labels: labels,
         datasets: [
             {
-                label: 'Precipitation',
-                data: hoursData.map((el) => el.precipitationProbability),
+                label: 'Pressure',
+                data: hoursData.map((el) => el.pressure),
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.4,
@@ -115,7 +118,22 @@ const chartConfig = ref<ChartConfiguration>({
                 font: {
                     weight: 'bold',
                 },
-                formatter: Math.round,
+                formatter: (value) => {
+                    return `${value}°C`;
+                },
+                anchor: 'end',
+                align: 'start',
+                offset: 8,
+            },
+        },
+        scales: {
+            y: {
+                display: true,
+                max: 10,
+                min: -10,
+                ticks: {
+                    stepSize: 1,
+                },
             },
         },
         aspectRatio: 5 / 3,
