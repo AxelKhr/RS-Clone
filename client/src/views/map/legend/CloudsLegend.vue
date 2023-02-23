@@ -1,7 +1,7 @@
 <template>
     <l-control position="bottomleft">
         <div class="scale-details">
-            <div>Clouds, %</div>
+            <div>{{ lang.clouds + ', ' }} %</div>
             <div class="scale-gradient" style="width: 260px">
                 <div class="scale-dividers">
                     <div>0</div>
@@ -18,10 +18,17 @@
 
 <script lang="ts">
 import { LControl } from '@vue-leaflet/vue-leaflet';
+import { langData } from '@/views/utils/langUtils';
 
 export default {
     components: {
         LControl,
+    },
+    data() {
+        let lang = langData();
+        return {
+            lang,
+        };
     },
 };
 </script>

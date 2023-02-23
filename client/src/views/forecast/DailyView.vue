@@ -1,6 +1,5 @@
-<!-- TODO все время отображает лондонскую погоду-->
 <template>
-    <div class="block__title">Daily Forecast</div>
+    <div class="block__title">{{ lang.daily }}</div>
     <div class="days">
         <div class="day">
             <div
@@ -28,31 +27,31 @@
                     <div class="details__container child" v-if="index === selected">
                         <div>
                             <img src="../../assets/images/humidity.svg" alt="" />
-                            <div class="details__subtitle">Humidity<br />{{ day[2].humidity }}</div>
+                            <div class="details__subtitle">{{ lang.humidity }}<br />{{ day[2].humidity }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/sunrise.svg" alt="" />
-                            <div class="details__subtitle">Sunrise<br />{{ day[4].sunrise }}</div>
+                            <div class="details__subtitle">{{ lang.sunrise }}<br />{{ day[4].sunrise }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/sunset.svg" alt="" />
-                            <div class="details__subtitle">Sunset<br />{{ day[5].sunset }}</div>
+                            <div class="details__subtitle">{{ lang.sunset }}<br />{{ day[5].sunset }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/wind.svg" alt="" />
-                            <div class="details__subtitle">Wind Speed<br />{{ day[6].wind }}</div>
+                            <div class="details__subtitle">{{ lang.wind }}<br />{{ day[6].wind }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/pressure.svg" alt="" />
-                            <div class="details__subtitle">Pressure<br />{{ day[7].pressure }}</div>
+                            <div class="details__subtitle">{{ lang.pressure }}<br />{{ day[7].pressure }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/cloud.svg" alt="" />
-                            <div class="details__subtitle">Cloud Coverage<br />{{ day[8].clouds }}</div>
+                            <div class="details__subtitle">{{ lang.clouds }}<br />{{ day[8].clouds }}</div>
                         </div>
                         <div>
                             <img src="../../assets/images/visibility.svg" alt="" />
-                            <div class="details__subtitle">Visibility<br />{{ day[9].visibility }}</div>
+                            <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
                         </div>
                     </div>
                 </transition>
@@ -64,31 +63,34 @@
 <script lang="ts">
 import store from '@/store';
 import { defineComponent } from 'vue';
+import { unitData } from '../utils/metricUtils';
+import { langData } from '../utils/langUtils';
 export default defineComponent({
     components: {},
     data() {
+        let unit = unitData();
+        let lang = langData();
         let daysData = store.state.forecast.daily.days;
-
         let details = daysData
             .map((day) => {
                 return [
                     { date: `${day.validDate}` },
-                    { temp: `${day.temperatureMin} ... ${day.temperatureMax}°C` },
+                    { temp: `${day.temperatureMin} ... ${day.temperatureMax} ${unit.temperature}` },
                     { humidity: `${day.humidityRelative} %` },
                     { precipitation: `${day.precipitationProbability} %` },
                     { sunrise: `${day.sunRise}` },
                     { sunset: `${day.sunSet}` },
-                    { wind: `${day.windSpeed} m/s ${day.windDirectionAbbr}` },
-                    { pressure: `${day.pressure} mmHg` },
+                    { wind: `${day.windSpeed} ${unit.speed} ${day.windDirectionAbbr}` },
+                    { pressure: `${day.pressure} ${unit.pressure}` },
                     { clouds: `${day.cloudCoverage} %` },
-                    { visibility: `${day.visibility} km` },
+                    { visibility: `${day.visibility} ${unit.length}` },
                     { icon: `${day.weatherIcon}` },
                     { descriptions: `${day.weatherDescription}` },
                     { time: `${day.timeStamp}` },
                 ];
             })
             .slice(1, 8);
-        return { details, selected: null as number | null };
+        return { lang, unit, details, selected: null as number | null };
     },
     methods: {
         toggleChild(index: number) {

@@ -7,17 +7,13 @@
     >
         <div class="weather-actions">
             <div class="locations">
-                <img class="locations__img" src="../../assets/images/location.svg" alt="locations" />
+                <div class="locations__img"></div>
                 <div class="locations__text">
                     {{ $store.state.forecast.current.cityName }}
                 </div>
             </div>
             <button class="refresh-btn" @click="$store.dispatch('forecast/updateForecast')">
-                <img
-                    src="../../assets/images/refresh.svg"
-                    alt="refresh"
-                    @click="$store.dispatch('forecast/updateForecast')"
-                />
+                <div class="locations__refresh"></div>
             </button>
         </div>
         <div class="weather">
@@ -25,12 +21,14 @@
                 <time-view />
                 <div class="temperature">
                     <img class="weather__img" :src="$store.state.forecast.current.weatherIcon" />
-                    <span class="temperature__cur">{{ Math.round($store.state.forecast.current.temperature) }}°C</span>
+                    <span class="temperature__cur">{{
+                        Math.round($store.state.forecast.current.temperature) + ' ' + unit.temperature
+                    }}</span>
                 </div>
                 <div class="weather__desc">
                     <div class="feelings">
-                        Feelings like
-                        {{ Math.round($store.state.forecast.current.feelsLikeTemp) }}°C
+                        {{ lang.feeling }}
+                        {{ Math.round($store.state.forecast.current.feelsLikeTemp) + ' ' + unit.temperature }}
                     </div>
                     <div class="desc">{{ $store.state.forecast.current.weatherDescription }}</div>
                 </div>
@@ -70,54 +68,74 @@ import store from '@/store';
 import TimeView from './TimeView.vue';
 import { WeatherCodes } from './weatherCodes/weatherCodes';
 import { defineComponent } from 'vue';
-import { Wind } from './weatherData/wind';
-import { Visibility } from './weatherData/visibility';
+import { windScale } from './weatherData/wind';
+import { visibilityScale } from './weatherData/visibility';
+import { unitData } from '@/views/utils/metricUtils';
+import { langData } from '../utils/langUtils';
+import { LANG } from '@/types/language';
+import { UNITS } from '@/types/units';
 export default defineComponent({
     components: {
         TimeView,
     },
     data() {
+        let unit = unitData();
+        let lang = langData();
         let details = [
             {
                 id: 0,
-                subtitle: 'Humidity',
+                subtitle: lang.humidity,
                 value: `${store.state.forecast.current.humidityRelative} %`,
-                desc: 'Amount of moisture present in the air relative to the maximum amount of moisture the air can contain at its current temperature.',
+                desc:
+                    store.state.settings.languageCurrent == LANG.en
+                        ? 'Amount of moisture present in the air relative to the maximum amount of moisture the air can contain at its current temperature.'
+                        : 'Количество влаги, присутствующей в воздухе, по отношению к максимальному количеству влаги, которое воздух может содержать при текущей температуре.',
             },
             {
                 id: 1,
-                subtitle: 'Precipitation',
+                subtitle: lang.precipitation,
                 value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
-                desc: 'In meteorology, precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.',
+                desc:
+                    store.state.settings.languageCurrent == LANG.en
+                        ? 'Precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.'
+                        : 'Осадки — это любой продукт конденсации атмосферного водяного пара, попадающий под действием гравитационного притяжения облаков.',
             },
             {
                 id: 2,
-                subtitle: 'Wind',
-                value: `${store.state.forecast.current.windSpeed.toFixed(2)} m/s ${
+                subtitle: lang.wind,
+                value: `${store.state.forecast.current.windSpeed.toFixed(2)} ${unit.speed} ${
                     store.state.forecast.current.windDirectionAbbr
                 }`,
                 desc: this.getWindDesc(store.state.forecast.current.windSpeed.toFixed(1)),
             },
             {
                 id: 3,
-                subtitle: 'Pressure',
-                value: `${Math.round(store.state.forecast.current.pressure / 1.333)} mmHg`,
-                desc: 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.',
+                subtitle: lang.pressure,
+                value: `${Math.round(store.state.forecast.current.pressure / 1.333)} ${unit.pressure}`,
+                desc:
+                    store.state.settings.languageCurrent == LANG.en
+                        ? 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.'
+                        : 'Давление – это вес воздуха в атмосфере. Оно нормализовано к стандартному атмосферному давлению 1013,25 мбар (29,9212 дюйма ртутного столба). Более высокое давление обычно связано с солнечной погодой, более низкое – с ненастной погодой.',
             },
             {
                 id: 4,
-                subtitle: 'Clouds Cov.',
+                subtitle: lang.clouds,
                 value: `${store.state.forecast.current.cloudCoverage} %`,
-                desc: 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.',
+                desc:
+                    store.state.settings.languageCurrent == LANG.en
+                        ? 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.'
+                        : 'Облачный покров — это часть неба, покрытая облаками по отношению к наблюдателю (метеостанции) в определенной точке на суше или на море.',
             },
             {
                 id: 5,
-                subtitle: 'Visibility',
-                value: `${store.state.forecast.current.visibility} km`,
-                desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
+                subtitle: lang.visibility,
+                value: `${store.state.forecast.current.visibility} ${unit.length}`,
+                desc: this.getVisibilityDesc(Math.round(store.state.forecast.current.visibility)),
             },
         ];
         return {
+            unit,
+            lang,
             details,
             bgr: this.getWeatherBackground(store.state.forecast.current.weatherCode),
         };
@@ -131,14 +149,16 @@ export default defineComponent({
             })?.[1];
         },
         getWindDesc(speed: number) {
-            const wind = Wind.filter((el) => Number(speed) >= el.min_speed && Number(speed) <= el.max_speed);
-            return wind[0].name;
+            const s = store.state.settings.units == UNITS.imperial ? speed / 2.237 : speed;
+            const wind = windScale().filter((el) => Number(s) >= el.min_speed && Number(s) <= el.max_speed);
+            return `${wind[0].name} (${wind[0].min_speed} - ${wind[0].max_speed} m/s) - ${wind[0].description}`;
         },
         getVisibilityDesc(visibility: number) {
-            const data = Visibility.filter(
-                (el) => Number(visibility) >= el.min_visibility && Number(visibility) <= el.max_visibility
+            const v = store.state.settings.units == UNITS.imperial ? visibility * 1.609 : visibility;
+            let data = visibilityScale().filter(
+                (el) => Number(v) >= el.min_visibility && Number(v) <= el.max_visibility
             );
-            return data[0].desc;
+            return `${data[0].desc} ( > ${data[0].min_visibility} km)`;
         },
     },
 });
@@ -199,7 +219,7 @@ export default defineComponent({
         position: absolute;
         padding: 5px;
         color: black;
-        background-color: white;
+        background-color: var(--background__color--hover);
         font-size: 0.9rem;
         width: 250px;
         top: 25px;
@@ -233,12 +253,27 @@ button {
     display: flex;
     align-items: center;
 
-    &__img {
+    &__img,
+    &__refresh {
         width: 25px;
         height: 25px;
         margin-right: 10px;
+        background-color: white;
+        mask-size: contain;
+        --webkit-mask-size: contain;
+        mask-repeat: no-repeat;
+        --webkit-mask-repeat: no-repeat;
+        mask-position: center;
+        --webkit-mask-position: center;
     }
-
+    &__img {
+        mask-image: url('@/assets/images/location.svg');
+        --webkit-mask-image: url('@/assets/images/location.svg');
+    }
+    &__refresh {
+        mask-image: url('@/assets/images/refresh.svg');
+        --webkit-mask-image: url('@/assets/images/refresh.svg');
+    }
     &__text {
         font-size: 1.5rem;
     }
