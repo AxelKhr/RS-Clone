@@ -89,6 +89,7 @@ export default {
                 start_date: `${offset.getFullYear()}-${offset.getMonth() + 1}-${offset.getDate()}:${offset.getHours()}`,
                 end_date: `${new Date().toISOString().slice(0, 10)}:${new Date().getHours() - 2}`,
                 units: context.rootState.settings.units,
+                lang: context.rootState.settings.languageCurrent,
             };
             context.commit('setLoading', true);
             const dataCurrent = await getForecastByLocation(query);

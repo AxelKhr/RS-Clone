@@ -1,7 +1,6 @@
 <template>
     <div class="timezone">
-        <!-- ругается но вроде все правильно отображает -->
-        <p>{{ currentTime.toLocaleString('en-GB', options) }}.</p>
+        <p>{{ currentTime.toLocaleString($store.state.settings.languageCurrent, options) }}.</p>
     </div>
 </template>
 
@@ -12,9 +11,7 @@ export default defineComponent({
     data() {
         return {
             currentTime: new Date(),
-
             options: {
-                locales: 'en-GB',
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',

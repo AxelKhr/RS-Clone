@@ -6,38 +6,46 @@ function getUnits(request: LocationForecastRequest | NameForecastRequest) {
     return request.units === 'Imperial' ? 'I' : 'M';
 }
 
+function getLang(request: LocationForecastRequest | NameForecastRequest) {
+    return request.lang === 'RU' ? 'ru' : 'en';
+}
+
 export async function getForecastByLocation(request: LocationForecastRequest) {
-    const units = getUnits(request);
     return await fetch(
-        `https://api.weatherbit.io/v2.0/current?lat=${request.latitude}&lon=${request.longitude}&units=${units}&key=${API_KEY}`
+        `https://api.weatherbit.io/v2.0/current?lat=${request.latitude}&lon=${request.longitude}&lang=${getLang(
+            request
+        )}&units=${getUnits(request)}&key=${API_KEY}`
     );
 }
 
 export async function getForecastByName(request: NameForecastRequest) {
-    const units = getUnits(request);
     return await fetch(
-        `https://api.weatherbit.io/v2.0/current?cities=${request.city_name}&units=${units}&key=${API_KEY}`
+        `https://api.weatherbit.io/v2.0/current?cities=${request.city_name}&lang=${getLang(request)}&units=${getUnits(
+            request
+        )}&key=${API_KEY}`
     );
 }
 
 export async function getForecastDaily(request: LocationForecastRequest) {
-    const units = getUnits(request);
     return await fetch(
-        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${request.latitude}&lon=${request.longitude}&units=${units}&key=${API_KEY}`
+        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${request.latitude}&lon=${request.longitude}&lang=${getLang(
+            request
+        )}&units=${getUnits(request)}&key=${API_KEY}`
     );
 }
 
 export async function getForecastHourly(request: LocationForecastRequest) {
-    const units = getUnits(request);
     return await fetch(
-        `https://api.weatherbit.io/v2.0/forecast/hourly?lat=${request.latitude}&lon=${request.longitude}&units=${units}&key=${API_KEY}&hours=24`
+        `https://api.weatherbit.io/v2.0/forecast/hourly?lat=${request.latitude}&lon=${request.longitude}&lang=${getLang(
+            request
+        )}&units=${getUnits(request)}&key=${API_KEY}&hours=24`
     );
 }
 
-export async function getForecastDayHourly(response: LocationForecastRequest) {
-    //2023-02-20:00 -start
-    //2023-02-20:24 - end
+export async function getForecastDayHourly(request: LocationForecastRequest) {
     return await fetch(
-        `https://api.weatherbit.io/v2.0/history/hourly?lat=${response.latitude}&lon=${response.longitude}&start_date=${response.start_date}&end_date=${response.end_date}&key=${API_KEY}`
+        `https://api.weatherbit.io/v2.0/history/hourly?lat=${request.latitude}&lon=${request.longitude}&start_date=${
+            request.start_date
+        }&end_date=${request.end_date}&lang=${getLang(request)}&units=${getUnits(request)}&key=${API_KEY}`
     );
 }
