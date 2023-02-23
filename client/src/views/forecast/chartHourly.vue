@@ -1,58 +1,33 @@
-<!-- Поковыряться с настройками графика что б был более пологий  и с текущего времени-->
-<!-- слайдер докрутить добавить коллапс-->
-<!-- маленькие окна сделать  -->
+<!-- animation for wind chart волной типо на ветру-->
 <template>
     <div class="btn-container">
         <div class="btn-chart" @click="selectedCategory = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
-        <div class="btn-chart" @click="selectedCategory = 'pressure'">
-            <img src="@/assets/images/pressure.svg" alt="" />
+        <div class="btn-chart" @click="selectedCategory = 'precipitation'">
+            <img src="@/assets/images/precipitation.svg" alt="" />
         </div>
         <div class="btn-chart" @click="selectedCategory = 'wind'">
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
-    <canvas id="MyChart" height="500" width="1200"></canvas>
+    <div style="height: 400px; width: 100%">
+        <canvas id="MyChart"></canvas>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { onMounted, ref, watch } from 'vue';
 import { ChartConfiguration } from 'chart.js';
 import { langData } from '../utils/langUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
 let hoursData = store.state.forecast.hourly.hours;
+console.log('hoursData :>> ', hoursData);
 let lang = langData();
-
-const labels = [
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',
-    '23:00',
-    '00:00',
-    '01:00',
-    '02:00',
-    '03:00',
-    '04:00',
-    '05:00',
-    '06:00',
-    '07:00',
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00',
-];
-
+Chart.register(ChartDataLabels);
 interface ChartData {
     [key: string]: {
         labels: string[];
@@ -62,14 +37,14 @@ interface ChartData {
             fill: boolean;
             borderColor: string;
             tension: number;
-            pointLabel?: any;
+            stepped?: string;
         }[];
     };
 }
 
 const chartData: ChartData = {
     temperature: {
-        labels: labels,
+        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
                 label: lang.temperature,
@@ -77,14 +52,11 @@ const chartData: ChartData = {
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.4,
-                pointLabel: function (context: any) {
-                    return context.parsed.y;
-                },
             },
         ],
     },
-    pressure: {
-        labels: labels,
+    precipitation: {
+        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
                 label: lang.precipitation,
@@ -92,15 +64,16 @@ const chartData: ChartData = {
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.4,
+                stepped: 'middle',
             },
         ],
     },
     wind: {
-        labels: labels,
+        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
                 label: lang.wind,
-                data: hoursData.map((el) => el.windSpeed),
+                data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
                 fill: true,
                 borderColor: 'rgb(54, 162, 235)',
                 tension: 0.4,
@@ -117,51 +90,51 @@ const chartConfig = ref<ChartConfiguration>({
     options: {
         plugins: {
             datalabels: {
-                display: function (context) {
-                    return context.dataset.data[context.dataIndex] !== null;
-                },
-                color: 'white',
+                color: 'black',
                 font: {
                     weight: 'bold',
                 },
-                formatter: (value) => {
-                    return `${value}°C`;
-                },
                 anchor: 'end',
                 align: 'start',
-                offset: 8,
+                offset: -20,
             },
         },
         scales: {
             y: {
-                display: true,
-                max: 10,
-                min: -10,
-                ticks: {
-                    stepSize: 1,
-                },
+                display: false,
             },
         },
-        aspectRatio: 5 / 3,
-        layout: {
+        /*  animations: {
+            tension: {
+                duration: 1000,
+                easing: 'linear',
+                from: 1,
+                to: 0,
+                loop: true,
+            },
+        }, */
+        /*  aspectRatio: 5 / 3, */
+        /*         layout: {
             padding: {
                 top: 32,
                 right: 16,
                 bottom: 16,
                 left: 8,
             },
-        },
-        elements: {
+        }, */
+        /*       elements: {
             line: {
                 fill: false,
                 tension: 0.4,
             },
-        },
+        }, */
 
-        interaction: {
+        /*    interaction: {
             mode: 'index',
             intersect: false,
-        },
+        }, */
+        responsive: true,
+        maintainAspectRatio: false,
     },
 });
 
