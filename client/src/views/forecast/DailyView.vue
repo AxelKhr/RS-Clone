@@ -44,25 +44,25 @@
                 <div class="details__subtitle">{{ lang.sunrise }}<br />{{ day[4].sunrise }}</div>
             </div>
             <div>
-                 <img src="../../assets/images/sunset.svg" alt="" />
-                 <div class="details__subtitle">{{ lang.sunset }}<br />{{ day[5].sunset }}</div>
-             </div>
-             <div>
-                  <img src="../../assets/images/wind.svg" alt="" />
-                  <div class="details__subtitle">{{ lang.wind }}<br />{{ day[6].wind }}</div>
-             </div>
-             <div>
-                  <img src="../../assets/images/pressure.svg" alt="" />
-                  <div class="details__subtitle">{{ lang.pressure }}<br />{{ day[7].pressure }}</div>
-             </div>
-             <div>
-                  <img src="../../assets/images/cloud.svg" alt="" />
-                  <div class="details__subtitle">{{ lang.clouds }}<br />{{ day[8].clouds }}</div>
-             </div>
-             <div>
-                  <img src="../../assets/images/visibility.svg" alt="" />
-                  <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
-             </div>                
+                <img src="../../assets/images/sunset.svg" alt="" />
+                <div class="details__subtitle">{{ lang.sunset }}<br />{{ day[5].sunset }}</div>
+            </div>
+            <div>
+                <img src="../../assets/images/wind.svg" alt="" />
+                <div class="details__subtitle">{{ lang.wind }}<br />{{ day[6].wind }}</div>
+            </div>
+            <div>
+                <img src="../../assets/images/pressure.svg" alt="" />
+                <div class="details__subtitle">{{ lang.pressure }}<br />{{ day[7].pressure }}</div>
+            </div>
+            <div>
+                <img src="../../assets/images/cloud.svg" alt="" />
+                <div class="details__subtitle">{{ lang.clouds }}<br />{{ day[8].clouds }}</div>
+            </div>
+            <div>
+                <img src="../../assets/images/visibility.svg" alt="" />
+                <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
+            </div>
         </div>
     </collapse>
     <div class="days">
@@ -136,7 +136,7 @@ export default defineComponent({
             },
         };
 
-        return { isExpanded: true, settings, breakpoints, details, selected: null as number | null };
+        return { lang, unit, isExpanded: true, settings, breakpoints, details, selected: null as number | null };
     },
     methods: {
         toggleChild(index: number) {

@@ -15,6 +15,7 @@
     "core-js": "^3.8.3",
     "leaflet": "^1.9.3",
     "vue": "^3.2.13",
+    "vue-carousel": "^0.18.0",
     "vue-chartjs": "^5.2.0",
     "vue-class-component": "^8.0.0-0",
     "vue-collapsed": "^1.1.2",
