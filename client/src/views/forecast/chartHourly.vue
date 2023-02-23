@@ -1,10 +1,13 @@
+<!-- Поковыряться с настройками графика что б был более пологий  и с текущего времени-->
+<!-- слайдер докрутить добавить коллапс-->
+<!-- маленькие окна сделать  -->
 <template>
     <div class="btn-container">
         <div class="btn-chart" @click="selectedCategory = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
-        <div class="btn-chart" @click="selectedCategory = 'precipitation'">
-            <img src="@/assets/images/precipitation.svg" alt="" />
+        <div class="btn-chart" @click="selectedCategory = 'pressure'">
+            <img src="@/assets/images/pressure.svg" alt="" />
         </div>
         <div class="btn-chart" @click="selectedCategory = 'wind'">
             <img src="@/assets/images/wind.svg" alt="" />
@@ -17,11 +20,24 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted, ref, watch } from 'vue';
 import { ChartConfiguration } from 'chart.js';
+import { langData } from '../utils/langUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
 let hoursData = store.state.forecast.hourly.hours;
+let lang = langData();
 
 const labels = [
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00',
+    '23:00',
     '00:00',
     '01:00',
     '02:00',
@@ -35,17 +51,6 @@ const labels = [
     '10:00',
     '11:00',
     '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',
-    '23:00',
 ];
 
 interface ChartData {
@@ -66,7 +71,7 @@ const chartData: ChartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Temperature',
+                label: lang.temperature,
                 data: hoursData.map((el) => el.temperature),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
@@ -74,11 +79,11 @@ const chartData: ChartData = {
             },
         ],
     },
-    precipitation: {
+    pressure: {
         labels: labels,
         datasets: [
             {
-                label: 'Precipitation',
+                label: lang.precipitation,
                 data: hoursData.map((el) => el.precipitationProbability),
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
@@ -90,7 +95,7 @@ const chartData: ChartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Wind',
+                label: lang.wind,
                 data: hoursData.map((el) => el.windSpeed),
                 fill: true,
                 borderColor: 'rgb(54, 162, 235)',
@@ -115,7 +120,22 @@ const chartConfig = ref<ChartConfiguration>({
                 font: {
                     weight: 'bold',
                 },
-                formatter: Math.round,
+                formatter: (value) => {
+                    return `${value}°C`;
+                },
+                anchor: 'end',
+                align: 'start',
+                offset: 8,
+            },
+        },
+        scales: {
+            y: {
+                display: true,
+                max: 10,
+                min: -10,
+                ticks: {
+                    stepSize: 1,
+                },
             },
         },
         aspectRatio: 5 / 3,
