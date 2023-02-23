@@ -27,6 +27,7 @@ export default {
             isLoading: false,
             isShowModal: false,
             location: SETTINGS.default.locationCurrent,
+            isDataReady: false,
             current: FORECAST_CURRENT_DEF,
             daily: FORECAST_DAILY_DEF,
             hourly: FORECAST_HOURLY_DEF,
@@ -43,6 +44,9 @@ export default {
         },
         setLocation(state: IForecast, location: ILocationPlace) {
             state.location = location;
+        },
+        setDataReady(state: IForecast, isDataReady: boolean) {
+            state.isDataReady = isDataReady;
         },
         setForecastCurrent(state: IForecast, forecastCurrent: IForecastCurrent) {
             state.current = forecastCurrent;
@@ -78,10 +82,11 @@ export default {
             const locations = context.rootState.settings.locationFavorites.filter((item) => item.id !== location.id);
             context.dispatch('settings/updateSettings', { locationFavorites: locations }, { root: true });
         },
-        async updateForecast(context: Context, location: ILocationPlace) {
+        async updateForecast(context: Context) {
             const date = new Date();
             const history = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             const offset = new Date(history.setHours(history.getHours() + date.getTimezoneOffset() / 60));
+            const location = context.state.location;
 
             const query: LocationForecastRequest = {
                 latitude: location.position.latitude,
@@ -103,6 +108,7 @@ export default {
             const dataDayHourly = await getForecastDayHourly(query);
             const respDayHourly = await dataDayHourly.json();
             context.commit('setForecastDayHourly', transformRespForecastHourly(respDayHourly));
+            context.commit('setDataReady', true);
             context.commit('setLoading', false);
         },
         async saveApiForecastToStorage() {
@@ -132,6 +138,7 @@ export default {
                 const respHourly = JSON.parse(dataHourly);
                 context.commit('setForecastHourly', transformRespForecastHourly(respHourly));
             }
+            context.commit('setDataReady', true);
         },
     },
 };

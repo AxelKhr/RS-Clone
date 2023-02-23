@@ -29,13 +29,15 @@ export default defineComponent({
     cursor: pointer;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
+    border: 1px solid transparent;
 
     .icon-button__icon {
         transition: all 0.2s ease-in-out;
     }
 
     &:hover {
-        background-color: var(--background__colour--hover);
+        background-color: var(--background__color--hover);
+        border-color: var(--font__color);
 
         .icon-button__icon {
             transform: scale(1.2);
