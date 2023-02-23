@@ -107,7 +107,7 @@ export default defineComponent({
                 value: `${store.state.forecast.current.windSpeed.toFixed(2)} ${unit.speed} ${
                     store.state.forecast.current.windDirectionAbbr
                 }`,
-                desc: this.getWindDesc(store.state.forecast.current.windSpeed.toFixed(1)),
+                desc: this.getWindDesc(store.state.forecast.current.windSpeed),
             },
             {
                 id: 3,
@@ -131,7 +131,7 @@ export default defineComponent({
                 id: 5,
                 subtitle: lang.visibility,
                 value: `${store.state.forecast.current.visibility} ${unit.length}`,
-                desc: this.getVisibilityDesc(Math.round(store.state.forecast.current.visibility)),
+                desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
             },
         ];
         return {
@@ -151,13 +151,13 @@ export default defineComponent({
         },
         getWindDesc(speed: number) {
             const s = store.state.settings.units == UNITS.imperial ? speed / 2.237 : speed;
-            const wind = windScale().filter((el) => Number(s) >= el.min_speed && Number(s) <= el.max_speed);
+            const wind = windScale().filter((el) => Number(s) >= el.min_speed && Number(s) < el.max_speed);
             return `${wind[0].name} (${wind[0].min_speed} - ${wind[0].max_speed} m/s) - ${wind[0].description}`;
         },
         getVisibilityDesc(visibility: number) {
             const v = store.state.settings.units == UNITS.imperial ? visibility * 1.609 : visibility;
             let data = visibilityScale().filter(
-                (el) => Number(v) >= el.min_visibility && Number(v) <= el.max_visibility
+                (el) => Number(v) >= el.min_visibility && Number(v) < el.max_visibility
             );
             return `${data[0].desc} ( > ${data[0].min_visibility} km)`;
         },
