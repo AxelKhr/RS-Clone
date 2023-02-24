@@ -13,6 +13,8 @@ export const FORECAST_DAILY_DATA_DEF: IForecastDailyData = {
     windDirection: 0,
     windDirectionAbbr: '',
     precipitationProbability: 0,
+    precip: 0,
+    snow: 0,
     pressure: 0,
     humidityRelative: 0,
     cloudCoverage: 0,

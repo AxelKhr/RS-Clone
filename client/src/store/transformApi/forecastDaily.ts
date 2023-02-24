@@ -17,6 +17,8 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
                 windDirection: day.wind_dir,
                 windDirectionAbbr: day.wind_cdir,
                 precipitationProbability: day.pop,
+                precip: day.precip,
+                snow: day.snow,
                 pressure: Math.round(day.pres / 1.333),
                 humidityRelative: day.rh,
                 cloudCoverage: day.clouds,

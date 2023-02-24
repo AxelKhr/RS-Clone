@@ -20,6 +20,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .block__title {
+    margin-top: 50px;
     font-size: 1.5rem;
 }
 </style>
