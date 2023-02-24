@@ -1,4 +1,5 @@
 <!-- animation for wind chart волной типо на ветру-->
+<!-- средние данные за 16 дней реализовать как в яндекс погоде -->
 <template>
     <div class="btn-container">
         <div class="btn-chart" @click="selectedCategory = 'temperature'">
@@ -24,8 +25,9 @@ import { ChartConfiguration } from 'chart.js';
 import { langData } from '../utils/langUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
+import { unitData } from '../utils/metricUtils';
 let hoursData = store.state.forecast.hourly.hours;
-console.log('hoursData :>> ', hoursData);
+let unit = unitData();
 let lang = langData();
 Chart.register(ChartDataLabels);
 interface ChartData {
@@ -47,7 +49,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.temperature,
+                label: lang.temperature + ' ' + unit.temperature,
                 data: hoursData.map((el) => el.temperature),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
@@ -59,7 +61,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.precipitation,
+                label: lang.precipitation + ' ' + 'TODO unit.precipitation',
                 data: hoursData.map((el) => el.precipitationProbability),
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
@@ -72,7 +74,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.wind,
+                label: lang.wind + ' ' + 'TODO unit.wind',
                 data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
                 fill: true,
                 borderColor: 'rgb(54, 162, 235)',
@@ -89,6 +91,13 @@ const chartConfig = ref<ChartConfiguration>({
     data: chartData[selectedCategory.value],
     options: {
         plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 14,
+                    },
+                },
+            },
             datalabels: {
                 color: 'black',
                 font: {
