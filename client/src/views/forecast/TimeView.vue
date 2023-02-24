@@ -1,6 +1,13 @@
 <template>
     <div class="timezone">
-        <p>{{ currentTime.toLocaleString($store.state.settings.languageCurrent, options) }}.</p>
+        <p>
+            {{
+                currentTime.toLocaleString(
+                    $store.state.settings.languageCurrent,
+                    getTime.options as Intl.DateTimeFormatOptions
+                )
+            }}.
+        </p>
     </div>
 </template>
 
@@ -11,21 +18,27 @@ export default defineComponent({
     data() {
         return {
             currentTime: new Date(),
-            options: {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                timeZone: store.state.forecast.current.timeZone,
-            },
         };
     },
     mounted() {
         setInterval(() => {
             this.currentTime = new Date();
         }, 1000);
+    },
+    computed: {
+        getTime() {
+            return {
+                options: {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    timeZone: store.state.forecast.current.timeZone,
+                },
+            };
+        },
     },
 });
 </script>
