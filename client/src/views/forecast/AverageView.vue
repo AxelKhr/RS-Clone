@@ -1,4 +1,5 @@
 <template>
+    <div class="block__title">Average for 16 days</div>
     <div class="average__container">
         <div style="height: 400px; width: 500px" class="polar__container">
             <canvas id="MyPolar"></canvas>
@@ -127,8 +128,11 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
-.average__container {
+.block__title {
     margin-top: 50px;
+    font-size: 1.5rem;
+}
+.average__container {
     display: flex;
     justify-content: flex-start;
     align-items: center;

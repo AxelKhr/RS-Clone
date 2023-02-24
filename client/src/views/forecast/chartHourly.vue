@@ -1,5 +1,3 @@
-<!-- animation for wind chart волной типо на ветру-->
-<!-- средние данные за 16 дней реализовать как в яндекс погоде -->
 <template>
     <div class="btn-container">
         <div class="btn-chart" @click="selectedCategory = 'temperature'">
@@ -113,35 +111,6 @@ const chartConfig = ref<ChartConfiguration>({
                 display: false,
             },
         },
-        /*  animations: {
-            tension: {
-                duration: 1000,
-                easing: 'linear',
-                from: 1,
-                to: 0,
-                loop: true,
-            },
-        }, */
-        /*  aspectRatio: 5 / 3, */
-        /*         layout: {
-            padding: {
-                top: 32,
-                right: 16,
-                bottom: 16,
-                left: 8,
-            },
-        }, */
-        /*       elements: {
-            line: {
-                fill: false,
-                tension: 0.4,
-            },
-        }, */
-
-        /*    interaction: {
-            mode: 'index',
-            intersect: false,
-        }, */
         responsive: true,
         maintainAspectRatio: false,
     },
