@@ -1,5 +1,4 @@
 <!-- Поковыряться с настройками графика что б был более пологий  и с текущего времени-->
-<!-- слайдер докрутить добавить коллапс-->
 <!-- маленькие окна сделать  -->
 <template>
     <div class="btn-container">
@@ -179,19 +178,23 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .btn-container {
-    width: 100px;
+    margin-top: 10px;
+    margin-left: 20px;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    column-gap: 10px;
+    justify-content: start;
 }
 
 .btn-chart {
-    width: 30px;
-    height: 30px;
-    padding: 3px;
+    width: 45px;
+    height: 45px;
+    padding: 5px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: rgb(205, 205, 205);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 4px 4px 7px -2px rgba(34, 60, 80, 0.2);
 
     &:hover {
         background-color: rgb(228, 228, 228);
@@ -200,5 +203,8 @@ onMounted(() => {
     &:active {
         background-color: rgb(205, 205, 205);
     }
+}
+.active {
+    background-color: aliceblue;
 }
 </style>

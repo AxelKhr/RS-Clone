@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .forecast {
-    margin-top: 40px;
+    margin-top: 20px;
     width: 100%;
     border: 1px solid black;
     border-radius: 15px;

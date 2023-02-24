@@ -21,7 +21,7 @@
     "vue-collapsed": "^1.1.2",
     "vue-router": "^4.0.3",
     "vue-transition-expand": "^0.1.0",
-    "vue3-carousel": "^0.2.9",
+    "vue3-carousel": "^0.2.11",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

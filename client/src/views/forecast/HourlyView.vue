@@ -20,6 +20,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .block__title {
+    display: inline-block;
+    width: 25%;
+    padding: 5px 20px;
+    padding-right: 60px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     font-size: 1.5rem;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
 }
 </style>

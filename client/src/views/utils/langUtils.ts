@@ -20,6 +20,8 @@ export const langData = () => {
             night: 'Night',
             daily: 'Daily Forecast',
             hourly: 'Hourly Forecast',
+            today: 'Today',
+            tommorow: 'Tommorow',
         },
         ru: {
             feeling: 'Ощущается как',
@@ -38,6 +40,8 @@ export const langData = () => {
             night: 'Ночь',
             daily: 'Дневной прогноз',
             hourly: 'Почасовой прогноз',
+            today: 'Сегодня',
+            tommorow: 'Завтра',
         },
     };
     if (store.state.settings.languageCurrent == LANG.ru) {

@@ -36,5 +36,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .list {
     display: flex;
+    column-gap: 5px;
+    padding-bottom: 10px;
 }
 </style>

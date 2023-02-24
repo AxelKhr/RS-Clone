@@ -38,7 +38,7 @@
         <div class="details__size">
             <transition name="mode-fade" mode="out-in">
                 <button @click="switchButton" class="details__btn">
-                    <div ref="exBtn" class="expand__btn"></div>
+                    <div ref="exBtn" class="collapse__btn"></div>
                 </button>
             </transition>
         </div>
@@ -66,7 +66,7 @@ export default defineComponent({
         return {
             unit,
             down: false,
-            isExpanded: false,
+            isExpanded: true,
             sunrise: this.getWithUtc(store.state.forecast.current.sunRise),
             sunset: this.getWithUtc(store.state.forecast.current.sunSet),
             dayLength: this.getDayLength(

@@ -30,3 +30,13 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+.carousel__viewport {
+    margin: 0 auto;
+    width: 85%;
+}
+.carousel__prev {
+    margin-right: 30px;
+}
+</style>

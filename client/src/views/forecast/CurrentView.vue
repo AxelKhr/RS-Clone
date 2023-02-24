@@ -159,7 +159,7 @@ export default defineComponent({
             let data = visibilityScale().filter(
                 (el) => Number(v) >= el.min_visibility && Number(v) < el.max_visibility
             );
-            return `${data[0].desc} ( > ${data[0].min_visibility} km)`;
+            return `${data[0].desc} ( ${data[0].min_visibility} - ${data[0].max_visibility} km)`;
         },
     },
 });
