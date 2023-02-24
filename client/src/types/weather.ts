@@ -4,6 +4,7 @@ export interface IForecast {
     isLoading: boolean;
     isShowModal: boolean;
     location: ILocationPlace;
+    isDataReady: boolean;
     current: IForecastCurrent;
     daily: IForecastDaily;
     hourly: IForecastHourly;
