@@ -9,4 +9,5 @@ export interface ISettings {
     theme: THEME;
     locationCurrent: ILocationPlace;
     locationFavorites: ILocationPlace[];
+    locationTabs: ILocationPlace[];
 }

@@ -65,12 +65,30 @@ export default {
         showModal(context: Context) {
             context.commit('setShowModal', true);
         },
-        updateLocation(context: Context, location: ILocationPlace) {
+        setLocation(context: Context, location: ILocationPlace) {
+            if (!context.rootState.settings.locationTabs.find((el) => el.id === location.id)) {
+                const tabs = context.rootState.settings.locationTabs;
+                context.dispatch(
+                    'settings/updateSettings',
+                    { locationTabs: uniqBy([...tabs, location], ({ id }) => id) },
+                    { root: true }
+                );
+            }
             context.commit('setLocation', location);
             context.dispatch('updateForecast', location);
             context.dispatch('settings/updateSettings', { locationCurrent: location }, { root: true });
         },
-        addLocation(context: Context, location: ILocationPlace) {
+        removeTab(context: Context, location: ILocationPlace) {
+            const tabs = context.rootState.settings.locationTabs.filter((tab) => tab.id !== location.id);
+            context.dispatch('settings/updateSettings', { locationTabs: tabs }, { root: true });
+            if (location.id === context.state.location.id) {
+                if (context.rootState.settings.locationTabs.length > 0) {
+                    context.commit('setLocation', context.rootState.settings.locationTabs[0]);
+                    context.dispatch('updateForecast', location);
+                }
+            }
+        },
+        addFavLocation(context: Context, location: ILocationPlace) {
             const locations = context.rootState.settings.locationFavorites;
             context.dispatch(
                 'settings/updateSettings',
@@ -78,7 +96,7 @@ export default {
                 { root: true }
             );
         },
-        removeLocation(context: Context, location: ILocationPlace) {
+        removeFavLocation(context: Context, location: ILocationPlace) {
             const locations = context.rootState.settings.locationFavorites.filter((item) => item.id !== location.id);
             context.dispatch('settings/updateSettings', { locationFavorites: locations }, { root: true });
         },

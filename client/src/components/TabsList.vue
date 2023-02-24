@@ -1,23 +1,35 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import TabsItem from './TabsItem.vue';
+import store from '@/store';
 
 export default defineComponent({
     name: 'tabs-list',
     components: { TabsItem },
     setup() {
-        const list = ['Location1', 'Location2', 'Location3', 'Location4'];
-        return { list };
+        const locationCurrent = computed(() => store.state.forecast.location);
+        const locationsTabs = computed(() => store.state.settings.locationTabs);
+        return { locationCurrent, locationsTabs };
     },
 });
 </script>
 
 <template>
     <ul class="list">
-        <li class="list__item" v-for="item in list" :key="item">
-            <tabs-item :title="item"> </tabs-item>
+        <li
+            class="list__item"
+            v-for="tab in locationsTabs"
+            :key="tab.id"
+            @click="$store.dispatch('forecast/setLocation', tab)"
+        >
+            <tabs-item
+                :title="tab.name"
+                :isActive="locationCurrent.id === tab.id"
+                @close-tab="$store.dispatch('forecast/removeTab', tab)"
+            >
+            </tabs-item>
         </li>
-        <tabs-item title="new" isNew> </tabs-item>
+        <tabs-item isNew @add-tab="$store.dispatch('forecast/showModal')"> </tabs-item>
     </ul>
 </template>
 

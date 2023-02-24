@@ -1,6 +1,5 @@
 <template>
     <tabs-list />
-    <button @click="$store.dispatch('forecast/updateForecast')">Update</button>
     <template v-if="$store.state.forecast.isDataReady">
         <current-view />
         <today-view />
@@ -16,6 +15,7 @@ import CurrentView from './CurrentView.vue';
 import HourlyView from './HourlyView.vue';
 import TabsList from '@/components/TabsList.vue';
 import { defineComponent } from 'vue';
+import store from '@/store';
 
 export default defineComponent({
     components: {
@@ -24,6 +24,9 @@ export default defineComponent({
         DailyView,
         CurrentView,
         HourlyView,
+    },
+    mounted() {
+        store.dispatch('forecast/updateForecast');
     },
 });
 </script>
