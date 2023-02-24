@@ -3,10 +3,9 @@ import { defineComponent } from 'vue';
 import TestStorage from '@/components/TestStorage.vue';
 import TestLocation from '@/components/TestLocation.vue';
 import TestCurrent from '@/components/TestCurrent.vue';
-import LocationModal from '@/components/LocationModal.vue';
 
 export default defineComponent({
-    components: { TestStorage, TestLocation, TestCurrent, LocationModal },
+    components: { TestStorage, TestLocation, TestCurrent },
 });
 </script>
 
@@ -17,7 +16,6 @@ export default defineComponent({
                 <TestStorage />
                 <TestLocation />
                 <TestCurrent />
-                <location-modal v-model:isShow="$store.state.forecast.isShowModal" />
             </div>
         </div>
     </div>

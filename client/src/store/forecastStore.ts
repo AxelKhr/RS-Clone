@@ -27,6 +27,7 @@ export default {
             isLoading: false,
             isShowModal: false,
             location: SETTINGS.default.locationCurrent,
+            isDataReady: false,
             current: FORECAST_CURRENT_DEF,
             daily: FORECAST_DAILY_DEF,
             hourly: FORECAST_HOURLY_DEF,
@@ -43,6 +44,9 @@ export default {
         },
         setLocation(state: IForecast, location: ILocationPlace) {
             state.location = location;
+        },
+        setDataReady(state: IForecast, isDataReady: boolean) {
+            state.isDataReady = isDataReady;
         },
         setForecastCurrent(state: IForecast, forecastCurrent: IForecastCurrent) {
             state.current = forecastCurrent;
@@ -61,12 +65,30 @@ export default {
         showModal(context: Context) {
             context.commit('setShowModal', true);
         },
-        updateLocation(context: Context, location: ILocationPlace) {
+        setLocation(context: Context, location: ILocationPlace) {
+            if (!context.rootState.settings.locationTabs.find((el) => el.id === location.id)) {
+                const tabs = context.rootState.settings.locationTabs;
+                context.dispatch(
+                    'settings/updateSettings',
+                    { locationTabs: uniqBy([...tabs, location], ({ id }) => id) },
+                    { root: true }
+                );
+            }
             context.commit('setLocation', location);
             context.dispatch('updateForecast', location);
             context.dispatch('settings/updateSettings', { locationCurrent: location }, { root: true });
         },
-        addLocation(context: Context, location: ILocationPlace) {
+        removeTab(context: Context, location: ILocationPlace) {
+            const tabs = context.rootState.settings.locationTabs.filter((tab) => tab.id !== location.id);
+            context.dispatch('settings/updateSettings', { locationTabs: tabs }, { root: true });
+            if (location.id === context.state.location.id) {
+                if (context.rootState.settings.locationTabs.length > 0) {
+                    context.commit('setLocation', context.rootState.settings.locationTabs[0]);
+                    context.dispatch('updateForecast', location);
+                }
+            }
+        },
+        addFavLocation(context: Context, location: ILocationPlace) {
             const locations = context.rootState.settings.locationFavorites;
             context.dispatch(
                 'settings/updateSettings',
@@ -74,14 +96,15 @@ export default {
                 { root: true }
             );
         },
-        removeLocation(context: Context, location: ILocationPlace) {
+        removeFavLocation(context: Context, location: ILocationPlace) {
             const locations = context.rootState.settings.locationFavorites.filter((item) => item.id !== location.id);
             context.dispatch('settings/updateSettings', { locationFavorites: locations }, { root: true });
         },
-        async updateForecast(context: Context, location: ILocationPlace) {
+        async updateForecast(context: Context) {
             const date = new Date();
             const history = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             const offset = new Date(history.setHours(history.getHours() + date.getTimezoneOffset() / 60));
+            const location = context.state.location;
 
             const query: LocationForecastRequest = {
                 latitude: location.position.latitude,
@@ -104,6 +127,7 @@ export default {
             const dataDayHourly = await getForecastDayHourly(query);
             const respDayHourly = await dataDayHourly.json();
             context.commit('setForecastDayHourly', transformRespForecastHourly(respDayHourly));
+            context.commit('setDataReady', true);
             context.commit('setLoading', false);
         },
         async saveApiForecastToStorage() {
@@ -133,6 +157,7 @@ export default {
                 const respHourly = JSON.parse(dataHourly);
                 context.commit('setForecastHourly', transformRespForecastHourly(respHourly));
             }
+            context.commit('setDataReady', true);
         },
     },
 };

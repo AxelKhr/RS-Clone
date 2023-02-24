@@ -82,14 +82,14 @@ export default defineComponent({
             },
         });
         function setLocation(location: ILocationItem) {
-            store.dispatch('forecast/updateLocation', location.place);
+            store.dispatch('forecast/setLocation', location.place);
             store.commit('forecast/setShowModal', false);
         }
         function modifyLocation(location: ILocationItem) {
             if (location.asFavorite) {
-                store.dispatch('forecast/removeLocation', location.place);
+                store.dispatch('forecast/removeFavLocation', location.place);
             } else {
-                store.dispatch('forecast/addLocation', location.place);
+                store.dispatch('forecast/addFavLocation', location.place);
             }
         }
         return { modal, searchQuery, isLoading, favoritesList, resultSearch, search, setLocation, modifyLocation };

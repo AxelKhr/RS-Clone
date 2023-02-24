@@ -4,9 +4,10 @@ import { RouterLink, RouterView } from 'vue-router';
 import { mapState } from 'vuex';
 import store from './store';
 import { setTheme } from '@/themes/themes';
+import LocationModal from '@/components/LocationModal.vue';
 
 export default defineComponent({
-    components: { RouterLink, RouterView },
+    components: { RouterLink, RouterView, LocationModal },
     computed: {
         ...mapState('language', {
             langData: 'data',
@@ -46,6 +47,7 @@ export default defineComponent({
         </div>
     </header>
     <RouterView />
+    <location-modal v-model:isShow="$store.state.forecast.isShowModal" />
 </template>
 
 <style scoped>

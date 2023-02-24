@@ -1,9 +1,12 @@
 <template>
-    <current-view />
-    <today-view />
-    <hourly-view />
-    <daily-view />
-    <average-view />
+    <tabs-list />
+    <template v-if="$store.state.forecast.isDataReady">
+        <current-view />
+        <today-view />
+        <daily-view />
+        <hourly-view />
+        <average-view />
+    </template>
 </template>
 
 <script lang="ts">
@@ -12,14 +15,21 @@ import TodayView from './TodayView.vue';
 import CurrentView from './CurrentView.vue';
 import HourlyView from './HourlyView.vue';
 import AverageView from './AverageView.vue';
+import TabsList from '@/components/TabsList.vue';
 import { defineComponent } from 'vue';
+import store from '@/store';
+
 export default defineComponent({
     components: {
+        TabsList,
         TodayView,
         DailyView,
         CurrentView,
         HourlyView,
         AverageView,
+    },
+    mounted() {
+        store.dispatch('forecast/updateForecast');
     },
 });
 </script>
