@@ -3,7 +3,7 @@
     <Carousel :settings="settings" :breakpoints="breakpoints">
         <Slide
             @click="toggleChild(index)"
-            v-for="(day, index) in details"
+            v-for="(day, index) in getDetails"
             :key="index"
             :class="{ active: index === selected }"
         >
@@ -30,7 +30,7 @@
     <collapse
         :when="isExpanded"
         class="v-collapse"
-        v-for="(day, index) in details"
+        v-for="(day, index) in getDetails"
         :key="index"
         :class="{ active: index === selected }"
     >
@@ -69,7 +69,7 @@
         <div class="day">
             <div
                 @click="toggleChild(index)"
-                v-for="(day, index) in details"
+                v-for="(day, index) in getDetails"
                 :key="index"
                 :class="{ active: index === selected }"
             ></div>
@@ -97,26 +97,7 @@ export default defineComponent({
     data() {
         let unit = unitData();
         let lang = langData();
-        let daysData = store.state.forecast.daily.days;
-        let details = daysData
-            .map((day) => {
-                return [
-                    { date: `${day.validDate}` },
-                    { temp: `${day.temperatureMin} ... ${day.temperatureMax} ${unit.temperature}` },
-                    { humidity: `${day.humidityRelative} %` },
-                    { precipitation: `${day.precipitationProbability} %` },
-                    { sunrise: `${day.sunRise}` },
-                    { sunset: `${day.sunSet}` },
-                    { wind: `${day.windSpeed} ${unit.speed} ${day.windDirectionAbbr}` },
-                    { pressure: `${day.pressure} ${unit.pressure}` },
-                    { clouds: `${day.cloudCoverage} %` },
-                    { visibility: `${day.visibility} ${unit.length}` },
-                    { icon: `${day.weatherIcon}` },
-                    { descriptions: `${day.weatherDescription}` },
-                    { time: `${day.timeStamp}` },
-                ];
-            })
-            .slice(0, 16);
+
         let settings = {
             itemsToShow: 1,
             snapAlign: 'center',
@@ -136,7 +117,7 @@ export default defineComponent({
             },
         };
 
-        return { lang, unit, isExpanded: true, settings, breakpoints, details, selected: null as number | null };
+        return { lang, unit, isExpanded: true, settings, breakpoints, selected: null as number | null };
     },
     methods: {
         toggleChild(index: number) {
@@ -146,7 +127,31 @@ export default defineComponent({
             this.isExpanded = !this.isExpanded;
         },
     },
-    computed: {},
+    computed: {
+        getDetails() {
+            let unit = unitData();
+            let daysData = store.state.forecast.daily.days;
+            return daysData
+                .map((day) => {
+                    return [
+                        { date: `${day.validDate}` },
+                        { temp: `${day.temperatureMin} ... ${day.temperatureMax} ${unit.temperature}` },
+                        { humidity: `${day.humidityRelative} %` },
+                        { precipitation: `${day.precipitationProbability} %` },
+                        { sunrise: `${day.sunRise}` },
+                        { sunset: `${day.sunSet}` },
+                        { wind: `${day.windSpeed} ${unit.speed} ${day.windDirectionAbbr}` },
+                        { pressure: `${day.pressure} ${unit.pressure}` },
+                        { clouds: `${day.cloudCoverage} %` },
+                        { visibility: `${day.visibility} ${unit.length}` },
+                        { icon: `${day.weatherIcon}` },
+                        { descriptions: `${day.weatherDescription}` },
+                        { time: `${day.timeStamp}` },
+                    ];
+                })
+                .slice(0, 16);
+        },
+    },
 });
 </script>
 
