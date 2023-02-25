@@ -50,6 +50,8 @@ export interface IForecastDailyData {
     windDirection: number;
     windDirectionAbbr: string;
     precipitationProbability: number;
+    precip: number;
+    snow: number;
     pressure: number;
     humidityRelative: number;
     cloudCoverage: number;
