@@ -43,9 +43,13 @@ export async function getForecastHourly(request: LocationForecastRequest) {
 }
 
 export async function getForecastDayHourly(request: LocationForecastRequest) {
-    return await fetch(
+    const response = await fetch(
         `https://api.weatherbit.io/v2.0/history/hourly?lat=${request.latitude}&lon=${request.longitude}&start_date=${
             request.start_date
-        }&end_date=${request.end_date}&lang=${getLang(request)}&units=${getUnits(request)}&key=${API_KEY}`
+        }&end_date=${request.end_date}&lang=${getLang(request)}&units=${getUnits(request)}&tz=local&key=${API_KEY}`
     );
+    if (response.status == 400) {
+        throw new Error('start date is equal to end date - no history yet');
+    }
+    return response;
 }

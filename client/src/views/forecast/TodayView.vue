@@ -63,17 +63,15 @@ export default defineComponent({
         for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
             dayForecast.push(forecast[j]);
         }
+        const sunrise = this.getTimeWithUtc(store.state.forecast.current.sunRise);
+        const sunset = this.getTimeWithUtc(store.state.forecast.current.sunSet);
         return {
             unit,
             down: false,
             isExpanded: true,
-            sunrise: this.getWithUtc(store.state.forecast.current.sunRise),
-            sunset: this.getWithUtc(store.state.forecast.current.sunSet),
-            dayLength: this.getDayLength(
-                store.state.forecast.current.sunRise,
-                store.state.forecast.current.sunSet,
-                unit
-            ),
+            sunrise: sunrise,
+            sunset: sunset,
+            dayLength: this.getDayLength(sunrise, sunset, unit),
             weather: dayForecast,
             dayWeather: [
                 {
@@ -105,10 +103,16 @@ export default defineComponent({
             (this.$refs.exBtn as HTMLElement).classList.toggle('collapse__btn');
             (this.$refs.exBtn as HTMLElement).classList.toggle('expand__btn');
         },
-        getWithUtc(value: string) {
-            const utc = new Date().getTimezoneOffset() / 60;
+        getTimeWithUtc(value: string) {
+            const curDate = new Date().toLocaleString('en-EN', { timeZone: store.state.forecast.current.timeZone });
+            const lonDate = new Date().toLocaleString('en-EN', { timeZone: 'Europe/London' });
+            const cur = new Date(curDate);
+            const lon = new Date(lonDate);
+            const offset = (cur.getTime() - lon.getTime()) / 3600000;
             const timeArr = value.split(':');
-            timeArr[0] = (+timeArr[0] - utc).toString();
+            const hourWithOffset = +timeArr[0] + offset;
+            const hour = hourWithOffset > 24 ? hourWithOffset - 24 : hourWithOffset;
+            timeArr[0] = hour.toString();
             return timeArr.join(':');
         },
         getDayLength(start: string, end: string, unit: IUnit) {
