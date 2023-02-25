@@ -13,6 +13,8 @@ export interface ILangData {
     settingsLanguage: string;
     settingsTheme: string;
     settingsUnits: string;
+    startText: string;
+    startButton: string;
 }
 
 export interface ILang {

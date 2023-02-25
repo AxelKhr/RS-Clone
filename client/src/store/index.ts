@@ -4,6 +4,7 @@ import forecastStore from './forecastStore';
 import settingsStore from './settingsStore';
 import langStore from './langStore';
 import themePlugin from '@/themes/themePlugin';
+import startPagePlugin from './plugins/startPage';
 
 const store = createStore<IState>({
     modules: {
@@ -11,7 +12,7 @@ const store = createStore<IState>({
         settings: settingsStore,
         language: langStore,
     },
-    plugins: [themePlugin],
+    plugins: [themePlugin, startPagePlugin],
 });
 
 export default store;

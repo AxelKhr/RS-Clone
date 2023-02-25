@@ -13,6 +13,8 @@ const ENGLISH: ILang = {
         settingsLanguage: 'Language',
         settingsTheme: 'Theme',
         settingsUnits: 'Units',
+        startText: 'Greeting text',
+        startButton: 'Set location',
     },
 };
 

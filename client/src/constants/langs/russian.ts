@@ -13,6 +13,8 @@ const RUSSIAN: ILang = {
         settingsLanguage: 'Язык',
         settingsTheme: 'Тема',
         settingsUnits: 'Единицы измерения',
+        startText: 'Текст привествия',
+        startButton: 'Выбрать локацию',
     },
 };
 
