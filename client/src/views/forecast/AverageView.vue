@@ -2,7 +2,7 @@
     <div class="block__title">Average for 16 days</div>
     <div class="average__container">
         <div style="height: 400px; width: 500px" class="polar__container">
-            <canvas id="MyPolar"></canvas>
+            <PolarArea id="MyPolar" :options="chartOptions" :data="chartData"></PolarArea>
         </div>
         <div class="data__container">
             <div class="data__item">
@@ -37,10 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { Chart } from 'chart.js/auto';
+import { ChartOptions } from 'chart.js/auto';
 import { computed } from 'vue';
-import { onMounted, ref } from 'vue';
-import { ChartConfiguration } from 'chart.js';
+import { PolarArea } from 'vue-chartjs';
 import { langData } from '../utils/langUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
@@ -100,49 +99,42 @@ interface ChartDataset {
     backgroundColor: string[];
 }
 
-const chartData: ChartData = {
-    labels: ['ясных дней', 'дней с осадками', 'облачных дней'],
-    datasets: [
-        {
-            label: lang.temperature,
-            data: [averageSunny.value.length, averagePrecipProbability.value.length, averageCloudy.value.length],
-            fill: true,
-            backgroundColor: ['rgba(254, 188, 0, 0.5)', 'rgba(142, 191, 226, 0.5)', 'rgba(38, 132, 210, 0.5)'],
-        },
-    ],
-};
+const chartData = computed<ChartData>(() => {
+    return {
+        labels: ['ясных дней', 'дней с осадками', 'облачных дней'],
+        datasets: [
+            {
+                label: lang.temperature,
+                data: [averageSunny.value.length, averagePrecipProbability.value.length, averageCloudy.value.length],
+                fill: true,
+                backgroundColor: ['rgba(254, 188, 0, 0.5)', 'rgba(142, 191, 226, 0.5)', 'rgba(38, 132, 210, 0.5)'],
+            },
+        ],
+    };
+});
 
-const chartConfig = ref<ChartConfiguration>({
-    type: 'polarArea',
-    data: chartData,
-    options: {
-        responsive: true,
+const chartOptions: ChartOptions<'polarArea'> = {
+    responsive: true,
 
-        plugins: {
-            legend: {
-                position: 'right',
-                labels: {
-                    boxWidth: 40,
-                    boxHeight: 40,
-                    font: {
-                        size: 16,
-                    },
-                    usePointStyle: true,
-                    pointStyle: 'circle',
+    plugins: {
+        legend: {
+            position: 'right',
+            labels: {
+                boxWidth: 40,
+                boxHeight: 40,
+                font: {
+                    size: 16,
                 },
+                usePointStyle: true,
+                pointStyle: 'circle',
             },
-            title: {
-                display: true,
-                text: '',
-            },
+        },
+        title: {
+            display: true,
+            text: '',
         },
     },
-});
-
-onMounted(() => {
-    const canvasTag = document.getElementById('MyPolar') as HTMLCanvasElement;
-    new Chart(canvasTag, chartConfig.value);
-});
+};
 </script>
 <style lang="scss" scoped>
 .block__title {
