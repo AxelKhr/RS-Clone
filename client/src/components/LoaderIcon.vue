@@ -46,12 +46,14 @@ export default defineComponent({
 
 .anim--enable {
     &:before {
-        border-color: rgb(220, 220, 220);
+        border-color: var(--font__color);
+        opacity: 0.8;
     }
 
     &:after {
-        animation: loader-anim 500ms infinite linear;
-        border-right-color: rgb(120, 120, 120);
+        animation: loader-anim 800ms infinite linear;
+        border-right-color: var(--background__color);
+        opacity: 0.8;
     }
 }
 

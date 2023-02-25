@@ -163,7 +163,7 @@ export default defineComponent({
 
     &__content {
         margin: auto;
-        background: white;
+        background: var(--background__color);
         border-radius: 10px;
         min-height: 50px;
         max-width: 480px;
@@ -185,8 +185,11 @@ export default defineComponent({
             overflow: hidden;
 
             &:hover {
-                background-color: rgb(220, 220, 220);
+                background-color: var(--background__color--hover);
                 cursor: pointer;
+            }
+            &:active {
+                background-color: var(--background__color--active);
             }
 
             .item__text {
