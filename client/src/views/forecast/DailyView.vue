@@ -8,17 +8,11 @@
             :class="{ active: index === selected }"
         >
             <div class="carousel__item day__short">
-                <img class="day__img" :src="day[10].icon" alt="" />
+                <div class="day__subtitle">{{ day[0].date }}</div>
+                <img class="day__img" :src="day[12].icon" alt="" />
+                <div class="day__temp" v-html="day[1].temp"></div>
                 <div class="day-text">
-                    <div class="day__subtitle">{{ day[0].date }}</div>
-                    <div class="day__description">{{ day[11].descriptions }}</div>
-                </div>
-                <div class="day__precipitation">
-                    <img class="day__precipitation-img" src="../../assets/images/drop.svg" alt="" />
-                    <div>{{ day[3].precipitation }}</div>
-                </div>
-                <div class="day__temp">
-                    {{ day[1].temp }}
+                    <div class="day__description">{{ day[13].descriptions }}</div>
                 </div>
             </div>
         </Slide>
@@ -27,42 +21,48 @@
             <Navigation />
         </template>
     </Carousel>
-    <collapse
-        :when="isExpanded"
-        class="v-collapse"
-        v-for="(day, index) in details"
-        :key="index"
-        :class="{ active: index === selected }"
-    >
-        <div class="details__container child" v-if="index === selected">
-            <div>
-                <img src="../../assets/images/humidity.svg" alt="" />
-                <div class="details__subtitle">{{ lang.humidity }}<br />{{ day[2].humidity }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/sunrise.svg" alt="" />
-                <div class="details__subtitle">{{ lang.sunrise }}<br />{{ day[4].sunrise }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/sunset.svg" alt="" />
-                <div class="details__subtitle">{{ lang.sunset }}<br />{{ day[5].sunset }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/wind.svg" alt="" />
-                <div class="details__subtitle">{{ lang.wind }}<br />{{ day[6].wind }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/pressure.svg" alt="" />
-                <div class="details__subtitle">{{ lang.pressure }}<br />{{ day[7].pressure }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/cloud.svg" alt="" />
-                <div class="details__subtitle">{{ lang.clouds }}<br />{{ day[8].clouds }}</div>
-            </div>
-            <div>
-                <img src="../../assets/images/visibility.svg" alt="" />
-                <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
-            </div>
+    <collapse :when="isExpanded" class="v-collapse">
+        <div v-for="(day, index) in details" :key="index" :class="{ active: index === selected }">
+            <transition name="fade">
+                <div class="details__container child" v-if="index === selected">
+                    <div>
+                        <img src="../../assets/images/humidity.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.humidity }}<br />{{ day[2].humidity }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/sunrise.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.sunrise }}<br />{{ day[4].sunrise }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/sunset.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.sunset }}<br />{{ day[5].sunset }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/wind.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.wind }}<br />{{ day[6].wind }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/pressure.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.pressure }}<br />{{ day[7].pressure }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cloud.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.clouds }}<br />{{ day[8].clouds }}</div>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/visibility.svg" alt="" />
+                        <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
+                    </div>
+                    <div>
+                        <img class="moon" src="../../assets/moonrise-black.png" alt="" />
+                        <div class="details__subtitle">{{ lang.moonrise }}<br />{{ day[10].moonrise }}</div>
+                    </div>
+                    <div>
+                        <img class="moon" src="../../assets/moonset-black.png" alt="" />
+                        <div class="details__subtitle">{{ lang.moonset }}<br />{{ day[11].moonset }}</div>
+                    </div>
+                </div>
+            </transition>
         </div>
     </collapse>
     <div class="days">
@@ -86,8 +86,7 @@ import { Collapse } from 'vue-collapsed';
 import { unitData } from '../utils/metricUtils';
 import { langData } from '../utils/langUtils';
 export default defineComponent({
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: 'Breakpoints',
+    name: 'BreakPoints',
     components: {
         Carousel,
         Slide,
@@ -101,8 +100,14 @@ export default defineComponent({
         let details = daysData
             .map((day) => {
                 return [
-                    { date: `${day.validDate}` },
-                    { temp: `${day.temperatureMin} ... ${day.temperatureMax} ${unit.temperature}` },
+                    { date: `${this.getDate(day.validDate)}` },
+                    {
+                        temp: `${lang.day}: <span style="font-size: 1.1rem; font-weight: bold;">
+                            ${day.temperatureMax}${unit.temperature}
+                            </span><br>${lang.night}: <span style="font-size: 1.1rem; font-weight: bold;">
+                                ${day.temperatureMin}${unit.temperature}
+                            </span>`,
+                    },
                     { humidity: `${day.humidityRelative} %` },
                     { precipitation: `${day.precipitationProbability} %` },
                     { sunrise: `${day.sunRise}` },
@@ -111,6 +116,8 @@ export default defineComponent({
                     { pressure: `${day.pressure} ${unit.pressure}` },
                     { clouds: `${day.cloudCoverage} %` },
                     { visibility: `${day.visibility} ${unit.length}` },
+                    { moonrise: `${day.moonRise}` },
+                    { moonset: `${day.moonSet}` },
                     { icon: `${day.weatherIcon}` },
                     { descriptions: `${day.weatherDescription}` },
                     { time: `${day.timeStamp}` },
@@ -121,29 +128,33 @@ export default defineComponent({
             itemsToShow: 1,
             snapAlign: 'center',
         };
-        // breakpoints are mobile first
-        // any settings not specified will fallback to the carousel settings
         let breakpoints = {
-            // 700px and up
             700: {
                 itemsToShow: 3.5,
                 snapAlign: 'center',
             },
-            // 1024 and up
             1024: {
-                itemsToShow: 5,
+                itemsToShow: 4.7,
                 snapAlign: 'start',
             },
         };
 
-        return { lang, unit, isExpanded: true, settings, breakpoints, details, selected: null as number | null };
+        return { lang, unit, isExpanded: false, settings, breakpoints, details, selected: null as number | null };
     },
     methods: {
         toggleChild(index: number) {
             this.selected = this.selected === index ? null : index;
+            this.selected === null ? (this.isExpanded = false) : (this.isExpanded = true);
         },
-        switchButton() {
-            this.isExpanded = !this.isExpanded;
+        getDate(dateStr: string) {
+            const date = new Date(dateStr);
+            const curDate = new Date();
+            if (date.getDate() === curDate.getDate()) {
+                return langData().today;
+            } else if (date.getDate() - curDate.getDate() === 1) {
+                return langData().tommorow;
+            }
+            return `${date.getDate()} ${date.toLocaleString(store.state.settings.languageCurrent, { month: 'short' })}`;
         },
     },
     computed: {},
@@ -152,8 +163,23 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .block__title {
-    margin-top: 50px;
+    display: inline-block;
+    width: 25%;
+    padding: 5px 20px;
+    padding-right: 60px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     font-size: 1.5rem;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+}
+
+.active .carousel__item {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.v-collapse .active {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 1px;
 }
 .day {
     &__short {
@@ -165,14 +191,26 @@ export default defineComponent({
         border-radius: 5px;
         margin-top: 10px;
         margin-bottom: 10px;
+        width: 95%;
+        padding: 15px;
         cursor: pointer;
         &:hover {
             background-color: rgb(228, 228, 228);
         }
     }
     &__img {
-        width: 50px;
-        height: 50px;
+        width: 60%;
+        height: 60%;
+    }
+    &__subtitle {
+        font-size: 1.5rem;
+    }
+    &__description {
+        margin-top: 10px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.1);
+        font-weight: 500;
+        padding: 5px 15px;
     }
 }
 
@@ -193,11 +231,12 @@ export default defineComponent({
             grid-template-columns: repeat(2, 1fr);
         }
         & > div {
+            margin: 0 auto;
             display: flex;
             align-items: center;
             background-color: rgb(228, 228, 228);
             border-radius: 5px;
-            width: 300px;
+            width: 95%;
             & > img {
                 width: 30px;
                 height: 30px;
@@ -207,9 +246,9 @@ export default defineComponent({
     }
 
     &__subtitle {
-        font-size: 0.8rem;
-        text-align: center;
-        width: 80px;
+        font-size: 1.1rem;
+        text-align: left;
+        width: 100%;
     }
     &__value {
         font-size: 1rem;
@@ -236,7 +275,12 @@ export default defineComponent({
     justify-content: space-between;
     column-gap: 30px;
     width: 100%;
-    transition: height var(--vc-auto-duration) ease-out;
+    transition: height var(--vc-auto-duration) ease-in;
+    box-shadow: 0px 5px 5px -5px rgba(34, 60, 80, 0.6) inset, 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+}
+
+.days {
+    margin-bottom: 40px;
 }
 
 .collapse {
@@ -247,6 +291,20 @@ export default defineComponent({
 .carousel__slide {
     flex-direction: column;
     justify-content: space-between;
+}
+
+.carousel__item {
+    box-shadow: 0px 2px 5px -1px rgba(34, 60, 80, 0.2);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.01s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 
 .mode-fade-enter-active,

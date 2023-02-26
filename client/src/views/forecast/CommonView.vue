@@ -4,8 +4,8 @@
         <current-view />
         <today-view />
         <daily-view />
-        <hourly-view />
         <average-view />
+        <hourly-view />
     </template>
 </template>
 
@@ -33,3 +33,13 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+.carousel__viewport {
+    margin: 0 auto;
+    width: 85%;
+}
+.carousel__prev {
+    margin-right: 30px;
+}
+</style>

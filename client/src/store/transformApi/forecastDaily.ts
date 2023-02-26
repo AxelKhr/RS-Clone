@@ -1,5 +1,6 @@
 import { apiForecastDaily } from '@/api/types/response';
 import { IForecastDaily, IForecastDailyData } from '@/types/weather';
+import store from '..';
 
 export default function transformRespForecastDaily(response: apiForecastDaily): IForecastDaily {
     return {
@@ -22,16 +23,10 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
                 pressure: Math.round(day.pres / 1.333),
                 humidityRelative: day.rh,
                 cloudCoverage: day.clouds,
-                sunRise: new Date(day.sunrise_ts * 1000).toLocaleTimeString('en-US', {
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                }),
-                sunSet: new Date(day.sunset_ts * 1000).toLocaleTimeString('en-US', {
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                }),
+                sunRise: getTime(new Date(day.sunrise_ts * 1000)),
+                sunSet: getTime(new Date(day.sunset_ts * 1000)),
+                moonRise: getTime(new Date(day.moonrise_ts * 1000)),
+                moonSet: getTime(new Date(day.moonset_ts * 1000)),
                 indexUV: day.uv,
                 visibility: Math.round(day.vis),
                 weatherIcon: require(`@/assets/icons/${day.weather.icon}.png`),
@@ -41,4 +36,13 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
             return data;
         }),
     };
+}
+
+function getTime(date: Date) {
+    return date.toLocaleTimeString('en', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: store.state.forecast.current.timeZone,
+    });
 }

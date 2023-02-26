@@ -6,11 +6,16 @@
                     weekday: 'short',
                     month: 'short',
                     day: 'numeric',
+                })
+            }}
+        </p>
+        <p>
+            {{
+                currentTime.toLocaleString($store.state.settings.languageCurrent, {
                     hour: 'numeric',
                     minute: 'numeric',
-                    timeZone: $store.state.forecast.current.timeZone,
                 })
-            }}.
+            }}
         </p>
     </div>
 </template>
@@ -34,5 +39,6 @@ export default defineComponent({
 <style scoped>
 .timezone p {
     font-weight: 700;
+    text-align: right;
 }
 </style>

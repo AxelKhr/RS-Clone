@@ -1,44 +1,85 @@
 <template>
     <div class="details">
         <collapse :when="isExpanded" class="v-collapse">
-            <div class="sunrise-sunset">
-                <div class="sunrise-sunset__chart"></div>
-                <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunrise">
-                    <dt class="sunrise-sunset__label">
-                        <span class="a11y-hidden">Sunrise</span
-                        ><span class="sunrise-sunset__text" aria-hidden="true">Sunrise</span
-                        ><i class="icon icon_sunrise icon_size_24" aria-hidden="true" data-width="24"></i>
-                    </dt>
-                    <dd class="sunrise-sunset__value">{{ sunrise }}</dd>
-                </dl>
-                <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunset">
-                    <dt class="sunrise-sunset__label">
-                        <span class="a11y-hidden">Sunset</span
-                        ><span class="sunrise-sunset__text" aria-hidden="true">Sunset</span
-                        ><i class="icon icon_sunset icon_size_24" aria-hidden="true" data-width="24"></i>
-                    </dt>
-                    <dd class="sunrise-sunset__value">{{ sunset }}</dd>
-                </dl>
-                <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
-                    <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
-                    <dd class="sunrise-sunset__value">{{ dayLength }}</dd>
-                </dl>
+            <div class="details__chart">
+                <div class="sunrise-sunset">
+                    <div class="sunrise-sunset__chart"></div>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunrise">
+                        <dt class="sunrise-sunset__label">
+                            <span class="a11y-hidden">Sunrise</span
+                            ><span class="sunrise-sunset__text" aria-hidden="true">Sunrise</span
+                            ><i class="icon icon_sunrise icon_size_24" aria-hidden="true" data-width="24"></i>
+                        </dt>
+                        <dd class="sunrise-sunset__value">{{ sunrise }}</dd>
+                    </dl>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunset">
+                        <dt class="sunrise-sunset__label">
+                            <span class="a11y-hidden">Sunset</span
+                            ><span class="sunrise-sunset__text" aria-hidden="true">Sunset</span
+                            ><i class="icon icon_sunset icon_size_24" aria-hidden="true" data-width="24"></i>
+                        </dt>
+                        <dd class="sunrise-sunset__value">{{ sunset }}</dd>
+                    </dl>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
+                        <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
+                        <dd class="sunrise-sunset__value length">{{ dayLength }}</dd>
+                    </dl>
+                </div>
+                <div class="sunrise-sunset">
+                    <div class="sunrise-sunset__moon-chart"></div>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunrise">
+                        <dt class="sunrise-sunset__label">
+                            <span class="a11y-hidden">Moonset</span
+                            ><span class="sunrise-sunset__text" aria-hidden="true">Moonset</span
+                            ><i class="icon icon_moonrise icon_size_24" aria-hidden="true" data-width="24"></i>
+                        </dt>
+                        <dd class="sunrise-sunset__value">{{ moonrise }}</dd>
+                    </dl>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunset">
+                        <dt class="sunrise-sunset__label">
+                            <span class="a11y-hidden">Moonrise</span
+                            ><span class="sunrise-sunset__text" aria-hidden="true">Moonrise</span
+                            ><i class="icon icon_moonset icon_size_24" aria-hidden="true" data-width="24"></i>
+                        </dt>
+                        <dd class="sunrise-sunset__value">{{ moonset }}</dd>
+                    </dl>
+                    <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
+                        <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
+                        <dd class="sunrise-sunset__value length">{{ nightLength }}</dd>
+                    </dl>
+                </div>
             </div>
             <div class="daily">
                 <div class="daily__weather" v-for="w in dayWeather" :key="w.id">
-                    <span>{{ w.name }}</span>
-                    <img class="daily__icon" :src="w.weather.weatherIcon" />
-                    <span>{{ w.weather.temperature + ' ' + unit.temperature }}</span>
-                    <span>{{ w.weather.windSpeed.toFixed(2) + ' ' + unit.speed }}</span>
-                    <span>{{ Math.round(w.weather.pressure / 1.333) + ' ' + unit.pressure }}</span>
-                    <span>{{ w.weather.humidityRelative }} %</span>
+                    <div class="name">
+                        <span>{{ w.name }}</span>
+                    </div>
+                    <div class="w-icon">
+                        <img class="daily__icon" :src="w.weather.weatherIcon" />
+                    </div>
+                    <div class="temp">
+                        <div class="temp_icon"></div>
+                        <span>{{ w.weather.temperature + ' ' + unit.temperature }}</span>
+                    </div>
+                    <div class="wind">
+                        <div class="wind_icon"></div>
+                        <span>{{ w.weather.windSpeed.toFixed(2) + ' ' + unit.speed }}</span>
+                    </div>
+                    <div class="pressure">
+                        <div class="pressure_icon"></div>
+                        <span>{{ Math.round(w.weather.pressure / 1.333) + ' ' + unit.pressure }}</span>
+                    </div>
+                    <div class="humidity">
+                        <div class="humidity_icon"></div>
+                        <span>{{ w.weather.humidityRelative }} %</span>
+                    </div>
                 </div>
             </div>
         </collapse>
         <div class="details__size">
             <transition name="mode-fade" mode="out-in">
                 <button @click="switchButton" class="details__btn">
-                    <div ref="exBtn" class="expand__btn"></div>
+                    <div ref="exBtn" class="collapse__btn"></div>
                 </button>
             </transition>
         </div>
@@ -63,17 +104,20 @@ export default defineComponent({
         for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
             dayForecast.push(forecast[j]);
         }
+        const moonrise = store.state.forecast.daily.days[0].moonRise;
+        const moonset = store.state.forecast.daily.days[0].moonSet;
+        const sunrise = this.getTimeWithUtc(store.state.forecast.current.sunRise);
+        const sunset = this.getTimeWithUtc(store.state.forecast.current.sunSet);
         return {
             unit,
             down: false,
-            isExpanded: false,
-            sunrise: this.getWithUtc(store.state.forecast.current.sunRise),
-            sunset: this.getWithUtc(store.state.forecast.current.sunSet),
-            dayLength: this.getDayLength(
-                store.state.forecast.current.sunRise,
-                store.state.forecast.current.sunSet,
-                unit
-            ),
+            isExpanded: true,
+            moonrise: moonrise,
+            moonset: moonset,
+            sunrise: sunrise,
+            sunset: sunset,
+            dayLength: this.getDayLength(sunrise, sunset, unit),
+            nightLength: this.getDayLength(moonset, moonrise, unit),
             weather: dayForecast,
             dayWeather: [
                 {
@@ -105,10 +149,16 @@ export default defineComponent({
             (this.$refs.exBtn as HTMLElement).classList.toggle('collapse__btn');
             (this.$refs.exBtn as HTMLElement).classList.toggle('expand__btn');
         },
-        getWithUtc(value: string) {
-            const utc = new Date().getTimezoneOffset() / 60;
+        getTimeWithUtc(value: string) {
+            const curDate = new Date().toLocaleString('en-EN', { timeZone: store.state.forecast.current.timeZone });
+            const lonDate = new Date().toLocaleString('en-EN', { timeZone: 'Europe/London' });
+            const cur = new Date(curDate);
+            const lon = new Date(lonDate);
+            const offset = (cur.getTime() - lon.getTime()) / 3600000;
             const timeArr = value.split(':');
-            timeArr[0] = (+timeArr[0] - utc).toString();
+            const hourWithOffset = +timeArr[0] + offset;
+            const hour = hourWithOffset > 24 ? hourWithOffset - 24 : hourWithOffset;
+            timeArr[0] = hour.toString();
             return timeArr.join(':');
         },
         getDayLength(start: string, end: string, unit: IUnit) {
@@ -126,13 +176,55 @@ export default defineComponent({
 <style lang="scss" scoped>
 .v-collapse {
     display: flex;
+    flex: 1 auto;
     flex-direction: row-reverse;
     justify-content: space-between;
-    column-gap: 30px;
+    column-gap: 20px;
     width: 100%;
     transition: height var(--vc-auto-duration) ease-out;
 }
 
+.name,
+.w-icon,
+.temp,
+.wind,
+.pressure,
+.humidity {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.name {
+    margin: 0 auto;
+}
+
+.temp_icon,
+.wind_icon,
+.pressure_icon,
+.humidity_icon {
+    width: 20px;
+    height: 20px;
+    background: black;
+}
+
+.temp_icon {
+    mask: url('@/assets/images/temperature.svg') center no-repeat;
+    --webkit-mask: url('@/assets/images/temperature.svg') center no-repeat;
+}
+.wind_icon {
+    mask: url('@/assets/images/wind.svg') center no-repeat;
+    --webkit-mask: url('@/assets/images/wind.svg') center no-repeat;
+}
+.pressure_icon {
+    mask: url('@/assets/images/pressure.svg') center no-repeat;
+    --webkit-mask: url('@/assets/images/pressure.svg') center no-repeat;
+}
+.humidity_icon {
+    mask: url('@/assets/images/humidity.svg') center no-repeat;
+    --webkit-mask: url('@/assets/images/humidity.svg') center no-repeat;
+}
 .daily__icon {
     width: 35px;
     height: 35px;
@@ -147,6 +239,15 @@ export default defineComponent({
         height: 31px;
         margin-bottom: 7px;
         background: url('@/assets/sunrise_chart.svg') center no-repeat;
+    }
+    &__moon-chart {
+        width: 100%;
+        height: 31px;
+        margin-bottom: 7px;
+        margin-top: 50px;
+        background-color: gray;
+        mask: url('@/assets/sunrise_chart.svg') center no-repeat;
+        --webkit-mask: url('@/assets/sunrise_chart.svg') center no-repeat;
     }
 
     &__description {
@@ -190,13 +291,24 @@ export default defineComponent({
     .icon_sunrise {
         -webkit-background-size: 100% 100%;
         background-size: 100%;
-        background-image: url('@/assets/sunrise.svg');
+        background-image: url('@/assets/sunrise.png');
     }
 
     .icon_sunset {
         -webkit-background-size: 100% 100%;
         background-size: 100%;
-        background-image: url('@/assets/sunset.svg');
+        background-image: url('@/assets/sunset.png');
+    }
+    .icon_moonrise {
+        -webkit-background-size: 100% 100%;
+        background-size: 100%;
+        background-image: url('@/assets/moonrise.png');
+    }
+
+    .icon_moonset {
+        -webkit-background-size: 100% 100%;
+        background-size: 100%;
+        background-image: url('@/assets/moonset.png');
     }
     .icon_size_24 {
         width: 24px;
@@ -204,16 +316,27 @@ export default defineComponent({
     }
 }
 
+.length {
+    font-weight: bold;
+}
+
 .daily {
-    width: 100%;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    width: 80%;
+    height: 250px;
     display: flex;
     flex-direction: column;
+    vertical-align: middle;
     justify-content: space-between;
-    height: 200px;
 
     &__weather {
+        height: 100%;
         display: grid;
         grid-template-columns: repeat(6, 1fr);
+    }
+    &__weather:nth-child(even) {
+        background-color: rgba(205, 205, 205, 0.2);
     }
 }
 
