@@ -1,137 +1,126 @@
 <template>
     <div class="btn-container">
-        <div class="btn-chart" @click="selectedCategory = 'temperature'">
+        <div class="btn-chart" @click="activeButton = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
-        <div class="btn-chart" @click="selectedCategory = 'precipitation'">
+        <div class="btn-chart" @click="activeButton = 'precipitation'">
             <img src="@/assets/images/precipitation.svg" alt="" />
         </div>
-        <div class="btn-chart" @click="selectedCategory = 'wind'">
+        <div class="btn-chart" @click="activeButton = 'wind'">
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
     <div style="height: 400px; width: 100%">
-        <canvas id="MyChart"></canvas>
+        <Line :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
-<script setup lang="ts">
-import { Chart } from 'chart.js/auto';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { onMounted, ref, watch } from 'vue';
-import { ChartConfiguration } from 'chart.js';
-import { langData } from '../utils/langUtils';
+<script lang="ts">
 import 'chartjs-plugin-datalabels';
+import { defineComponent } from 'vue';
 import store from '@/store';
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale } from 'chart.js';
+import { langData } from '../utils/langUtils';
 import { unitData } from '../utils/metricUtils';
-let hoursData = store.state.forecast.hourly.hours;
-let unit = unitData();
-let lang = langData();
-Chart.register(ChartDataLabels);
-interface ChartData {
-    [key: string]: {
-        labels: string[];
-        datasets: {
-            label: string;
-            data: number[];
-            fill: boolean;
-            borderColor: string;
-            tension: number;
-            stepped?: string;
-        }[];
-    };
+import { ChartOptions } from 'chart.js/auto';
+import { ChartData } from 'chart.js/auto';
+ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale);
+
+interface ChartArr {
+    temperature: ChartData<'line'>;
+    precipitation: ChartData<'line'>;
+    wind: ChartData<'line'>;
 }
 
-const chartData: ChartData = {
-    temperature: {
-        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
-        datasets: [
-            {
-                label: lang.temperature + ' ' + unit.temperature,
-                data: hoursData.map((el) => el.temperature),
-                fill: true,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.4,
-            },
-        ],
+export default defineComponent({
+    name: 'LineChart',
+    components: { Line },
+    data() {
+        return {
+            activeButton: 'temperature',
+        };
     },
-    precipitation: {
-        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
-        datasets: [
-            {
-                label: lang.precipitation + ' ' + 'TODO unit.precipitation',
-                data: hoursData.map((el) => el.precipitationProbability),
-                fill: true,
-                borderColor: 'rgb(255, 99, 132)',
-                tension: 0.4,
-                stepped: 'middle',
-            },
-        ],
-    },
-    wind: {
-        labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
-        datasets: [
-            {
-                label: lang.wind + ' ' + 'TODO unit.wind',
-                data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
-                fill: true,
-                borderColor: 'rgb(54, 162, 235)',
-                tension: 0.4,
-            },
-        ],
-    },
-};
+    computed: {
+        chartData(): ChartData<'line'> {
+            let hoursData = store.state.forecast.hourly.hours;
+            let unit = unitData();
+            let lang = langData();
+            let result: ChartArr = {
+                temperature: {
+                    labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
+                    datasets: [
+                        {
+                            label: lang.temperature + ' ' + unit.temperature,
+                            data: hoursData.map((el) => el.temperature),
+                            fill: true,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.4,
+                        },
+                    ],
+                },
+                precipitation: {
+                    labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
+                    datasets: [
+                        {
+                            label: lang.precipitation + ' ' + 'TODO unit.precipitation',
+                            data: hoursData.map((el) => el.precipitationProbability),
+                            fill: true,
+                            borderColor: 'rgb(255, 99, 132)',
+                            tension: 0.4,
+                            stepped: 'middle',
+                        },
+                    ],
+                },
+                wind: {
+                    labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
+                    datasets: [
+                        {
+                            label: lang.wind + ' ' + 'TODO unit.wind',
+                            data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
+                            fill: true,
+                            borderColor: 'rgb(54, 162, 235)',
+                            tension: 0.4,
+                        },
+                    ],
+                },
+            };
+            return result[this.activeButton as keyof ChartArr];
+        },
 
-const selectedCategory = ref('temperature');
-
-const chartConfig = ref<ChartConfiguration>({
-    type: 'line',
-    data: chartData[selectedCategory.value],
-    options: {
-        plugins: {
-            legend: {
-                labels: {
-                    font: {
-                        size: 14,
+        chartOptions(): ChartOptions<'line'> {
+            return {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14,
+                            },
+                        },
+                    },
+                    datalabels: {
+                        color: 'black',
+                        font: {
+                            weight: 'bold',
+                        },
+                        anchor: 'end',
+                        align: 'start',
+                        offset: -20,
                     },
                 },
-            },
-            datalabels: {
-                color: 'black',
-                font: {
-                    weight: 'bold',
+                scales: {
+                    y: {
+                        display: false,
+                    },
                 },
-                anchor: 'end',
-                align: 'start',
-                offset: -20,
-            },
+                responsive: true,
+                maintainAspectRatio: false,
+            };
         },
-        scales: {
-            y: {
-                display: false,
-            },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
     },
 });
-
-onMounted(() => {
-    const canvasTag = document.getElementById('MyChart') as HTMLCanvasElement;
-    const chart = new Chart(canvasTag, chartConfig.value);
-
-    // Watch for changes in selectedCategory and update the chart data
-    watch(
-        function () {
-            return selectedCategory.value;
-        },
-        function () {
-            chart.data = chartData[selectedCategory.value];
-            chart.update();
-        }
-    );
-});
 </script>
+
 <style lang="scss" scoped>
 .btn-container {
     width: 100px;
