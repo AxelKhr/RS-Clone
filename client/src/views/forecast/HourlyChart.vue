@@ -66,7 +66,7 @@ export default defineComponent({
                     labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
                     datasets: [
                         {
-                            label: lang.precipitation + ' ' + 'TODO unit.precipitation',
+                            label: lang.precipitation + ' ' + unit.precipitation,
                             data: hoursData.map((el) => el.precipitationProbability),
                             fill: true,
                             borderColor: 'rgb(255, 99, 132)',
