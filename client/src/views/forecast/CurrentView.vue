@@ -86,6 +86,7 @@ interface Detail {
     subtitle: string;
     value: string;
     desc: string;
+    color: string;
 }
 
 export default defineComponent({
@@ -96,68 +97,7 @@ export default defineComponent({
     data() {
         let unit = unitData();
         let lang = langData();
-<<<<<<< HEAD
-        let details = [
-            {
-                id: 0,
-                subtitle: lang.humidity,
-                value: `${store.state.forecast.current.humidityRelative} %`,
-                desc:
-                    store.state.settings.languageCurrent == LANG.en
-                        ? 'Amount of moisture present in the air relative to the maximum amount of moisture the air can contain at its current temperature.'
-                        : 'Количество влаги, присутствующей в воздухе, по отношению к максимальному количеству влаги, которое воздух может содержать при текущей температуре.',
-                color: 'background-color: transparent',
-            },
-            {
-                id: 1,
-                subtitle: lang.precipitation,
-                value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
-                desc:
-                    store.state.settings.languageCurrent == LANG.en
-                        ? 'Precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.'
-                        : 'Осадки — это любой продукт конденсации атмосферного водяного пара, попадающий под действием гравитационного притяжения облаков.',
-                color: 'background-color: transparent',
-            },
-            {
-                id: 2,
-                subtitle: lang.wind,
-                value: `${store.state.forecast.current.windSpeed.toFixed(2)} ${unit.speed} ${
-                    store.state.forecast.current.windDirectionAbbr
-                }`,
-                desc: this.getWindDesc(store.state.forecast.current.windSpeed),
-                color: this.getWindColor(store.state.forecast.current.windSpeed),
-            },
-            {
-                id: 3,
-                subtitle: lang.pressure,
-                value: `${Math.round(store.state.forecast.current.pressure / 1.333)} ${unit.pressure}`,
-                desc:
-                    store.state.settings.languageCurrent == LANG.en
-                        ? 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.'
-                        : 'Давление – это вес воздуха в атмосфере. Оно нормализовано к стандартному атмосферному давлению 1013,25 мбар (29,9212 дюйма ртутного столба). Более высокое давление обычно связано с солнечной погодой, более низкое – с ненастной погодой.',
-                color: 'background-color: transparent',
-            },
-            {
-                id: 4,
-                subtitle: lang.clouds,
-                value: `${store.state.forecast.current.cloudCoverage} %`,
-                desc:
-                    store.state.settings.languageCurrent == LANG.en
-                        ? 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.'
-                        : 'Облачный покров — это часть неба, покрытая облаками по отношению к наблюдателю (метеостанции) в определенной точке на суше или на море.',
-                color: 'background-color: transparent',
-            },
-            {
-                id: 5,
-                subtitle: lang.visibility,
-                value: `${store.state.forecast.current.visibility} ${unit.length}`,
-                desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
-                color: this.getVisibilityColor(store.state.forecast.current.visibility),
-            },
-        ];
-=======
 
->>>>>>> 7814b02edb95dcc0721ab22e7afb05c3052dea8c
         return {
             unit,
             lang,
@@ -219,6 +159,7 @@ export default defineComponent({
                         store.state.settings.languageCurrent == LANG.en
                             ? 'Amount of moisture present in the air relative to the maximum amount of moisture the air can contain at its current temperature.'
                             : 'Количество влаги, присутствующей в воздухе, по отношению к максимальному количеству влаги, которое воздух может содержать при текущей температуре.',
+                    color: 'background-color: transparent',
                 },
                 {
                     id: 1,
@@ -228,6 +169,7 @@ export default defineComponent({
                         store.state.settings.languageCurrent == LANG.en
                             ? 'Precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.'
                             : 'Осадки — это любой продукт конденсации атмосферного водяного пара, попадающий под действием гравитационного притяжения облаков.',
+                    color: 'background-color: transparent',
                 },
                 {
                     id: 2,
@@ -236,6 +178,7 @@ export default defineComponent({
                         store.state.forecast.current.windDirectionAbbr
                     }`,
                     desc: this.getWindDesc(store.state.forecast.current.windSpeed),
+                    color: this.getWindColor(store.state.forecast.current.windSpeed),
                 },
                 {
                     id: 3,
@@ -245,6 +188,7 @@ export default defineComponent({
                         store.state.settings.languageCurrent == LANG.en
                             ? 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.'
                             : 'Давление – это вес воздуха в атмосфере. Оно нормализовано к стандартному атмосферному давлению 1013,25 мбар (29,9212 дюйма ртутного столба). Более высокое давление обычно связано с солнечной погодой, более низкое – с ненастной погодой.',
+                    color: 'background-color: transparent',
                 },
                 {
                     id: 4,
@@ -254,12 +198,14 @@ export default defineComponent({
                         store.state.settings.languageCurrent == LANG.en
                             ? 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.'
                             : 'Облачный покров — это часть неба, покрытая облаками по отношению к наблюдателю (метеостанции) в определенной точке на суше или на море.',
+                    color: 'background-color: transparent',
                 },
                 {
                     id: 5,
                     subtitle: lang.visibility,
                     value: `${store.state.forecast.current.visibility} ${unit.length}`,
                     desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
+                    color: this.getVisibilityColor(store.state.forecast.current.visibility),
                 },
             ];
         },
