@@ -93,7 +93,7 @@ export default defineComponent({
         Navigation,
         Collapse,
     },
-    data() {
+    data: () => {
         let unit = unitData();
         let lang = langData();
         let settings = {
@@ -117,7 +117,7 @@ export default defineComponent({
             this.selected = this.selected === index ? null : index;
             this.selected === null ? (this.isExpanded = false) : (this.isExpanded = true);
         },
-        getDate(dateStr: string) {
+        getCurDate(dateStr: string): string {
             const date = new Date(dateStr);
             const curDate = new Date();
             if (date.getDate() === curDate.getDate()) {
@@ -131,15 +131,16 @@ export default defineComponent({
     computed: {
         getDetails() {
             let unit = unitData();
+            let lang = langData();
             let daysData = store.state.forecast.daily.days;
             return daysData
                 .map((day) => {
                     return [
-                        { date: `${this.getDate(day.validDate)}` },
+                        { date: `${this.getCurDate(day.validDate)}` },
                         {
-                            temp: `${langData().day}: <span style="font-size: 1.1rem; font-weight: bold;">
+                            temp: `${lang.day}: <span style="font-size: 1.1rem; font-weight: bold;">
                             ${day.temperatureMax}${unit.temperature}
-                            </span><br>${langData().night}: <span style="font-size: 1.1rem; font-weight: bold;">
+                            </span><br>${lang.night}: <span style="font-size: 1.1rem; font-weight: bold;">
                                 ${day.temperatureMin}${unit.temperature}
                             </span>`,
                         },
