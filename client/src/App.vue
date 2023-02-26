@@ -32,8 +32,6 @@ export default defineComponent({
                 <div class="header_wrap">
                     <div class="header_logo">
                         <div class="app-logo"></div>
-                        <!--<img alt="Vue logo" class="logo" src="./assets/weather-logo.png" width="80" height="80" />
-                        <span class="title">RS-Weather</span>-->
                     </div>
                     <div class="wrapper">
                         <nav>
@@ -74,8 +72,8 @@ header {
     width: 200px;
     height: 80px;
     background-color: var(--font__color);
-    mask-image: url("@/assets/applogo.svg");
-    -webkit-mask-image: url("@/assets/applogo.svg");
+    mask-image: url('@/assets/applogo.svg');
+    -webkit-mask-image: url('@/assets/applogo.svg');
     mask-size: contain;
     -webkit-mask-size: contain;
     mask-position: center;
