@@ -121,7 +121,6 @@ onMounted(() => {
     const canvasTag = document.getElementById('MyChart') as HTMLCanvasElement;
     const chart = new Chart(canvasTag, chartConfig.value);
 
-    // Watch for changes in selectedCategory and update the chart data
     watch(
         function () {
             return selectedCategory.value;

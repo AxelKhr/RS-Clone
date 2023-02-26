@@ -2,7 +2,7 @@
     <div
         class="cur-wrap"
         :style="{
-            'background-image': 'url(' + bgr + ')',
+            'background-image': 'url(' + getBgr + ')',
         }"
     >
         <div class="weather-actions">
@@ -38,7 +38,7 @@
             </div>
             <div class="weather__info">
                 <div class="details__container details__top">
-                    <div v-for="detail in details" :key="detail.id">
+                    <div v-for="detail in getDetails" :key="detail.id">
                         <div class="details__subtitle">
                             <div class="subtitle-wrap">
                                 <span class="dot" :style="detail.color"></span>
@@ -80,6 +80,14 @@ import { unitData } from '@/views/utils/metricUtils';
 import { langData } from '../utils/langUtils';
 import { LANG } from '@/types/language';
 import { UNITS } from '@/types/units';
+
+interface Detail {
+    id: number;
+    subtitle: string;
+    value: string;
+    desc: string;
+}
+
 export default defineComponent({
     components: {
         TimeView,
@@ -88,6 +96,7 @@ export default defineComponent({
     data() {
         let unit = unitData();
         let lang = langData();
+<<<<<<< HEAD
         let details = [
             {
                 id: 0,
@@ -146,11 +155,12 @@ export default defineComponent({
                 color: this.getVisibilityColor(store.state.forecast.current.visibility),
             },
         ];
+=======
+
+>>>>>>> 7814b02edb95dcc0721ab22e7afb05c3052dea8c
         return {
             unit,
             lang,
-            details,
-            bgr: this.getWeatherBackground(store.state.forecast.current.weatherCode),
         };
     },
     methods: {
@@ -191,6 +201,67 @@ export default defineComponent({
             setTimeout(() => {
                 target.classList.remove('rotate');
             }, 2000);
+        },
+    },
+    computed: {
+        getBgr(): string {
+            return this.getWeatherBackground(store.state.forecast.current.weatherCode);
+        },
+        getDetails(): Detail[] {
+            let unit = unitData();
+            let lang = langData();
+            return [
+                {
+                    id: 0,
+                    subtitle: lang.humidity,
+                    value: `${store.state.forecast.current.humidityRelative} %`,
+                    desc:
+                        store.state.settings.languageCurrent == LANG.en
+                            ? 'Amount of moisture present in the air relative to the maximum amount of moisture the air can contain at its current temperature.'
+                            : 'Количество влаги, присутствующей в воздухе, по отношению к максимальному количеству влаги, которое воздух может содержать при текущей температуре.',
+                },
+                {
+                    id: 1,
+                    subtitle: lang.precipitation,
+                    value: `${store.state.forecast.daily.days[1].precipitationProbability} %`,
+                    desc:
+                        store.state.settings.languageCurrent == LANG.en
+                            ? 'Precipitation is any product of the condensation of atmospheric water vapor that falls under gravitational pull from clouds.'
+                            : 'Осадки — это любой продукт конденсации атмосферного водяного пара, попадающий под действием гравитационного притяжения облаков.',
+                },
+                {
+                    id: 2,
+                    subtitle: lang.wind,
+                    value: `${store.state.forecast.current.windSpeed.toFixed(2)} ${unit.speed} ${
+                        store.state.forecast.current.windDirectionAbbr
+                    }`,
+                    desc: this.getWindDesc(store.state.forecast.current.windSpeed),
+                },
+                {
+                    id: 3,
+                    subtitle: lang.pressure,
+                    value: `${Math.round(store.state.forecast.current.pressure / 1.333)} ${unit.pressure}`,
+                    desc:
+                        store.state.settings.languageCurrent == LANG.en
+                            ? 'Pressure is the weight of the air in the atmosphere. It is normalized to the standard atmospheric pressure of 1,013.25 mb (29.9212 inHg). Higher pressure is usually associated with sunny weather, lower pressure with stormy weather.'
+                            : 'Давление – это вес воздуха в атмосфере. Оно нормализовано к стандартному атмосферному давлению 1013,25 мбар (29,9212 дюйма ртутного столба). Более высокое давление обычно связано с солнечной погодой, более низкое – с ненастной погодой.',
+                },
+                {
+                    id: 4,
+                    subtitle: lang.clouds,
+                    value: `${store.state.forecast.current.cloudCoverage} %`,
+                    desc:
+                        store.state.settings.languageCurrent == LANG.en
+                            ? 'The cloud cover is a part of the sky covered by clouds in relation to an observer (weather station) at a certain point on land or at sea.'
+                            : 'Облачный покров — это часть неба, покрытая облаками по отношению к наблюдателю (метеостанции) в определенной точке на суше или на море.',
+                },
+                {
+                    id: 5,
+                    subtitle: lang.visibility,
+                    value: `${store.state.forecast.current.visibility} ${unit.length}`,
+                    desc: this.getVisibilityDesc(store.state.forecast.current.visibility),
+                },
+            ];
         },
     },
 });

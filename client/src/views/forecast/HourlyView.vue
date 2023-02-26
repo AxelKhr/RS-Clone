@@ -1,14 +1,14 @@
 <template>
     <div class="block__title">{{ lang.hourly }}</div>
-    <chart-hourly />
+    <hourly-chart />
 </template>
 
 <script lang="ts">
-import chartHourly from '@/views/forecast/chartHourly.vue';
+import HourlyChart from './HourlyChart.vue';
 import { defineComponent } from 'vue';
 import { langData } from '../utils/langUtils';
 export default defineComponent({
-    components: { chartHourly },
+    components: { HourlyChart },
     data() {
         let lang = langData();
         return {

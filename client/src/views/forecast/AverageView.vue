@@ -2,7 +2,7 @@
     <div class="block__title">{{ langData().average }}</div>
     <div class="average__container">
         <div style="height: 400px; width: 500px" class="polar__container">
-            <canvas id="MyPolar"></canvas>
+            <PolarArea id="MyPolar" :options="chartOptions" :data="chartData"></PolarArea>
         </div>
         <div class="data__container">
             <div class="data__item">
@@ -40,38 +40,54 @@
 </template>
 
 <script setup lang="ts">
-import { Chart } from 'chart.js/auto';
-
-import { onMounted, ref } from 'vue';
-import { ChartConfiguration } from 'chart.js';
+import { ChartOptions } from 'chart.js/auto';
+import { computed } from 'vue';
+import { PolarArea } from 'vue-chartjs';
 import { langData } from '../utils/langUtils';
 import { unitData } from '../utils/metricUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
-let daysData = store.state.forecast.daily.days;
-const averageSunny = daysData.filter((day) => day.cloudCoverage < 30);
-const averageCloudy = daysData.filter((day) => day.cloudCoverage >= 30);
-const averagePrecipProbability = daysData.filter((day) => day.precipitationProbability >= 60);
-const averageHumid = (
-    daysData.reduce((acc, day) => {
-        return acc + day.humidityRelative;
-    }, 0) / daysData.length
-).toFixed(0);
-const averageWind = (
-    daysData.reduce((acc, day) => {
-        return acc + day.windSpeed;
-    }, 0) / daysData.length
-).toFixed(1);
-const averageRain = +(
-    daysData.reduce((acc, day) => {
-        return acc + day.precip;
-    }, 0) / daysData.length
-).toFixed(0);
-const averageSnow = +(
-    daysData.reduce((acc, day) => {
-        return acc + day.snow;
-    }, 0) / daysData.length
-).toFixed(0);
+
+let daysData = computed(() => {
+    return store.state.forecast.daily.days;
+});
+const averageSunny = computed(() => {
+    return daysData.value.filter((day) => day.cloudCoverage < 30);
+});
+const averageCloudy = computed(() => {
+    return daysData.value.filter((day) => day.cloudCoverage >= 30);
+});
+const averagePrecipProbability = computed(() => {
+    return daysData.value.filter((day) => day.precipitationProbability >= 60);
+});
+const averageHumid = computed(() => {
+    return (
+        daysData.value.reduce((acc, day) => {
+            return acc + day.humidityRelative;
+        }, 0) / daysData.value.length
+    ).toFixed(0);
+});
+const averageWind = computed(() => {
+    return (
+        daysData.value.reduce((acc, day) => {
+            return acc + day.windSpeed;
+        }, 0) / daysData.value.length
+    ).toFixed(1);
+});
+const averageRain = computed(() => {
+    return +(
+        daysData.value.reduce((acc, day) => {
+            return acc + day.precip;
+        }, 0) / daysData.value.length
+    ).toFixed(0);
+});
+const averageSnow = computed(() => {
+    return +(
+        daysData.value.reduce((acc, day) => {
+            return acc + day.snow;
+        }, 0) / daysData.value.length
+    ).toFixed(0);
+});
 
 let lang = langData();
 
@@ -87,49 +103,42 @@ interface ChartDataset {
     backgroundColor: string[];
 }
 
-const chartData: ChartData = {
-    labels: [lang.clear, lang.prec_day, lang.cloudy_day],
-    datasets: [
-        {
-            label: lang.temperature,
-            data: [averageSunny.length, averagePrecipProbability.length, averageCloudy.length],
-            fill: true,
-            backgroundColor: ['rgba(254, 188, 0, 0.5)', 'rgba(142, 191, 226, 0.5)', 'rgba(38, 132, 210, 0.5)'],
-        },
-    ],
-};
+const chartData = computed<ChartData>(() => {
+    return {
+        labels: [lang.clear, lang.prec_day, lang.cloudy_day],
+        datasets: [
+            {
+                label: lang.temperature,
+                data: [averageSunny.value.length, averagePrecipProbability.value.length, averageCloudy.value.length],
+                fill: true,
+                backgroundColor: ['rgba(254, 188, 0, 0.5)', 'rgba(142, 191, 226, 0.5)', 'rgba(38, 132, 210, 0.5)'],
+            },
+        ],
+    };
+});
 
-const chartConfig = ref<ChartConfiguration>({
-    type: 'polarArea',
-    data: chartData,
-    options: {
-        responsive: true,
+const chartOptions: ChartOptions<'polarArea'> = {
+    responsive: true,
 
-        plugins: {
-            legend: {
-                position: 'right',
-                labels: {
-                    boxWidth: 40,
-                    boxHeight: 40,
-                    font: {
-                        size: 16,
-                    },
-                    usePointStyle: true,
-                    pointStyle: 'circle',
+    plugins: {
+        legend: {
+            position: 'right',
+            labels: {
+                boxWidth: 40,
+                boxHeight: 40,
+                font: {
+                    size: 16,
                 },
+                usePointStyle: true,
+                pointStyle: 'circle',
             },
-            title: {
-                display: true,
-                text: '',
-            },
+        },
+        title: {
+            display: true,
+            text: '',
         },
     },
-});
-
-onMounted(() => {
-    const canvasTag = document.getElementById('MyPolar') as HTMLCanvasElement;
-    new Chart(canvasTag, chartConfig.value);
-});
+};
 </script>
 <style lang="scss" scoped>
 .block__title {
