@@ -5,6 +5,7 @@ import funcDebounce from 'lodash-es/debounce';
 import { ILocationPlace } from '@/types/location';
 import { searchLocations } from '@/services/location';
 import store from '@/store';
+import { getBrowserLocation } from '@/services/location';
 
 interface ILocationItem {
     place: ILocationPlace;
@@ -92,7 +93,25 @@ export default defineComponent({
                 store.dispatch('forecast/addFavLocation', location.place);
             }
         }
-        return { modal, searchQuery, isLoading, favoritesList, resultSearch, search, setLocation, modifyLocation };
+        function getLocation() {
+            getBrowserLocation((geolocation) => {
+                if (geolocation.isAvailable) {
+                    store.dispatch('forecast/setLocation', { ...geolocation });
+                    store.commit('forecast/setShowModal', false);
+                }
+            });
+        }
+        return {
+            modal,
+            searchQuery,
+            isLoading,
+            favoritesList,
+            resultSearch,
+            search,
+            setLocation,
+            modifyLocation,
+            getLocation,
+        };
     },
 });
 </script>
@@ -106,6 +125,10 @@ export default defineComponent({
                 :isLoading="isLoading"
                 placeholder="Search for a location..."
             ></search-box>
+            <div class="list__item" @click="getLocation()">
+                <div class="item__text">Current location</div>
+                <icon-svg class="item__icon icon-gps" :iconPath="require('@/assets/icons/_gps.svg')" />
+            </div>
             <div class="list">
                 <template v-if="searchQuery">
                     <div
@@ -183,6 +206,7 @@ export default defineComponent({
             padding: 2px 5px 2px 10px;
             border-radius: 5px;
             overflow: hidden;
+            min-height: 40px;
 
             &:hover {
                 background-color: var(--background__color--hover);
@@ -199,6 +223,11 @@ export default defineComponent({
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+            }
+            .item__icon {
+                &.icon-gps {
+                    margin-right: 6px;
+                }
             }
         }
     }

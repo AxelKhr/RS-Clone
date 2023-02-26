@@ -44,6 +44,7 @@ export default defineComponent({
             &__button {
                 font-family: inherit;
                 font-size: 1.2rem;
+                color: var(--font__color);
                 border: 1px solid var(--border__color);
                 border-radius: 20px;
                 background-color: var(--background__color);

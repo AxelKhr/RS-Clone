@@ -1,7 +1,14 @@
 const API_KEY_LOCATION = '87b9f08fb1mshfc8b07ee4985fe9p1e1199jsnaa7a18fdfdda';
 
-export interface LocationRequest {
+export interface LocationSearchRequest {
     query: string;
+    limit: number;
+    language: string;
+}
+
+export interface LocationPlaceRequest {
+    latitude: number;
+    longitude: number;
     limit: number;
     language: string;
 }
@@ -43,7 +50,7 @@ export interface LocationResponse {
     };
 }
 
-export async function searchLocationByQuery(request: LocationRequest): Promise<Array<LocationResponse>> {
+export async function searchLocationByQuery(request: LocationSearchRequest): Promise<Array<LocationResponse>> {
     const options = {
         method: 'GET',
         headers: {
@@ -68,4 +75,19 @@ export async function searchLocationByQuery(request: LocationRequest): Promise<A
                 .sort((a, b) => b.population - a.population)
                 .slice(0, 5);
         });
+}
+
+export async function getLocationByCoordinates(request: LocationPlaceRequest): Promise<Array<LocationResponse>> {
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': API_KEY_LOCATION,
+            'X-RapidAPI-Host': 'spott.p.rapidapi.com',
+        },
+    };
+
+    return await fetch(
+        `https://spott.p.rapidapi.com/places?type=CITY&limit=${request.limit}&skip=0&language=%20${request.language}&latitude=${request.latitude}&longitude=${request.longitude}`,
+        options
+    ).then((response) => response.json());
 }

@@ -14,3 +14,9 @@ export interface ILocationPlace {
     nameFull: string;
     position: ILocationPosition;
 }
+
+export interface IBrowserLocation extends ILocationPlace {
+    isAvailable: boolean;
+}
+
+export type BrowserLocationCallback = (data: IBrowserLocation) => void;
