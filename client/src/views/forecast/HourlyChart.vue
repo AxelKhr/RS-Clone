@@ -16,15 +16,18 @@
 </template>
 
 <script lang="ts">
-import 'chartjs-plugin-datalabels';
+import { Chart } from 'chart.js/auto';
 import { defineComponent } from 'vue';
 import store from '@/store';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale } from 'chart.js';
 import { langData } from '../utils/langUtils';
-import { unitData } from '../utils/metricUtils';
 import { ChartOptions } from 'chart.js/auto';
 import { ChartData } from 'chart.js/auto';
+import 'chartjs-plugin-datalabels';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { unitData } from '../utils/metricUtils';
+Chart.register(ChartDataLabels);
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale);
 
 interface ChartArr {
@@ -43,9 +46,9 @@ export default defineComponent({
     },
     computed: {
         chartData(): ChartData<'line'> {
-            let hoursData = store.state.forecast.hourly.hours;
             let unit = unitData();
             let lang = langData();
+            let hoursData = store.state.forecast.hourly.hours;
             let result: ChartArr = {
                 temperature: {
                     labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
