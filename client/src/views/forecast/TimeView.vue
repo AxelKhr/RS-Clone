@@ -2,14 +2,10 @@
     <div class="timezone">
         <p>
             {{
-                currentTime.toLocaleString($store.state.settings.languageCurrent, {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    timeZone: $store.state.forecast.current.timeZone,
-                })
+                currentTime.toLocaleString(
+                    $store.state.settings.languageCurrent,
+                    getTime.options as Intl.DateTimeFormatOptions
+                )
             }}.
         </p>
     </div>
@@ -17,6 +13,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import store from '@/store';
 export default defineComponent({
     data() {
         return {
@@ -27,6 +24,21 @@ export default defineComponent({
         setInterval(() => {
             this.currentTime = new Date();
         }, 1000);
+    },
+    computed: {
+        getTime() {
+            return {
+                options: {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    timeZone: store.state.forecast.current.timeZone,
+                },
+            };
+        },
     },
 });
 </script>

@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import DailyView from './DailyView.vue';
+
 import TodayView from './TodayView.vue';
 import CurrentView from './CurrentView.vue';
 import HourlyView from './HourlyView.vue';
