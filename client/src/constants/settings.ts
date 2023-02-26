@@ -2,6 +2,7 @@ import { THEME } from '@/themes/themes';
 import { LANG } from '@/types/language';
 import { ISettings } from '@/types/settings';
 import { UNITS } from '@/types/units';
+import { MAP_LAYERS } from '@/views/map/types';
 
 const DEF_LOCATION = {
     id: '2643743',
@@ -22,6 +23,7 @@ const SETTINGS = {
         locationCurrent: DEF_LOCATION,
         locationFavorites: [],
         locationTabs: [DEF_LOCATION],
+        mapLayersEnable: MAP_LAYERS,
     },
 };
 
