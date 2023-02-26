@@ -1,5 +1,5 @@
 <template>
-    <div class="block__title">Average for 16 days</div>
+    <div class="block__title">{{ langData().average }}</div>
     <div class="average__container">
         <div style="height: 400px; width: 500px" class="polar__container">
             <canvas id="MyPolar"></canvas>

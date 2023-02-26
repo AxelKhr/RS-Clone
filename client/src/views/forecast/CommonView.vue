@@ -4,8 +4,8 @@
         <current-view />
         <today-view />
         <daily-view />
-        <hourly-view />
         <average-view />
+        <hourly-view />
     </template>
 </template>
 

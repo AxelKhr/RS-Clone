@@ -31,8 +31,9 @@ export default defineComponent({
             <div class="wrap">
                 <div class="header_wrap">
                     <div class="header_logo">
-                        <img alt="Vue logo" class="logo" src="./assets/weather-logo.png" width="80" height="80" />
-                        <span class="title">RS-Weather</span>
+                        <div class="app-logo"></div>
+                        <!--<img alt="Vue logo" class="logo" src="./assets/weather-logo.png" width="80" height="80" />
+                        <span class="title">RS-Weather</span>-->
                     </div>
                     <div class="wrapper">
                         <nav>
@@ -67,6 +68,20 @@ header {
 .header_logo {
     column-gap: 25px;
     width: 100%;
+}
+
+.app-logo {
+    width: 200px;
+    height: 80px;
+    background-color: var(--font__color);
+    mask-image: url("@/assets/applogo.svg");
+    -webkit-mask-image: url("@/assets/applogo.svg");
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
 }
 
 .title {
