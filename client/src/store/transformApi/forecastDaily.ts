@@ -25,6 +25,8 @@ export default function transformRespForecastDaily(response: apiForecastDaily): 
                 cloudCoverage: day.clouds,
                 sunRise: getTime(new Date(day.sunrise_ts * 1000)),
                 sunSet: getTime(new Date(day.sunset_ts * 1000)),
+                moonRise: getTime(new Date(day.moonrise_ts * 1000)),
+                moonSet: getTime(new Date(day.moonset_ts * 1000)),
                 indexUV: day.uv,
                 visibility: Math.round(day.vis),
                 weatherIcon: require(`@/assets/icons/${day.weather.icon}.png`),

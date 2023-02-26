@@ -1,7 +1,7 @@
 develop
 <template>
-    <div class="btn-container">
-        <div class="btn-chart" @click="selectedCategory = 'temperature'">
+    <div class="btn-container" @click="toggleActive">
+        <div class="btn-chart active" @click="selectedCategory = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
         <div class="btn-chart" @click="selectedCategory = 'precipitation'">
@@ -11,7 +11,7 @@ develop
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
-    <div style="height: 400px; width: 100%">
+    <div style="height: 400px; width: 100%; margin-bottom: 60px; padding: 35px">
         <canvas id="MyChart"></canvas>
     </div>
 </template>
@@ -48,7 +48,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.temperature + ' ' + unit.temperature,
+                label: lang.temperature + ', ' + unit.temperature,
                 data: hoursData.map((el) => el.temperature),
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
@@ -60,7 +60,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.precipitation + ' ' + 'TODO unit.precipitation',
+                label: lang.precipitation + ', ' + unit.precipitation,
                 data: hoursData.map((el) => el.precipitationProbability),
                 fill: true,
                 borderColor: 'rgb(255, 99, 132)',
@@ -73,7 +73,7 @@ const chartData: ChartData = {
         labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
         datasets: [
             {
-                label: lang.wind + ' ' + 'TODO unit.wind',
+                label: lang.wind + ', ' + unit.speed,
                 data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
                 fill: true,
                 borderColor: 'rgb(54, 162, 235)',
@@ -132,12 +132,20 @@ onMounted(() => {
         }
     );
 });
+
+function toggleActive(e: Event) {
+    const target = e.target as HTMLElement;
+    const elem = target.closest('div');
+    const el = document.querySelectorAll('.btn-chart');
+    el.forEach((el) => el.classList.remove('active'));
+    elem?.classList.add('active');
+}
 </script>
 <style lang="scss" scoped>
 .btn-container {
     margin-top: 10px;
     margin-left: 20px;
-    width: 100%;
+    width: max-content;
     display: flex;
     column-gap: 10px;
     justify-content: start;
@@ -162,6 +170,7 @@ onMounted(() => {
     }
 }
 .active {
-    background-color: aliceblue;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2) inset;
 }
 </style>

@@ -20,6 +20,8 @@ export const FORECAST_DAILY_DATA_DEF: IForecastDailyData = {
     cloudCoverage: 0,
     sunRise: '',
     sunSet: '',
+    moonRise: '',
+    moonSet: '',
     indexUV: 0,
     visibility: 0,
     weatherIcon: '',

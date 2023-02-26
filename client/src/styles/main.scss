@@ -28,13 +28,27 @@ dt {
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: rgb(60, 202, 155);
   transition: 0.4s;
+}
+
+body::-webkit-scrollbar {
+  width: 14px;
+}
+
+body::-webkit-scrollbar-track {
+  background: white;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 20px;
+  border: 3px solid white;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    color: hsl(120, 61%, 34%);
   }
 }
 

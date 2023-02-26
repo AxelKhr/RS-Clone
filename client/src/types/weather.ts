@@ -57,6 +57,8 @@ export interface IForecastDailyData {
     cloudCoverage: number;
     sunRise: string;
     sunSet: string;
+    moonRise: string;
+    moonSet: string;
     indexUV: number;
     visibility: number;
     weatherIcon: string;

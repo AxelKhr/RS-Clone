@@ -9,10 +9,10 @@
         >
             <div class="carousel__item day__short">
                 <div class="day__subtitle">{{ day[0].date }}</div>
-                <img class="day__img" :src="day[10].icon" alt="" />
+                <img class="day__img" :src="day[12].icon" alt="" />
                 <div class="day__temp" v-html="day[1].temp"></div>
                 <div class="day-text">
-                    <div class="day__description">{{ day[11].descriptions }}</div>
+                    <div class="day__description">{{ day[13].descriptions }}</div>
                 </div>
             </div>
         </Slide>
@@ -52,6 +52,14 @@
                     <div>
                         <img src="../../assets/images/visibility.svg" alt="" />
                         <div class="details__subtitle">{{ lang.visibility }}<br />{{ day[9].visibility }}</div>
+                    </div>
+                    <div>
+                        <img class="moon" src="../../assets/moonrise-black.png" alt="" />
+                        <div class="details__subtitle">{{ lang.moonrise }}<br />{{ day[10].moonrise }}</div>
+                    </div>
+                    <div>
+                        <img class="moon" src="../../assets/moonset-black.png" alt="" />
+                        <div class="details__subtitle">{{ lang.moonset }}<br />{{ day[11].moonset }}</div>
                     </div>
                 </div>
             </transition>
@@ -94,9 +102,9 @@ export default defineComponent({
                 return [
                     { date: `${this.getDate(day.validDate)}` },
                     {
-                        temp: `Днем: <span style="font-size: 1.1rem; font-weight: bold;">
+                        temp: `${lang.day}: <span style="font-size: 1.1rem; font-weight: bold;">
                             ${day.temperatureMax}${unit.temperature}
-                            </span><br>Ночью: <span style="font-size: 1.1rem; font-weight: bold;">
+                            </span><br>${lang.night}: <span style="font-size: 1.1rem; font-weight: bold;">
                                 ${day.temperatureMin}${unit.temperature}
                             </span>`,
                     },
@@ -108,6 +116,8 @@ export default defineComponent({
                     { pressure: `${day.pressure} ${unit.pressure}` },
                     { clouds: `${day.cloudCoverage} %` },
                     { visibility: `${day.visibility} ${unit.length}` },
+                    { moonrise: `${day.moonRise}` },
+                    { moonset: `${day.moonSet}` },
                     { icon: `${day.weatherIcon}` },
                     { descriptions: `${day.weatherDescription}` },
                     { time: `${day.timeStamp}` },
@@ -236,9 +246,9 @@ export default defineComponent({
     }
 
     &__subtitle {
-        font-size: 0.8rem;
-        text-align: center;
-        width: 80px;
+        font-size: 1.1rem;
+        text-align: left;
+        width: 100%;
     }
     &__value {
         font-size: 1rem;

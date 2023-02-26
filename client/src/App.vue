@@ -108,7 +108,8 @@ nav {
 }
 
 nav a.router-link-exact-active {
-    color: var(--color-text);
+    color: var(--font__color);
+    font-weight: 500;
 }
 
 nav a.router-link-exact-active:hover {

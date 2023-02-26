@@ -12,7 +12,7 @@
                 </div>
                 <span class="data__text">
                     % <br />
-                    влажность воздуха</span
+                    {{ langData().humidity }}</span
                 >
             </div>
             <div class="data__item">
@@ -21,8 +21,8 @@
                     {{ averageWind }}
                 </div>
                 <span class="data__text">
-                    м/с <br />
-                    ветер</span
+                    {{ unitData().speed }} <br />
+                    {{ langData().wind }}</span
                 >
             </div>
             <div class="data__item">
@@ -30,7 +30,10 @@
                 <div class="data__value">
                     {{ averageRain + averageSnow }}
                 </div>
-                <span class="data__text"> мм <br />осадков</span>
+                <span class="data__text">
+                    {{ unitData().precipitation }} <br />
+                    {{ langData().precipitation }}
+                </span>
             </div>
         </div>
     </div>
@@ -42,6 +45,7 @@ import { Chart } from 'chart.js/auto';
 import { onMounted, ref } from 'vue';
 import { ChartConfiguration } from 'chart.js';
 import { langData } from '../utils/langUtils';
+import { unitData } from '../utils/metricUtils';
 import 'chartjs-plugin-datalabels';
 import store from '@/store';
 let daysData = store.state.forecast.daily.days;
@@ -84,7 +88,7 @@ interface ChartDataset {
 }
 
 const chartData: ChartData = {
-    labels: ['ясных дней', 'дней с осадками', 'облачных дней'],
+    labels: [lang.clear, lang.prec_day, lang.cloudy_day],
     datasets: [
         {
             label: lang.temperature,
@@ -129,12 +133,18 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .block__title {
-    margin-top: 50px;
+    display: inline-block;
+    width: 25%;
+    padding: 5px 20px;
+    padding-right: 60px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     font-size: 1.5rem;
+    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
 }
 .average__container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
