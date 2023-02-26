@@ -24,6 +24,7 @@ export default {
     namespaced: true,
     state: (): IForecast => {
         return {
+            isStart: false,
             isLoading: false,
             isShowModal: false,
             location: SETTINGS.default.locationCurrent,
@@ -36,6 +37,9 @@ export default {
     },
     getters: {},
     mutations: {
+        setStart(state: IForecast, isStart: boolean) {
+            state.isStart = isStart;
+        },
         setLoading(state: IForecast, isLoading: boolean) {
             state.isLoading = isLoading;
         },

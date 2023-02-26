@@ -55,6 +55,13 @@ export default defineComponent({
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        color: var(--font__color);
+        background-color: var(--background__color);
+
+        &::placeholder {
+            color: var(--font__color);
+            opacity: 0.4;
+        }
     }
 }
 </style>

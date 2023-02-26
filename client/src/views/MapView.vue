@@ -69,7 +69,13 @@
                             </div>
                         </l-popup>
                     </l-marker>
-                    <map-legend :temp="temp" :press="press" :cloud="cloud" :wind="wind" :prec="prec" />
+                    <map-legend
+                        :temp="layersLegend.temp"
+                        :press="layersLegend.press"
+                        :cloud="layersLegend.cloud"
+                        :wind="layersLegend.wind"
+                        :prec="layersLegend.prec"
+                    />
                 </l-map>
             </div>
         </div>
@@ -85,9 +91,12 @@ import { LatLng, Icon } from 'leaflet';
 import { getForecastByLocation } from '@/api/forecast/weather';
 import { LMap, LPopup, LTileLayer, LControlLayers, LMarker } from '@vue-leaflet/vue-leaflet';
 import { LUrlType, LTypeId } from './map/enum';
+import { MapLayer } from './map/types';
 import * as Api from '../api/constants';
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { unitData } from './utils/metricUtils';
+import { useStore } from 'vuex';
+import { IState } from '@/types/state';
 
 export default defineComponent({
     components: {
@@ -104,11 +113,6 @@ export default defineComponent({
         return {
             unit,
             weather: store.state.forecast.current,
-            temp: false,
-            press: false,
-            cloud: false,
-            wind: false,
-            prec: false,
             zoom: 6,
             minZoom: 2,
             maxBounds: [
@@ -247,75 +251,40 @@ export default defineComponent({
         toggleOverlay(event: Event) {
             const target = event.target as HTMLElement;
             if (target.closest('li')) {
-                if (target.classList.contains('active')) {
-                    target.classList.remove('active');
-                    switch (target.id) {
-                        case LTypeId.TEMPERATURE: {
-                            this.temp = false;
-                            this.hideLayer(LTypeId.TEMPERATURE);
-                            break;
-                        }
-                        case LTypeId.WIND: {
-                            this.wind = false;
-                            this.hideLayer(LTypeId.WIND);
-                            break;
-                        }
-                        case LTypeId.PRESSURE:
-                            this.press = false;
-                            this.hideLayer(LTypeId.PRESSURE);
-                            break;
-                        case LTypeId.CLOUDS:
-                            this.cloud = false;
-                            this.hideLayer(LTypeId.CLOUDS);
-                            break;
-                        case LTypeId.PRECIPITATION:
-                            this.prec = false;
-                            this.hideLayer(LTypeId.PRECIPITATION);
-                            break;
-                    }
-                } else {
-                    target.classList.add('active');
-                    switch (target.id) {
-                        case LTypeId.TEMPERATURE: {
-                            this.temp = true;
-                            this.showLayer(LTypeId.TEMPERATURE);
-                            break;
-                        }
-                        case LTypeId.WIND: {
-                            this.wind = true;
-                            this.showLayer(LTypeId.WIND);
-                            break;
-                        }
-                        case LTypeId.PRESSURE:
-                            this.press = true;
-                            this.showLayer(LTypeId.PRESSURE);
-                            break;
-                        case LTypeId.CLOUDS:
-                            this.cloud = true;
-                            this.showLayer(LTypeId.CLOUDS);
-                            break;
-                        case LTypeId.PRECIPITATION:
-                            this.prec = true;
-                            this.showLayer(LTypeId.PRECIPITATION);
-                            break;
-                    }
-                }
+                this.setLayer(target.id);
             }
         },
-        showLayer(layer: string) {
-            this.tiles.forEach((el) => {
-                if (el.name == layer) {
-                    el.visible = true;
-                }
-            });
+        setLayer(id: string) {
+            const layers = this.layersEnable as MapLayer[];
+            const ind = layers.findIndex((item) => item.id === id);
+            if (ind >= 0) {
+                this.tiles.forEach((el) => {
+                    if (el.name == layers[ind].id) {
+                        el.visible = layers[ind].enable;
+                    }
+                });
+            }
         },
-        hideLayer(layer: string) {
-            this.tiles.forEach((el) => {
-                if (el.name == layer) {
-                    el.visible = false;
-                }
-            });
-        },
+    },
+    mounted() {
+        const layers = this.layersEnable as MapLayer[];
+        layers.forEach((el) => {
+            this.setLayer(el.id);
+        });
+    },
+    setup() {
+        const store = useStore<IState>();
+        const layersEnable = computed(() => store.state.settings.mapLayersEnable);
+        const layersLegend = computed(() => {
+            return {
+                temp: layersEnable.value.find((el) => el.id === 'temp')?.enable || false,
+                wind: layersEnable.value.find((el) => el.id === 'wind')?.enable || false,
+                cloud: layersEnable.value.find((el) => el.id === 'cloud')?.enable || false,
+                press: layersEnable.value.find((el) => el.id === 'pressure')?.enable || false,
+                prec: layersEnable.value.find((el) => el.id === 'precipitation')?.enable || false,
+            };
+        });
+        return { layersEnable, layersLegend };
     },
 });
 </script>

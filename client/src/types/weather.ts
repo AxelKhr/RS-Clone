@@ -1,6 +1,7 @@
 import { ILocationPlace } from './location';
 
 export interface IForecast {
+    isStart: boolean;
     isLoading: boolean;
     isShowModal: boolean;
     location: ILocationPlace;

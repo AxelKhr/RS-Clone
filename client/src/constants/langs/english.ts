@@ -13,6 +13,16 @@ const ENGLISH: ILang = {
         settingsLanguage: 'Language',
         settingsTheme: 'Theme',
         settingsUnits: 'Units',
+        settingsLayers: 'Layers',
+        mapLayers: {
+            temp: 'Temperature',
+            wind: 'Wind',
+            cloud: 'Clouds',
+            pressure: 'Pressure',
+            precipitation: 'Precipiation',
+        },
+        startText: 'Greeting text',
+        startButton: 'Set location',
     },
 };
 

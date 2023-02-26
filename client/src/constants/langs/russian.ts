@@ -13,6 +13,16 @@ const RUSSIAN: ILang = {
         settingsLanguage: 'Язык',
         settingsTheme: 'Тема',
         settingsUnits: 'Единицы измерения',
+        settingsLayers: 'Слои',
+        mapLayers: {
+            temp: 'Температура',
+            wind: 'Ветер',
+            cloud: 'Облачность',
+            pressure: 'Давление',
+            precipitation: 'Осадки',
+        },
+        startText: 'Текст привествия',
+        startButton: 'Выбрать локацию',
     },
 };
 

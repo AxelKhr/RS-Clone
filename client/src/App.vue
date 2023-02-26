@@ -2,25 +2,18 @@
 import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { mapState } from 'vuex';
-import store from './store';
-import { setTheme } from '@/themes/themes';
 import LocationModal from '@/components/LocationModal.vue';
+import StartView from './views/StartView.vue';
 
 export default defineComponent({
-    components: { RouterLink, RouterView, LocationModal },
+    components: { RouterLink, RouterView, LocationModal, StartView },
     computed: {
         ...mapState('language', {
             langData: 'data',
         }),
-        getTheme() {
-            const theme = store.state.settings.theme;
-            console.log(theme);
-            setTheme(theme);
-            return theme;
-        },
     },
     mounted() {
-        store.dispatch('language/loadLanguage');
+        this.$store.dispatch('language/loadLanguage');
     },
 });
 </script>
@@ -46,7 +39,8 @@ export default defineComponent({
             </div>
         </div>
     </header>
-    <RouterView />
+    <StartView v-if="$store.state.forecast.isStart" />
+    <RouterView v-else />
     <location-modal v-model:isShow="$store.state.forecast.isShowModal" />
 </template>
 

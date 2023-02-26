@@ -6,9 +6,11 @@ export default defineComponent({
     props: {
         titleParam: {
             type: String,
+            default: '',
         },
         valueParam: {
             type: String,
+            default: '',
         },
         isDrop: {
             type: Boolean,
