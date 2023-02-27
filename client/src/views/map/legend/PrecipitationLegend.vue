@@ -2,21 +2,15 @@
     <l-control position="bottomleft">
         <div class="scale-details">
             <div>{{ lang.precipitation }}, %</div>
-            <div class="scale-gradient" style="width: 260px">
+            <div class="scale-gradient">
                 <div class="scale-dividers">
                     <div>0</div>
                     <div>0.5</div>
                     <div>1</div>
                     <div>2</div>
-                    <div>4</div>
                     <div>6</div>
-                    <div>7</div>
                     <div>10</div>
-                    <div>12</div>
-                    <div>14</div>
-                    <div>16</div>
                     <div>24</div>
-                    <div>32</div>
                     <div>60</div>
                 </div>
                 <div class="horizontal-gradient-line"></div>
@@ -45,6 +39,7 @@ export default {
 <style scoped>
 .scale-details {
     padding: 10px;
+    width: 260px;
     color: black;
     background-color: white;
     border-radius: 5px;
@@ -71,5 +66,10 @@ export default {
         rgba(170, 128, 177, 0.44),
         rgba(255, 255, 0, 0)
     );
+}
+@media (max-width: 500px) {
+    .scale-details {
+        width: 150px;
+    }
 }
 </style>

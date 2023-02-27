@@ -47,6 +47,7 @@ export default defineComponent({
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
+    justify-content: center;
     .list {
         &__item {
             padding: 2px 15px;

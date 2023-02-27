@@ -2,7 +2,7 @@
     <l-control position="bottomleft">
         <div class="scale-details">
             <div>{{ lang.temperature + ', ' + unit.temperature }}</div>
-            <div class="scale-gradient" style="width: 260px">
+            <div class="scale-gradient">
                 <div class="scale-dividers">
                     <div>-40</div>
                     <div>-20</div>
@@ -39,6 +39,7 @@ export default {
 <style scoped>
 .scale-details {
     padding: 10px;
+    width: 260px;
     color: black;
     background-color: white;
     border-radius: 5px;
@@ -74,5 +75,10 @@ export default {
         rgb(244, 104, 89) 93.75%,
         rgb(244, 76, 73) 100%
     );
+}
+@media (max-width: 500px) {
+    .scale-details {
+        width: 150px;
+    }
 }
 </style>

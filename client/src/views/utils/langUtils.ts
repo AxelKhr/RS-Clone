@@ -5,7 +5,7 @@ export const langData = () => {
     const data = {
         en: {
             clear: 'Clear days',
-            prec_day: 'Days with precipitation',
+            prec_day: 'Precipitation',
             cloudy_day: 'Cloudy days',
             time: 'Local time',
             feeling: 'Feelings like',

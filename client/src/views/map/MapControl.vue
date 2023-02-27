@@ -146,4 +146,14 @@ export default defineComponent({
     mask-image: url('@/assets/map-icons/precipitation.svg');
     -webkit-mask-image: url('@/assets/map-icons/precipitation.svg');
 }
+
+@media (max-width: 450px) {
+    .map-control {
+        height: 50px;
+    }
+    .map_logo {
+        width: 30px;
+        height: 30px;
+    }
+}
 </style>
