@@ -3,14 +3,21 @@ import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { mapState } from 'vuex';
 import LocationModal from '@/components/LocationModal.vue';
-import StartView from './views/StartView.vue';
 
 export default defineComponent({
-    components: { RouterLink, RouterView, LocationModal, StartView },
+    components: { RouterLink, RouterView, LocationModal },
     computed: {
         ...mapState('language', {
             langData: 'data',
         }),
+        startState() {
+            return this.$store.state.forecast.isStart;
+        },
+    },
+    watch: {
+        startState(newValue) {
+            this.$router.replace(newValue ? '/start' : '/');
+        },
     },
     mounted() {
         this.$store.dispatch('language/loadLanguage');
@@ -47,8 +54,7 @@ export default defineComponent({
             </div>
         </div>
     </header>
-    <StartView v-if="$store.state.forecast.isStart" />
-    <RouterView v-else />
+    <RouterView />
     <location-modal v-model:isShow="$store.state.forecast.isShowModal" />
 </template>
 

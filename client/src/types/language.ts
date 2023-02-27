@@ -6,6 +6,7 @@ export enum LANG {
 }
 
 export interface ILangData {
+    page404: string;
     menuForecast: string;
     menuMap: string;
     menuSettings: string;
@@ -16,9 +17,14 @@ export interface ILangData {
     settingsTheme: string;
     settingsUnits: string;
     settingsLayers: string;
+    settingsAbout: string;
     mapLayers: IMapLayersLang;
     startText: string;
     startButton: string;
+    aboutTitle: string;
+    aboutText: string;
+    aboutAuthor: string;
+    btnBackText: string;
 }
 
 export interface ILang {

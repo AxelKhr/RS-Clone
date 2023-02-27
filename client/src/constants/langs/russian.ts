@@ -4,6 +4,7 @@ const RUSSIAN: ILang = {
     name: 'Russian',
     abbreviation: 'RU',
     data: {
+        page404: 'Страница не найдена',
         menuForecast: 'Прогноз',
         menuMap: 'Карта',
         menuSettings: 'Настройки',
@@ -14,6 +15,7 @@ const RUSSIAN: ILang = {
         settingsTheme: 'Тема',
         settingsUnits: 'Единицы измерения',
         settingsLayers: 'Слои',
+        settingsAbout: 'О программе',
         mapLayers: {
             temp: 'Температура',
             wind: 'Ветер',
@@ -23,6 +25,10 @@ const RUSSIAN: ILang = {
         },
         startText: 'Текст привествия',
         startButton: 'Выбрать локацию',
+        aboutTitle: 'О программе',
+        aboutText: 'Приложение прогноза погоды с картами',
+        aboutAuthor: 'Разработано',
+        btnBackText: 'Назад',
     },
 };
 

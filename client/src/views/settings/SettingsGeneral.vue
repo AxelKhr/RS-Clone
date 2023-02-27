@@ -8,6 +8,7 @@ import { LANG } from '@/types/language';
 import store from '@/store';
 import { mapState } from 'vuex';
 import { THEME, Themes } from '@/themes/themes';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'settings-general',
@@ -49,8 +50,12 @@ export default defineComponent({
                 store.dispatch('settings/updateSettings', { theme: value.id });
             },
         });
+        const router = useRouter();
+        function routeToAbout() {
+            router.push('/about');
+        }
 
-        return { langList, langSelected, themeList, themeSelected };
+        return { langList, langSelected, themeList, themeSelected, routeToAbout };
     },
 });
 </script>
@@ -75,6 +80,7 @@ export default defineComponent({
                 <themes-list class="theme__params" :items="themeList" v-model:selected="themeSelected"> </themes-list>
             </div>
         </settings-item>
+        <settings-item :titleParam="langData.settingsAbout" @click="routeToAbout"></settings-item>
     </div>
 </template>
 

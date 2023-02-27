@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+import store from '@/store';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -7,23 +8,44 @@ const router = createRouter({
             path: '/',
             name: 'forecast',
             component: () => import('../views/ForecastView.vue'),
+            beforeEnter: beforeEnterHandler,
         },
         {
             path: '/map',
             name: 'map',
             component: () => import('../views/MapView.vue'),
+            beforeEnter: beforeEnterHandler,
         },
         {
             path: '/settings',
             name: 'settings',
             component: () => import('../views/SettingsView.vue'),
+            beforeEnter: beforeEnterHandler,
         },
         {
-            path: '/test',
-            name: 'test',
-            component: () => import('../views/TestView.vue'),
+            path: '/start',
+            name: 'start',
+            component: () => import('../views/StartView.vue'),
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: () => import('../views/AboutView.vue'),
+        },
+        {
+            path: '/:catchAll(.*)',
+            name: 'error',
+            component: () => import('../views/Error404.vue'),
         },
     ],
 });
+
+function beforeEnterHandler(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+    if (store.state.forecast.isStart) {
+        next('/start');
+    } else {
+        next();
+    }
+}
 
 export default router;
