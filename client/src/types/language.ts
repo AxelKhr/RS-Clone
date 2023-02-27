@@ -1,4 +1,5 @@
 import { LTypeId } from '@/views/map/enum';
+import { UNITS } from './units';
 
 export enum LANG {
     en = 'EN',
@@ -19,6 +20,7 @@ export interface ILangData {
     settingsLayers: string;
     settingsAbout: string;
     mapLayers: IMapLayersLang;
+    unitsTypes: IUnitsTypesLang;
     startText: string;
     startButton: string;
     aboutTitle: string;
@@ -39,4 +41,9 @@ export interface IMapLayersLang {
     [LTypeId.CLOUDS]: string;
     [LTypeId.PRESSURE]: string;
     [LTypeId.PRECIPITATION]: string;
+}
+
+export interface IUnitsTypesLang {
+    [UNITS.metric]: string;
+    [UNITS.imperial]: string;
 }

@@ -1,7 +1,7 @@
 import { ILang } from '@/types/language';
 
 const RUSSIAN: ILang = {
-    name: 'Russian',
+    name: 'Русский',
     abbreviation: 'RU',
     data: {
         page404: 'Страница не найдена',
@@ -22,6 +22,10 @@ const RUSSIAN: ILang = {
             cloud: 'Облачность',
             pressure: 'Давление',
             precipitation: 'Осадки',
+        },
+        unitsTypes: {
+            metric: 'Метрические',
+            imperial: 'Имперские',
         },
         startText: 'Текст привествия',
         startButton: 'Выбрать локацию',

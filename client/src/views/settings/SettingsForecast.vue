@@ -5,6 +5,7 @@ import ParamsList from '@/components/ParamsList.vue';
 import { UNITS } from '@/types/units';
 import store from '@/store';
 import { mapState } from 'vuex';
+import { IUnitsTypesLang } from '@/types/language';
 
 export default defineComponent({
     name: 'settings-forecast',
@@ -20,14 +21,25 @@ export default defineComponent({
         }),
     },
     setup() {
-        const unitsList = Object.values(UNITS);
+        const unitsNames = computed(() => store.state.language.data.unitsTypes);
+        const unitsKeys = Object.keys(UNITS);
+        const unitsList = computed(() =>
+            unitsKeys.map((key) => {
+                return unitsNames.value[key as keyof IUnitsTypesLang];
+            })
+        );
         const unitsSelected = computed({
             get: () => {
                 const unitsCurrent = ref(store.state.settings.units);
-                return unitsCurrent.value;
+                return unitsNames.value[unitsCurrent.value];
             },
             set: (value) => {
-                store.dispatch('settings/updateSettings', { units: value });
+                const item = unitsKeys.find((key) => {
+                    return unitsNames.value[key as keyof IUnitsTypesLang] === value;
+                });
+                if (item) {
+                    store.dispatch('settings/updateSettings', { units: item });
+                }
             },
         });
         return { unitsList, unitsSelected };

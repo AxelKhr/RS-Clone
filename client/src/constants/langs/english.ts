@@ -23,6 +23,10 @@ const ENGLISH: ILang = {
             pressure: 'Pressure',
             precipitation: 'Precipiation',
         },
+        unitsTypes: {
+            metric: 'Metric',
+            imperial: 'Imperial',
+        },
         startText: 'Greeting text',
         startButton: 'Set location',
         aboutTitle: 'About',
