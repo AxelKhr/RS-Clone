@@ -35,9 +35,19 @@ export default defineComponent({
                     </div>
                     <div class="wrapper">
                         <nav>
-                            <RouterLink to="/">{{ langData.menuForecast }}</RouterLink>
-                            <RouterLink to="/map">{{ langData.menuMap }}</RouterLink>
-                            <RouterLink to="/settings">{{ langData.menuSettings }}</RouterLink>
+                            <RouterLink to="/" class="forecast-route">
+                                <div class="forecast-logo"></div>
+                                <span class="forecast-title">{{ langData.menuForecast }}</span>
+                            </RouterLink>
+                            <RouterLink to="/map" class="map-route">
+                                <div class="map-logo"></div>
+                                <span class="map-title">{{ langData.menuMap }}</span>
+                            </RouterLink>
+                            <RouterLink to="/settings" class="setting-route">
+                                <div class="setting-logo"></div>
+                                <span class="setting-title">{{ langData.menuSettings }}</span>
+                            </RouterLink>
+                            <!--<RouterLink to="/test">Test</RouterLink>-->
                         </nav>
                     </div>
                 </div>
@@ -64,7 +74,7 @@ header {
 
 .header_logo {
     column-gap: 25px;
-    width: 100%;
+    width: 25%;
 }
 
 .app-logo {
@@ -101,9 +111,10 @@ header {
 }
 
 nav {
+    display: flex;
+    justify-content: end;
     width: 100%;
     font-size: 1.2rem;
-    text-align: right;
 }
 
 nav a.router-link-exact-active {
@@ -111,6 +122,29 @@ nav a.router-link-exact-active {
     font-weight: 500;
 }
 
+.forecast-route,
+.map-route,
+.setting-route {
+    display: flex;
+    align-items: center;
+}
+.forecast-logo,
+.map-logo,
+.setting-logo {
+    display: none;
+    width: 25px;
+    height: 25px;
+    background-color: black;
+}
+.forecast-logo {
+    mask: url('@/assets/forecast-logo.svg') center no-repeat;
+}
+.map-logo {
+    mask: url('@/assets/map-logo.svg') center no-repeat;
+}
+.setting-logo {
+    mask: url('@/assets/setting-logo.svg') center no-repeat;
+}
 nav a.router-link-exact-active:hover {
     background-color: transparent;
 }
@@ -118,5 +152,44 @@ nav a.router-link-exact-active:hover {
 nav a {
     display: inline-block;
     padding: 0 2rem;
+}
+
+@media (max-width: 720px) {
+    nav {
+        font-size: 1rem;
+    }
+
+    nav a {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 450px) {
+    header {
+        min-height: 50px;
+    }
+    .header_logo {
+        display: none;
+    }
+
+    nav {
+        justify-content: space-between;
+    }
+
+    nav a {
+        padding: 0 1.5rem;
+    }
+
+    .forecast-logo,
+    .map-logo,
+    .setting-logo {
+        display: block;
+    }
+
+    .forecast-title,
+    .map-title,
+    .setting-title {
+        display: none;
+    }
 }
 </style>

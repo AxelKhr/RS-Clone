@@ -10,7 +10,7 @@
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
-    <div style="height: 400px; width: 100%; margin-bottom: 60px; padding: 35px">
+    <div class="chart">
         <Line :data="chartData" :options="chartOptions" />
     </div>
 </template>
@@ -75,7 +75,7 @@ export default defineComponent({
                     labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
                     datasets: [
                         {
-                            label: lang.precipitation + ', ' + unit.precipitation,
+                            label: lang.precipitation + ' ' + unit.precipitation,
                             data: hoursData.map((el) => el.precipitationProbability),
                             fill: true,
                             borderColor: 'rgb(255, 99, 132)',
@@ -113,11 +113,13 @@ export default defineComponent({
                     datalabels: {
                         color: 'black',
                         font: {
+                            size: 8,
                             weight: 'bold',
                         },
                         anchor: 'end',
                         align: 'start',
                         offset: -20,
+                        display: true,
                     },
                 },
                 scales: {
@@ -143,6 +145,12 @@ export default defineComponent({
     justify-content: start;
 }
 
+.chart {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 60px;
+    padding: 35px;
+}
 .btn-chart {
     width: 45px;
     height: 45px;
@@ -164,5 +172,24 @@ export default defineComponent({
 .active {
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2) inset;
+}
+
+@media (max-width: 450px) {
+    .btn-container {
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .btn-chart {
+        width: 35px;
+        height: 35px;
+    }
+    .chart {
+        height: 300px;
+        margin-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 10px;
+    }
 }
 </style>

@@ -29,9 +29,9 @@ export default defineComponent({
         getTime() {
             return {
                 options: {
-                    weekday: 'long',
+                    weekday: 'short',
                     year: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     day: 'numeric',
                     hour: 'numeric',
                     minute: 'numeric',

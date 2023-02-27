@@ -10,7 +10,7 @@
                             ><span class="sunrise-sunset__text" aria-hidden="true">Sunrise</span
                             ><i class="icon icon_sunrise icon_size_24" aria-hidden="true" data-width="24"></i>
                         </dt>
-                        <dd class="sunrise-sunset__value">{{ sunrise }}</dd>
+                        <dd class="sunrise-sunset__value">{{ getDetails.sunrise }}</dd>
                     </dl>
                     <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunset">
                         <dt class="sunrise-sunset__label">
@@ -18,11 +18,11 @@
                             ><span class="sunrise-sunset__text" aria-hidden="true">Sunset</span
                             ><i class="icon icon_sunset icon_size_24" aria-hidden="true" data-width="24"></i>
                         </dt>
-                        <dd class="sunrise-sunset__value">{{ sunset }}</dd>
+                        <dd class="sunrise-sunset__value">{{ getDetails.sunset }}</dd>
                     </dl>
                     <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
                         <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
-                        <dd class="sunrise-sunset__value length">{{ dayLength }}</dd>
+                        <dd class="sunrise-sunset__value length">{{ getDetails.dayLength }}</dd>
                     </dl>
                 </div>
                 <div class="sunrise-sunset">
@@ -33,7 +33,7 @@
                             ><span class="sunrise-sunset__text" aria-hidden="true">Moonset</span
                             ><i class="icon icon_moonrise icon_size_24" aria-hidden="true" data-width="24"></i>
                         </dt>
-                        <dd class="sunrise-sunset__value">{{ moonrise }}</dd>
+                        <dd class="sunrise-sunset__value">{{ getDetails.moonrise }}</dd>
                     </dl>
                     <dl class="sunrise-sunset__description sunrise-sunset__description_value_sunset">
                         <dt class="sunrise-sunset__label">
@@ -41,16 +41,16 @@
                             ><span class="sunrise-sunset__text" aria-hidden="true">Moonrise</span
                             ><i class="icon icon_moonset icon_size_24" aria-hidden="true" data-width="24"></i>
                         </dt>
-                        <dd class="sunrise-sunset__value">{{ moonset }}</dd>
+                        <dd class="sunrise-sunset__value">{{ getDetails.moonset }}</dd>
                     </dl>
                     <dl class="sunrise-sunset__description sunrise-sunset__description_value_duration">
                         <dt class="sunrise-sunset__label"><span class="sunrise-sunset__text">Daylight hours</span></dt>
-                        <dd class="sunrise-sunset__value length">{{ nightLength }}</dd>
+                        <dd class="sunrise-sunset__value length">{{ getDetails.nightLength }}</dd>
                     </dl>
                 </div>
             </div>
             <div class="daily">
-                <div class="daily__weather" v-for="w in dayWeather" :key="w.id">
+                <div class="daily__weather" v-for="w in getDetails.dayWeather" :key="w.id">
                     <div class="name">
                         <span>{{ w.name }}</span>
                     </div>
@@ -92,6 +92,25 @@ import { defineComponent } from 'vue';
 import { Collapse } from 'vue-collapsed';
 import { IUnit, unitData } from '../utils/metricUtils';
 import { langData } from '../utils/langUtils';
+import { IForecastHourlyData } from '@/types/weather';
+
+interface WeatherDayInfo {
+    moonrise: string;
+    moonset: string;
+    sunrise: string;
+    sunset: string;
+    dayLength: string;
+    nightLength: string;
+    weather: IForecastHourlyData[];
+    dayWeather: DayWeather[];
+}
+
+interface DayWeather {
+    id: number;
+    name: string;
+    weather: IForecastHourlyData;
+}
+
 export default defineComponent({
     components: {
         Collapse,
@@ -99,48 +118,12 @@ export default defineComponent({
     data() {
         let unit = unitData();
         let lang = langData();
-        const forecast = store.state.forecast.hourly.hours;
-        const dayForecast = store.state.forecast.dayHourly.hours;
-        for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
-            dayForecast.push(forecast[j]);
-        }
-        const moonrise = store.state.forecast.daily.days[0].moonRise;
-        const moonset = store.state.forecast.daily.days[0].moonSet;
-        const sunrise = this.getTimeWithUtc(store.state.forecast.current.sunRise);
-        const sunset = this.getTimeWithUtc(store.state.forecast.current.sunSet);
+
         return {
             unit,
+            lang,
             down: false,
             isExpanded: true,
-            moonrise: moonrise,
-            moonset: moonset,
-            sunrise: sunrise,
-            sunset: sunset,
-            dayLength: this.getDayLength(sunrise, sunset, unit),
-            nightLength: this.getDayLength(moonset, moonrise, unit),
-            weather: dayForecast,
-            dayWeather: [
-                {
-                    id: 1,
-                    name: lang.morning,
-                    weather: dayForecast[5],
-                },
-                {
-                    id: 2,
-                    name: lang.day,
-                    weather: dayForecast[11],
-                },
-                {
-                    id: 3,
-                    name: lang.evening,
-                    weather: dayForecast[17],
-                },
-                {
-                    id: 4,
-                    name: lang.night,
-                    weather: dayForecast[22],
-                },
-            ],
         };
     },
     methods: {
@@ -168,6 +151,52 @@ export default defineComponent({
             const endLength = +endArr[0] * 60 + +endArr[1];
             const length = endLength - startLength;
             return `${(length / 60).toFixed(0)} ${unit.hour} ${length % 60} ${unit.minute}`;
+        },
+    },
+    computed: {
+        getDetails(): WeatherDayInfo {
+            const forecast = store.state.forecast.hourly.hours;
+            const dayForecast = store.state.forecast.dayHourly.hours;
+            for (let i = dayForecast.length, j = 0; i < 24; i++, j++) {
+                dayForecast.push(forecast[j]);
+            }
+            const moonrise = store.state.forecast.daily.days[0].moonRise;
+            const moonset = store.state.forecast.daily.days[0].moonSet;
+            const sunrise = this.getTimeWithUtc(store.state.forecast.current.sunRise);
+            const sunset = this.getTimeWithUtc(store.state.forecast.current.sunSet);
+            let unit = unitData();
+            let lang = langData();
+            return {
+                moonrise: moonrise,
+                moonset: moonset,
+                sunrise: sunrise,
+                sunset: sunset,
+                dayLength: this.getDayLength(sunrise, sunset, unit),
+                nightLength: this.getDayLength(moonset, moonrise, unit),
+                weather: dayForecast,
+                dayWeather: [
+                    {
+                        id: 1,
+                        name: lang.morning,
+                        weather: dayForecast[5],
+                    },
+                    {
+                        id: 2,
+                        name: lang.day,
+                        weather: dayForecast[11],
+                    },
+                    {
+                        id: 3,
+                        name: lang.evening,
+                        weather: dayForecast[17],
+                    },
+                    {
+                        id: 4,
+                        name: lang.night,
+                        weather: dayForecast[22],
+                    },
+                ],
+            };
         },
     },
 });
@@ -480,5 +509,71 @@ button {
 .slide-fade-leave-to {
     transform: translateY(20px);
     opacity: 0;
+}
+
+@media (max-width: 1100px) {
+    .details {
+        padding: 20px 5px;
+    }
+    .v-collapse {
+        flex-wrap: wrap-reverse;
+        row-gap: 40px;
+    }
+    .daily {
+        width: 100%;
+    }
+    .details__chart {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        column-gap: 40px;
+    }
+
+    .sunrise-sunset__moon-chart {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 750px) {
+    .daily {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .daily {
+        font-size: 0.8rem;
+        height: auto;
+
+        &__weather {
+            height: 100%;
+            display: grid;
+            column-gap: 5px;
+            grid-template-columns: 60px 60px 1fr 1fr;
+
+            .temp,
+            .wind,
+            .pressure,
+            .humidity {
+                justify-content: center;
+            }
+        }
+    }
+
+    .pressure {
+        grid-column-start: 3;
+    }
+}
+
+@media (max-width: 400px) {
+    .daily {
+        .temp,
+        .wind,
+        .pressure,
+        .humidity {
+            justify-content: left;
+        }
+    }
 }
 </style>

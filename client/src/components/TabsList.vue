@@ -50,6 +50,7 @@ export default defineComponent({
 }
 .list {
     display: flex;
+    flex-wrap: wrap;
     column-gap: 5px;
     padding-bottom: 10px;
 }
@@ -61,5 +62,22 @@ export default defineComponent({
     border-bottom-left-radius: 10px;
     font-size: 1.2rem;
     box-shadow: -2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+}
+
+@media (max-width: 1200px) {
+    .time {
+        width: 25%;
+    }
+}
+
+@media (max-width: 800px) {
+    .list-wrap {
+        flex-wrap: wrap;
+    }
+    .time {
+        width: 100%;
+        margin-bottom: 10px;
+        border-bottom-right-radius: 10px;
+    }
 }
 </style>
