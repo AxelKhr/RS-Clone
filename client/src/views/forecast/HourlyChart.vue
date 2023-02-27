@@ -1,6 +1,6 @@
 <template>
-    <div class="btn-container">
-        <div class="btn-chart" @click="activeButton = 'temperature'">
+    <div class="btn-container" @click="toggleActive">
+        <div class="btn-chart active" @click="activeButton = 'temperature'">
             <img src="@/assets/images/temperature.svg" alt="" />
         </div>
         <div class="btn-chart" @click="activeButton = 'precipitation'">
@@ -10,7 +10,7 @@
             <img src="@/assets/images/wind.svg" alt="" />
         </div>
     </div>
-    <div style="height: 400px; width: 100%">
+    <div style="height: 400px; width: 100%; margin-bottom: 60px; padding: 35px">
         <Line :data="chartData" :options="chartOptions" />
     </div>
 </template>
@@ -44,6 +44,15 @@ export default defineComponent({
             activeButton: 'temperature',
         };
     },
+    methods: {
+        toggleActive(e: Event) {
+            const target = e.target as HTMLElement;
+            const elem = target.closest('div');
+            const el = document.querySelectorAll('.btn-chart');
+            el.forEach((el) => el.classList.remove('active'));
+            elem?.classList.add('active');
+        },
+    },
     computed: {
         chartData(): ChartData<'line'> {
             let unit = unitData();
@@ -54,7 +63,7 @@ export default defineComponent({
                     labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
                     datasets: [
                         {
-                            label: lang.temperature + ' ' + unit.temperature,
+                            label: lang.temperature + ', ' + unit.temperature,
                             data: hoursData.map((el) => el.temperature),
                             fill: true,
                             borderColor: 'rgb(75, 192, 192)',
@@ -79,7 +88,7 @@ export default defineComponent({
                     labels: hoursData.map((el) => el.timeStampLocal.slice(-8, -3)),
                     datasets: [
                         {
-                            label: lang.wind + ' ' + 'TODO unit.wind',
+                            label: lang.wind + ', ' + unit.speed,
                             data: hoursData.map((el) => +el.windSpeed.toFixed(1)),
                             fill: true,
                             borderColor: 'rgb(54, 162, 235)',
@@ -126,19 +135,23 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .btn-container {
-    width: 100px;
+    margin-top: 10px;
+    margin-left: 20px;
+    width: max-content;
     display: flex;
-    justify-content: space-between;
+    column-gap: 10px;
+    justify-content: start;
 }
 
 .btn-chart {
-    width: 30px;
-    height: 30px;
-    padding: 3px;
+    width: 45px;
+    height: 45px;
+    padding: 5px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: rgb(205, 205, 205);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 4px 4px 7px -2px rgba(34, 60, 80, 0.2);
 
     &:hover {
         background-color: rgb(228, 228, 228);
@@ -147,5 +160,9 @@ export default defineComponent({
     &:active {
         background-color: rgb(205, 205, 205);
     }
+}
+.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2) inset;
 }
 </style>
