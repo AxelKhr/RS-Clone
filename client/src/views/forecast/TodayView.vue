@@ -510,4 +510,70 @@ button {
     transform: translateY(20px);
     opacity: 0;
 }
+
+@media (max-width: 1100px) {
+    .details {
+        padding: 20px 5px;
+    }
+    .v-collapse {
+        flex-wrap: wrap-reverse;
+        row-gap: 40px;
+    }
+    .daily {
+        width: 100%;
+    }
+    .details__chart {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        column-gap: 40px;
+    }
+
+    .sunrise-sunset__moon-chart {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 750px) {
+    .daily {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .daily {
+        font-size: 0.8rem;
+        height: auto;
+
+        &__weather {
+            height: 100%;
+            display: grid;
+            column-gap: 5px;
+            grid-template-columns: 60px 60px 1fr 1fr;
+
+            .temp,
+            .wind,
+            .pressure,
+            .humidity {
+                justify-content: center;
+            }
+        }
+    }
+
+    .pressure {
+        grid-column-start: 3;
+    }
+}
+
+@media (max-width: 400px) {
+    .daily {
+        .temp,
+        .wind,
+        .pressure,
+        .humidity {
+            justify-content: left;
+        }
+    }
+}
 </style>

@@ -41,4 +41,21 @@ export default defineComponent({
     font-weight: 700;
     text-align: right;
 }
+
+@media (max-width: 800px) {
+    .list-wrap {
+        flex-wrap: wrap;
+    }
+    .time {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .timezone {
+        display: flex;
+        flex-direction: row;
+        column-gap: 25px;
+        justify-content: center;
+    }
+}
 </style>

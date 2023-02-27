@@ -2,7 +2,7 @@
     <l-control position="bottomleft">
         <div class="scale-details">
             <div>{{ lang.pressure + ', ' + unit.pressure }}</div>
-            <div class="scale-gradient" style="width: 260px">
+            <div class="scale-gradient">
                 <div class="scale-dividers">
                     <div>740</div>
                     <div>745</div>
@@ -39,6 +39,7 @@ export default {
 <style scoped>
 .scale-details {
     padding: 10px;
+    width: 260px;
     color: black;
     background-color: white;
     border-radius: 5px;
@@ -66,5 +67,10 @@ export default {
         rgb(243, 54, 59) 91.1938%,
         rgb(198, 0, 0) 100%
     );
+}
+@media (max-width: 500px) {
+    .scale-details {
+        width: 150px;
+    }
 }
 </style>
