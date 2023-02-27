@@ -395,9 +395,9 @@ button {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-@media (max-width: 330px) {
+@media (max-width: 350px) {
     .details__sub {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 }
 </style>

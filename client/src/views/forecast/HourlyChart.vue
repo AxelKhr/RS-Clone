@@ -113,6 +113,7 @@ export default defineComponent({
                     datalabels: {
                         color: 'black',
                         font: {
+                            size: 8,
                             weight: 'bold',
                         },
                         anchor: 'end',

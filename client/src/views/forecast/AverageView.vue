@@ -265,7 +265,6 @@ const chartOptions: ChartOptions<'polarArea'> = {
     .data__container {
         width: 100%;
         margin-top: -50px;
-        grid-template-rows: unset;
         grid-template-columns: 1fr 1fr 1fr;
         margin-left: 0;
     }
@@ -283,6 +282,12 @@ const chartOptions: ChartOptions<'polarArea'> = {
     }
     .block__title {
         font-size: 1rem;
+    }
+}
+@media (max-width: 330px) {
+    .polar__container {
+        width: 390px;
+        height: 270px;
     }
 }
 </style>
