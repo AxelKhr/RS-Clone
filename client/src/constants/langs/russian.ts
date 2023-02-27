@@ -4,6 +4,7 @@ const RUSSIAN: ILang = {
     name: 'Russian',
     abbreviation: 'RU',
     data: {
+        page404: 'Страница не найдена',
         menuForecast: 'Прогноз',
         menuMap: 'Карта',
         menuSettings: 'Настройки',

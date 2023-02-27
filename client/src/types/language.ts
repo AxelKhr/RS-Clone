@@ -6,6 +6,7 @@ export enum LANG {
 }
 
 export interface ILangData {
+    page404: string;
     menuForecast: string;
     menuMap: string;
     menuSettings: string;

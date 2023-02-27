@@ -4,6 +4,7 @@ const ENGLISH: ILang = {
     name: 'English',
     abbreviation: 'EN',
     data: {
+        page404: 'Page not found',
         menuForecast: 'Forecast',
         menuMap: 'Map',
         menuSettings: 'Settings',
