@@ -1,8 +1,8 @@
 <template>
     <div class="block__title">{{ langData().average }}</div>
     <div class="average__container">
-        <div style="height: 400px; width: 500px" class="polar__container">
-            <PolarArea id="MyPolar" :options="chartOptions" :data="chartData"></PolarArea>
+        <div class="polar__container">
+            <PolarArea class="polar" id="MyPolar" :options="chartOptions" :data="chartData"></PolarArea>
         </div>
         <div class="data__container">
             <div class="data__item">
@@ -12,8 +12,8 @@
                 </div>
                 <span class="data__text">
                     % <br />
-                    {{ langData().humidity }}</span
-                >
+                    <span class="title">{{ langData().humidity }}</span>
+                </span>
             </div>
             <div class="data__item">
                 <img class="data__img" src="../../assets/images/averageWind.svg" alt="" />
@@ -22,8 +22,8 @@
                 </div>
                 <span class="data__text">
                     {{ unitData().speed }} <br />
-                    {{ langData().wind }}</span
-                >
+                    <span class="title">{{ langData().wind }}</span>
+                </span>
             </div>
             <div class="data__item">
                 <img class="data__img" src="../../assets/images/averagePrecip.svg" alt="" />
@@ -32,7 +32,7 @@
                 </div>
                 <span class="data__text">
                     {{ unitData().precipitation }} <br />
-                    {{ langData().precipitation }}
+                    <span class="title">{{ langData().precipitation }}</span>
                 </span>
             </div>
         </div>
@@ -124,18 +124,14 @@ const chartOptions: ChartOptions<'polarArea'> = {
         legend: {
             position: 'right',
             labels: {
-                boxWidth: 40,
-                boxHeight: 40,
+                boxWidth: 25,
+                boxHeight: 25,
                 font: {
-                    size: 16,
+                    size: 14,
                 },
                 usePointStyle: true,
                 pointStyle: 'circle',
             },
-        },
-        title: {
-            display: true,
-            text: '',
         },
     },
 };
@@ -145,7 +141,7 @@ const chartOptions: ChartOptions<'polarArea'> = {
     display: inline-block;
     width: 25%;
     padding: 5px 20px;
-    padding-right: 60px;
+    padding-right: 20px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     font-size: 1.5rem;
@@ -153,23 +149,27 @@ const chartOptions: ChartOptions<'polarArea'> = {
 }
 .average__container {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    margin-left: 40px;
+    margin-top: -30px;
 }
 .polar__container {
-    display: flex;
-    align-items: center;
+    height: 400px;
+    width: 400px;
 }
 
 .data__container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    margin-left: 50px;
+    width: 40%;
+    grid-template-rows: 1fr 1fr 1fr;
+    margin-left: 10px;
 }
 .data__item {
+    width: 60%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     margin-right: 50px;
@@ -177,11 +177,112 @@ const chartOptions: ChartOptions<'polarArea'> = {
 }
 .data__img {
     margin-right: 10px;
-    height: 70px;
-    width: 70px;
+    height: 40px;
+    width: 40px;
 }
 .data__value {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-right: 10px;
+}
+
+@media (max-width: 750px) {
+    .data__img {
+        height: 35px;
+        width: 35px;
+    }
+    .data__value {
+        font-size: 1.1rem;
+        margin-right: 10px;
+    }
+    .data__item {
+        width: unset;
+    }
+    .polar__container {
+        margin-top: -50px;
+        height: 400px;
+        width: 400px;
+    }
+    .data__container {
+        width: 100%;
+        margin-top: -50px;
+        grid-template-rows: unset;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-left: 0;
+    }
+}
+@media (max-width: 720px) {
+    .block__title {
+        width: 50%;
+        padding: 5px 20px;
+        padding-right: 20px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    }
+}
+
+@media (max-width: 650px) {
+    .data__img {
+        height: 25px;
+        width: 25px;
+    }
+    .data__value {
+        font-size: 1rem;
+        margin-right: 10px;
+    }
+    .average__container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-left: 40px;
+        margin-top: -10px;
+    }
+    .data__container {
+        width: 40%;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: unset;
+    }
+    .data__item {
+        margin: unset;
+        margin-bottom: 5px;
+    }
+
+    .polar__container {
+        width: 400px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 530px) {
+    .average__container {
+        flex-wrap: wrap;
+    }
+
+    .data__container {
+        width: 100%;
+        margin-top: -50px;
+        grid-template-rows: unset;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 450px) {
+    .average__container {
+        margin-left: 15px;
+    }
+    .title {
+        display: none;
+    }
+    .data__item {
+        margin: 0 auto;
+    }
+    .block__title {
+        font-size: 1rem;
+    }
 }
 </style>

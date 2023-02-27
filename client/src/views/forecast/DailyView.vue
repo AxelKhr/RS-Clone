@@ -8,11 +8,15 @@
             :class="{ active: index === selected }"
         >
             <div class="carousel__item day__short">
-                <div class="day__subtitle">{{ day[0].date }}</div>
-                <img class="day__img" :src="day[12].icon" alt="" />
-                <div class="day__temp" v-html="day[1].temp"></div>
+                <div class="item-main">
+                    <div class="day__subtitle">{{ day[0].date }}</div>
+                    <img class="day__img" :src="day[12].icon" alt="" />
+                    <div class="day__temp" v-html="day[1].temp"></div>
+                </div>
                 <div class="day-text">
-                    <div class="day__description">{{ day[13].descriptions }}</div>
+                    <div class="day__description">
+                        <p class="desc">{{ day[13].descriptions }}</p>
+                    </div>
                 </div>
             </div>
         </Slide>
@@ -97,13 +101,21 @@ export default defineComponent({
         let unit = unitData();
         let lang = langData();
         let settings = {
-            itemsToShow: 1,
-            snapAlign: 'center',
+            itemsToShow: 1.15,
+            snapAlign: 'start',
         };
         let breakpoints = {
+            400: {
+                itemsToShow: 2.35,
+                snapAlign: 'start',
+            },
             700: {
                 itemsToShow: 3.5,
-                snapAlign: 'center',
+                snapAlign: 'start',
+            },
+            800: {
+                itemsToShow: 4.7,
+                snapAlign: 'start',
             },
             1024: {
                 itemsToShow: 4.7,
@@ -178,6 +190,10 @@ export default defineComponent({
     box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
 }
 
+.item-main {
+    height: 80%;
+}
+
 .active .carousel__item {
     background-color: rgba(0, 0, 0, 0.05);
 }
@@ -203,18 +219,30 @@ export default defineComponent({
         }
     }
     &__img {
-        width: 60%;
-        height: 60%;
+        width: 100%;
+        height: auto;
     }
     &__subtitle {
         font-size: 1.5rem;
+    }
+    &-text {
+        max-width: 200px;
+        width: 100%;
     }
     &__description {
         margin-top: 10px;
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0.1);
-        font-weight: 500;
         padding: 5px 15px;
+        white-space: pre-wrap;
+
+        .desc {
+            text-align: center;
+            word-wrap: break-word;
+            font-weight: 500;
+            max-width: 200px;
+            width: 100%;
+        }
     }
 }
 
@@ -298,6 +326,7 @@ export default defineComponent({
 }
 
 .carousel__item {
+    height: 100%;
     box-shadow: 0px 2px 5px -1px rgba(34, 60, 80, 0.2);
 }
 
@@ -319,5 +348,34 @@ export default defineComponent({
 .mode-fade-enter-from,
 .no-mode-fade-leave-to {
     opacity: 0;
+}
+
+@media (max-width: 720px) {
+    .block__title {
+        width: 50%;
+        padding: 5px 20px;
+        padding-right: 60px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    }
+}
+
+@media (max-width: 450px) {
+    .block__title {
+        font-size: 1rem;
+    }
+    .details__subtitle {
+        font-size: 0.8rem;
+        text-align: left;
+        width: 100%;
+    }
+    .details__container > div > img {
+        width: 20px;
+        height: 20px;
+        margin: 10px;
+    }
 }
 </style>

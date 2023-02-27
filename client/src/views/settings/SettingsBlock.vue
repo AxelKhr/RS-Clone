@@ -24,11 +24,13 @@ export default defineComponent({
 .settings-block {
     .settings-block {
         &__title {
+            margin-bottom: 10px;
             font-size: 1.2rem;
         }
         &__content {
             margin: 0 auto;
-            max-width: 500px;
+            margin-bottom: 10px;
+            max-width: 100%;
         }
     }
 }
