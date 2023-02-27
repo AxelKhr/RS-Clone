@@ -38,7 +38,6 @@ export default defineComponent({
                             <RouterLink to="/">{{ langData.menuForecast }}</RouterLink>
                             <RouterLink to="/map">{{ langData.menuMap }}</RouterLink>
                             <RouterLink to="/settings">{{ langData.menuSettings }}</RouterLink>
-                            <RouterLink to="/test">Test</RouterLink>
                         </nav>
                     </div>
                 </div>
