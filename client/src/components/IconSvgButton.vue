@@ -22,7 +22,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .icon-button {
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     width: auto;
     padding: 5px;
@@ -42,6 +42,10 @@ export default defineComponent({
         .icon-button__icon {
             transform: scale(1.2);
         }
+    }
+
+    .icon-button__label {
+        margin-left: 5px;
     }
 }
 </style>

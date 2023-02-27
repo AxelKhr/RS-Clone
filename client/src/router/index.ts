@@ -28,6 +28,11 @@ const router = createRouter({
             component: () => import('../views/StartView.vue'),
         },
         {
+            path: '/about',
+            name: 'about',
+            component: () => import('../views/AboutView.vue'),
+        },
+        {
             path: '/:catchAll(.*)',
             name: 'error',
             component: () => import('../views/Error404.vue'),

@@ -15,6 +15,7 @@ const ENGLISH: ILang = {
         settingsTheme: 'Theme',
         settingsUnits: 'Units',
         settingsLayers: 'Layers',
+        settingsAbout: 'About',
         mapLayers: {
             temp: 'Temperature',
             wind: 'Wind',
@@ -24,6 +25,10 @@ const ENGLISH: ILang = {
         },
         startText: 'Greeting text',
         startButton: 'Set location',
+        aboutTitle: 'About',
+        aboutText: 'Weather forecast application with maps',
+        aboutAuthor: 'Designed by',
+        btnBackText: 'Back',
     },
 };
 
