@@ -23,7 +23,7 @@ const SETTINGS = {
         theme: THEME.default,
         locationCurrent: DEF_LOCATION,
         locationFavorites: [],
-        locationTabs: [DEF_LOCATION],
+        locationTabs: [],
         mapLayersEnable: MAP_LAYERS,
         sections: [
             {

@@ -25,6 +25,7 @@ export interface ILangData {
     unitsTypes: IUnitsTypesLang;
     forecastSections: ISectionsLang;
     startText: string;
+    startText2: string;
     startButton: string;
     aboutTitle: string;
     aboutText: string;
