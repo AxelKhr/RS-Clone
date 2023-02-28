@@ -3,3 +3,9 @@ export interface ParamCheckItem {
     name: string;
     checked: boolean;
 }
+
+export interface ParamBlockItem {
+    id: string;
+    name: string;
+    visible: boolean;
+}

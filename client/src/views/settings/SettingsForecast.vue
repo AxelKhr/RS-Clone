@@ -5,14 +5,18 @@ import ParamsList from '@/components/ParamsList.vue';
 import { UNITS } from '@/types/units';
 import store from '@/store';
 import { mapState } from 'vuex';
-import { IUnitsTypesLang } from '@/types/language';
+import { IUnitsTypesLang, ISectionsLang } from '@/types/language';
+import ParamsBlocks from '@/components/ParamsBlocks.vue';
+import { ParamBlockItem } from '@/types/params';
+import { ISection, SectionsId } from '@/types/sections';
 
 export default defineComponent({
     name: 'settings-forecast',
-    components: { SettingsItem, ParamsList },
+    components: { SettingsItem, ParamsList, ParamsBlocks },
     data() {
         return {
             isDropUnits: false,
+            isDropBloks: false,
         };
     },
     computed: {
@@ -42,7 +46,34 @@ export default defineComponent({
                 }
             },
         });
-        return { unitsList, unitsSelected };
+
+        const blocksNames = computed(() => store.state.language.data.forecastSections);
+        const blocksList = computed({
+            get: () => {
+                const sections = store.state.settings.sections;
+                const list: ParamBlockItem[] = [];
+                sections.forEach((el) => {
+                    list.push({
+                        id: el.id,
+                        name: blocksNames.value[el.id as keyof ISectionsLang],
+                        visible: el.visible,
+                    });
+                });
+                return list;
+            },
+            set: (list) => {
+                const sections: ISection[] = [];
+                list.forEach((el) => {
+                    sections.push({
+                        id: el.id as SectionsId,
+                        visible: el.visible,
+                    });
+                });
+                store.dispatch('settings/updateSettings', { sections });
+            },
+        });
+
+        return { unitsList, unitsSelected, blocksList };
     },
 });
 </script>
@@ -50,8 +81,13 @@ export default defineComponent({
 <template>
     <div class="settings">
         <settings-item :titleParam="langData.settingsUnits" :valueParam="unitsSelected" v-model:isDrop="isDropUnits">
-            <div class="settings__units">
-                <params-list class="units__params" :items="unitsList" v-model:selected="unitsSelected"> </params-list>
+            <div class="settings__list">
+                <params-list class="list__units" :items="unitsList" v-model:selected="unitsSelected" />
+            </div>
+        </settings-item>
+        <settings-item :titleParam="langData.settingsSections" v-model:isDrop="isDropBloks">
+            <div class="settings__list">
+                <params-blocks class="list__blocks" v-model:items="blocksList" />
             </div>
         </settings-item>
     </div>
@@ -60,11 +96,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .settings {
     .settings {
-        &__units {
+        &__list {
             width: 100%;
-            .units__params {
+            .list__units {
                 margin-left: auto;
                 width: min-content;
+            }
+
+            .list__blocks {
+                width: 100%;
             }
         }
     }

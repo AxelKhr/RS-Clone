@@ -90,7 +90,7 @@ import { Collapse } from 'vue-collapsed';
 import { unitData } from '../utils/metricUtils';
 import { langData } from '../utils/langUtils';
 export default defineComponent({
-    name: 'BreakPoints',
+    name: 'daily-view',
     components: {
         Carousel,
         Slide,

@@ -47,7 +47,6 @@ export default defineComponent({
                                 <div class="setting-logo"></div>
                                 <span class="setting-title">{{ langData.menuSettings }}</span>
                             </RouterLink>
-                            <!--<RouterLink to="/test">Test</RouterLink>-->
                         </nav>
                     </div>
                 </div>

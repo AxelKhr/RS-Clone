@@ -14,6 +14,7 @@ const ENGLISH: ILang = {
         settingsLanguage: 'Language',
         settingsTheme: 'Theme',
         settingsUnits: 'Units',
+        settingsSections: 'Sections',
         settingsLayers: 'Layers',
         settingsAbout: 'About',
         mapLayers: {
@@ -26,6 +27,11 @@ const ENGLISH: ILang = {
         unitsTypes: {
             metric: 'Metric',
             imperial: 'Imperial',
+        },
+        forecastSections: {
+            daily: 'Daily forecast',
+            hourly: 'Hourly forecast',
+            average: 'Average data',
         },
         startText: 'Greeting text',
         startButton: 'Set location',

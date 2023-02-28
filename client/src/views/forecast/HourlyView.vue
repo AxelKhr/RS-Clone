@@ -8,6 +8,7 @@ import HourlyChart from './HourlyChart.vue';
 import { defineComponent } from 'vue';
 import { langData } from '../utils/langUtils';
 export default defineComponent({
+    name: 'hourly-view',
     components: { HourlyChart },
     data() {
         let lang = langData();

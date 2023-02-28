@@ -14,6 +14,7 @@ const RUSSIAN: ILang = {
         settingsLanguage: 'Язык',
         settingsTheme: 'Тема',
         settingsUnits: 'Единицы измерения',
+        settingsSections: 'Секции',
         settingsLayers: 'Слои',
         settingsAbout: 'О программе',
         mapLayers: {
@@ -26,6 +27,11 @@ const RUSSIAN: ILang = {
         unitsTypes: {
             metric: 'Метрические',
             imperial: 'Имперские',
+        },
+        forecastSections: {
+            daily: 'Дневной прогноз',
+            hourly: 'Почасовой прогноз',
+            average: 'Усредненные данные',
         },
         startText: 'Текст привествия',
         startButton: 'Выбрать локацию',

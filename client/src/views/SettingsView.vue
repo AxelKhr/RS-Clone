@@ -20,22 +20,30 @@ export default defineComponent({
     <div class="container">
         <div class="wrap">
             <div class="settings">
-                <settings-block :title="langData.settingsGeneralTitle">
-                    <settings-general />
-                </settings-block>
-                <settings-block :title="langData.settingsForecastTitle">
+                <settings-block class="settings__block" :title="langData.settingsForecastTitle">
                     <settings-forecast />
                 </settings-block>
-                <settings-block :title="langData.settingsMapTitle">
+                <settings-block class="settings__block" :title="langData.settingsMapTitle">
                     <settings-map />
+                </settings-block>
+                <settings-block class="settings__block" :title="langData.settingsGeneralTitle">
+                    <settings-general />
                 </settings-block>
             </div>
         </div>
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
     padding-top: 40px;
+}
+.settings {
+    max-width: 500px;
+    margin: 0 auto;
+
+    .settings__block {
+        margin-bottom: 30px;
+    }
 }
 </style>

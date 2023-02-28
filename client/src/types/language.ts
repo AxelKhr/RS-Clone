@@ -1,4 +1,5 @@
 import { LTypeId } from '@/views/map/enum';
+import { SectionsId } from './sections';
 import { UNITS } from './units';
 
 export enum LANG {
@@ -17,10 +18,12 @@ export interface ILangData {
     settingsLanguage: string;
     settingsTheme: string;
     settingsUnits: string;
+    settingsSections: string;
     settingsLayers: string;
     settingsAbout: string;
     mapLayers: IMapLayersLang;
     unitsTypes: IUnitsTypesLang;
+    forecastSections: ISectionsLang;
     startText: string;
     startButton: string;
     aboutTitle: string;
@@ -46,4 +49,10 @@ export interface IMapLayersLang {
 export interface IUnitsTypesLang {
     [UNITS.metric]: string;
     [UNITS.imperial]: string;
+}
+
+export interface ISectionsLang {
+    [SectionsId.daily]: string;
+    [SectionsId.hourly]: string;
+    [SectionsId.average]: string;
 }

@@ -3,21 +3,21 @@
     <template v-if="$store.state.forecast.isDataReady">
         <current-view />
         <today-view />
-        <daily-view />
-        <average-view />
-        <hourly-view />
+        <template v-for="section in sections" :key="section.id">
+            <component v-if="section.visible" :is="section.component"></component>
+        </template>
     </template>
 </template>
 
 <script lang="ts">
 import DailyView from './DailyView.vue';
-
 import TodayView from './TodayView.vue';
 import CurrentView from './CurrentView.vue';
 import HourlyView from './HourlyView.vue';
 import AverageView from './AverageView.vue';
 import TabsList from '@/components/TabsList.vue';
 import { defineComponent } from 'vue';
+import { ISectionView } from '@/types/sections';
 import store from '@/store';
 
 export default defineComponent({
@@ -31,6 +31,14 @@ export default defineComponent({
     },
     mounted() {
         store.dispatch('forecast/updateForecast');
+    },
+    setup() {
+        const list = store.state.settings.sections;
+        const sections: ISectionView[] = [];
+        list.forEach((el) => {
+            sections.push({ id: `${el.id}`, component: `${el.id}-view`, visible: el.visible });
+        });
+        return { sections };
     },
 });
 </script>
