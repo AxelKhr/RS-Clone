@@ -61,7 +61,7 @@ export default defineComponent({
     padding-right: 15px;
     border-bottom-left-radius: 10px;
     font-size: 1.2rem;
-    box-shadow: -2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: -2px 2px 2px -1px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 1200px) {

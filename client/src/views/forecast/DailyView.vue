@@ -187,7 +187,7 @@ export default defineComponent({
     border-bottom-right-radius: 10px;
     font-size: 1.5rem;
     margin-bottom: 20px;
-    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
 }
 
 .item-main {
@@ -232,11 +232,12 @@ export default defineComponent({
     &__description {
         margin-top: 10px;
         border-radius: 10px;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgb(228, 228, 228);
         padding: 5px 15px;
         white-space: pre-wrap;
 
         .desc {
+            color: black;
             text-align: center;
             word-wrap: break-word;
             font-weight: 500;
@@ -278,6 +279,7 @@ export default defineComponent({
     }
 
     &__subtitle {
+        color: black;
         font-size: 1.1rem;
         text-align: left;
         width: 100%;
@@ -327,7 +329,7 @@ export default defineComponent({
 
 .carousel__item {
     height: 100%;
-    box-shadow: 0px 2px 5px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.2);
 }
 
 .fade-enter-active,
@@ -359,7 +361,7 @@ export default defineComponent({
         border-bottom-right-radius: 10px;
         font-size: 1.5rem;
         margin-bottom: 20px;
-        box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+        box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
     }
 }
 

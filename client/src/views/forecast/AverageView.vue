@@ -145,7 +145,7 @@ const chartOptions: ChartOptions<'polarArea'> = {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     font-size: 1.5rem;
-    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
 }
 .average__container {
     display: flex;
@@ -219,7 +219,7 @@ const chartOptions: ChartOptions<'polarArea'> = {
         border-bottom-right-radius: 10px;
         font-size: 1.5rem;
         margin-bottom: 20px;
-        box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+        box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
     }
 }
 

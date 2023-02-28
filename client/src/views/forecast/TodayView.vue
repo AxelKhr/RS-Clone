@@ -235,7 +235,7 @@ export default defineComponent({
 .humidity_icon {
     width: 20px;
     height: 20px;
-    background: black;
+    background: var(--font__color);
 }
 
 .temp_icon {
