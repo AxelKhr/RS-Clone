@@ -136,24 +136,25 @@ export default defineComponent({
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             tiles: [
                 {
-                    name: 'OSM Map',
-                    url: Api.OSM_MAP_BASE_URL,
+                    name: store.state.settings.mapsBase[0].name,
+                    url: store.state.settings.mapsBase[0].url,
                     layerType: 'base',
                     bounds: null,
-                    visible: false,
+                    visible: store.state.settings.mapsBase[0].visible,
                 },
                 {
-                    name: 'CartoDB (Dark)',
-                    url: Api.CARTO_MAP_DARK_URL,
+                    name: store.state.settings.mapsBase[1].name,
+                    url: store.state.settings.mapsBase[1].url,
                     layerType: 'base',
                     bounds: null,
-                    visible: false,
+                    visible: store.state.settings.mapsBase[1].visible,
                 },
                 {
-                    name: 'CartoDB (Light)',
-                    url: Api.CARTO_MAP_LIGHT_URL,
+                    name: store.state.settings.mapsBase[2].name,
+                    url: store.state.settings.mapsBase[2].url,
                     layerType: 'base',
                     bounds: null,
+                    visible: store.state.settings.mapsBase[2].visible,
                 },
                 {
                     name: LTypeId.PRESSURE,

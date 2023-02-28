@@ -17,6 +17,7 @@ const ENGLISH: ILang = {
         settingsTheme: 'Theme',
         settingsUnits: 'Units',
         settingsSections: 'Sections',
+        settingsMaps: 'Map type',
         settingsLayers: 'Layers',
         settingsAbout: 'About',
         mapLayers: {
