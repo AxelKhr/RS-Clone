@@ -195,10 +195,10 @@ export default defineComponent({
 }
 
 .active .carousel__item {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--background__color--hover);
 }
 .v-collapse .active {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--background__color--hover);
     border-radius: 1px;
 }
 .day {
@@ -215,7 +215,7 @@ export default defineComponent({
         padding: 15px;
         cursor: pointer;
         &:hover {
-            background-color: rgb(228, 228, 228);
+            background-color: var(--background__color--hover);
         }
     }
     &__img {
