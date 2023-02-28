@@ -29,7 +29,7 @@ export default defineComponent({
     border-bottom-right-radius: 10px;
     font-size: 1.5rem;
     margin-bottom: 20px;
-    box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 720px) {
@@ -41,7 +41,7 @@ export default defineComponent({
         border-bottom-right-radius: 10px;
         font-size: 1.5rem;
         margin-bottom: 20px;
-        box-shadow: 2px 2px 2px -1px rgba(34, 60, 80, 0.2);
+        box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.2);
     }
 }
 

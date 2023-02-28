@@ -212,7 +212,7 @@ export default defineComponent({
 
 .time {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     column-gap: 15px;
 }
 .time-local {
@@ -278,7 +278,7 @@ export default defineComponent({
         transition: 0.7s;
         position: absolute;
         padding: 5px;
-        color: black;
+        color: var(--font__color);
         background-color: var(--background__color--hover);
         font-size: 0.9rem;
         width: 250px;
