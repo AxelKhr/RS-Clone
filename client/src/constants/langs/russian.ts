@@ -17,6 +17,7 @@ const RUSSIAN: ILang = {
         settingsTheme: 'Тема',
         settingsUnits: 'Единицы измерения',
         settingsSections: 'Секции',
+        settingsMaps: 'Тип карты',
         settingsLayers: 'Слои',
         settingsAbout: 'О программе',
         mapLayers: {

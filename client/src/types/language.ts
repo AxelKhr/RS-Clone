@@ -21,6 +21,7 @@ export interface ILangData {
     settingsTheme: string;
     settingsUnits: string;
     settingsSections: string;
+    settingsMaps: string;
     settingsLayers: string;
     settingsAbout: string;
     mapLayers: IMapLayersLang;
