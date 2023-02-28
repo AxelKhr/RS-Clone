@@ -16,6 +16,7 @@ export default defineComponent({
         <div class="wrap">
             <div class="start">
                 <p class="start__text">{{ langData.startText }}</p>
+                <p class="start__text2">{{ langData.startText2 }}</p>
                 <button class="start__button" @click="$store.dispatch('forecast/showModal')">
                     {{ langData.startButton }}
                 </button>
@@ -37,8 +38,13 @@ export default defineComponent({
 
         .start {
             &__text {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
                 margin-bottom: 10px;
+                text-align: center;
+            }
+            &__text2 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
                 text-align: center;
             }
             &__button {

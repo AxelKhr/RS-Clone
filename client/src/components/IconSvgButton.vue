@@ -6,12 +6,16 @@ export default defineComponent({
         iconPath: {
             type: String,
         },
+        enable: {
+            type: Boolean,
+            default: true,
+        },
     },
 });
 </script>
 
 <template>
-    <div class="icon-button">
+    <div class="icon-button" :class="enable ? '' : 'button--disabled'">
         <icon-svg class="icon-button__icon" :iconPath="iconPath"></icon-svg>
         <div class="icon-button__label" v-if="$slots.default">
             <slot></slot>
@@ -26,10 +30,16 @@ export default defineComponent({
     align-items: center;
     width: auto;
     padding: 5px;
-    cursor: pointer;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
     border: 1px solid transparent;
+
+    &:not(.button--disabled) {
+        cursor: pointer;
+    }
+    &.button--disabled {
+        opacity: 0;
+    }
 
     .icon-button__icon {
         transition: all 0.2s ease-in-out;

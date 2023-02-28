@@ -26,6 +26,7 @@ export default defineComponent({
         &__title {
             margin-bottom: 10px;
             font-size: 1.2rem;
+            border-bottom: 1px solid var(--border__color);
         }
         &__content {
             margin: 0 auto;

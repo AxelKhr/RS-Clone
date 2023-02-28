@@ -1,5 +1,6 @@
 import { THEME } from '@/themes/themes';
 import { LANG } from '@/types/language';
+import { SectionsId } from '@/types/sections';
 import { ISettings } from '@/types/settings';
 import { UNITS } from '@/types/units';
 import { MAP_LAYERS } from '@/views/map/types';
@@ -22,8 +23,22 @@ const SETTINGS = {
         theme: THEME.default,
         locationCurrent: DEF_LOCATION,
         locationFavorites: [],
-        locationTabs: [DEF_LOCATION],
+        locationTabs: [],
         mapLayersEnable: MAP_LAYERS,
+        sections: [
+            {
+                id: SectionsId.daily,
+                visible: true,
+            },
+            {
+                id: SectionsId.average,
+                visible: true,
+            },
+            {
+                id: SectionsId.hourly,
+                visible: true,
+            },
+        ],
     },
 };
 
