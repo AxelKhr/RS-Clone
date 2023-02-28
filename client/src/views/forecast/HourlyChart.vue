@@ -111,7 +111,7 @@ export default defineComponent({
                         },
                     },
                     datalabels: {
-                        color: 'black',
+                        color: `black`,
                         font: {
                             size: 8,
                             weight: 'bold',
@@ -119,12 +119,12 @@ export default defineComponent({
                         anchor: 'end',
                         align: 'start',
                         offset: -20,
-                        display: true,
+                        display: false,
                     },
                 },
                 scales: {
                     y: {
-                        display: false,
+                        display: true,
                     },
                 },
                 responsive: true,

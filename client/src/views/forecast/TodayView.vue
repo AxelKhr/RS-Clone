@@ -59,11 +59,11 @@
                     </div>
                     <div class="temp">
                         <div class="temp_icon"></div>
-                        <span>{{ w.weather.temperature + ' ' + unit.temperature }}</span>
+                        <span>{{ w.weather.temperature.toFixed(0) + ' ' + unit.temperature }}</span>
                     </div>
                     <div class="wind">
                         <div class="wind_icon"></div>
-                        <span>{{ w.weather.windSpeed.toFixed(2) + ' ' + unit.speed }}</span>
+                        <span>{{ w.weather.windSpeed.toFixed(1) + ' ' + unit.speed }}</span>
                     </div>
                     <div class="pressure">
                         <div class="pressure_icon"></div>
