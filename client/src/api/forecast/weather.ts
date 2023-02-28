@@ -1,9 +1,10 @@
 import type { LocationForecastRequest, NameForecastRequest } from '../types/request';
+import { UNITS } from '@/types/units';
 
 import { API_KEY } from '../constants';
 
 function getUnits(request: LocationForecastRequest | NameForecastRequest) {
-    return request.units === 'Imperial' ? 'I' : 'M';
+    return request.units === UNITS.imperial ? 'I' : 'M';
 }
 
 function getLang(request: LocationForecastRequest | NameForecastRequest) {

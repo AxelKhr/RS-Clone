@@ -4,6 +4,7 @@ import { SectionsId } from '@/types/sections';
 import { ISettings } from '@/types/settings';
 import { UNITS } from '@/types/units';
 import { MAP_LAYERS } from '@/views/map/types';
+import { MAPS_BASE } from '@/views/map/types';
 
 const DEF_LOCATION = {
     id: '2643743',
@@ -25,6 +26,7 @@ const SETTINGS = {
         locationFavorites: [],
         locationTabs: [],
         mapLayersEnable: MAP_LAYERS,
+        mapsBase: MAPS_BASE,
         sections: [
             {
                 id: SectionsId.daily,
