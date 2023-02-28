@@ -8,6 +8,8 @@ const ENGLISH: ILang = {
         menuForecast: 'Forecast',
         menuMap: 'Map',
         menuSettings: 'Settings',
+        modalSearch: 'Search for a location...',
+        modalCurrent: 'Current location',
         settingsGeneralTitle: 'GENERAL',
         settingsForecastTitle: 'FORECAST',
         settingsMapTitle: 'MAP',

@@ -6,6 +6,7 @@ import { ILocationPlace } from '@/types/location';
 import { searchLocations } from '@/services/location';
 import store from '@/store';
 import { getBrowserLocation } from '@/services/location';
+import { mapState } from 'vuex';
 
 interface ILocationItem {
     place: ILocationPlace;
@@ -20,6 +21,11 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+    },
+    computed: {
+        ...mapState('language', {
+            langData: 'data',
+        }),
     },
     methods: {
         hideModal() {
@@ -123,10 +129,10 @@ export default defineComponent({
                 class="search-line"
                 v-model="search"
                 :isLoading="isLoading"
-                placeholder="Search for a location..."
+                :placeholder="langData.modalSearch"
             ></search-box>
             <div class="list__item" @click="getLocation()">
-                <div class="item__text">Current location</div>
+                <div class="item__text">{{ langData.modalCurrent }}</div>
                 <icon-svg class="item__icon icon-gps" :iconPath="require('@/assets/icons/_gps.svg')" />
             </div>
             <div class="list">

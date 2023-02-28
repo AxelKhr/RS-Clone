@@ -12,6 +12,8 @@ export interface ILangData {
     menuForecast: string;
     menuMap: string;
     menuSettings: string;
+    modalSearch: string;
+    modalCurrent: string;
     settingsGeneralTitle: string;
     settingsForecastTitle: string;
     settingsMapTitle: string;

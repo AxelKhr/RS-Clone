@@ -8,6 +8,8 @@ const RUSSIAN: ILang = {
         menuForecast: 'Прогноз',
         menuMap: 'Карта',
         menuSettings: 'Настройки',
+        modalSearch: 'Введите локацию...',
+        modalCurrent: 'Текущее местоположение',
         settingsGeneralTitle: 'ОБЩИЕ',
         settingsForecastTitle: 'ПРОГНОЗ',
         settingsMapTitle: 'КАРТА',
