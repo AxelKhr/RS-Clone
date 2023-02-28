@@ -1,4 +1,4 @@
-const API_KEY_LOCATION = '87b9f08fb1mshfc8b07ee4985fe9p1e1199jsnaa7a18fdfdda';
+const API_KEY_LOCATION = '2e267380c0msh40c99cb55045627p14ca10jsn962b850013f7';
 
 export interface LocationSearchRequest {
     query: string;
