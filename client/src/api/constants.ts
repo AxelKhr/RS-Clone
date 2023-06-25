@@ -1,6 +1,9 @@
-export const API_KEY = '883ea4f02f2d4e02822ae111ae70dd3b';
+export const API_KEY = "e2a8e8d44b3640699de25c729a697f0c";
 
-export const OSM_MAP_BASE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-export const CARTO_MAP_DARK_URL = 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-export const CARTO_MAP_LIGHT_URL = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+export const OSM_MAP_BASE_URL =
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+export const CARTO_MAP_DARK_URL =
+  "http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+export const CARTO_MAP_LIGHT_URL =
+  "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png";
 export const MAP_OVERLAY_URL = `https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=1d44eaad1808dee6a14e9f7c1db9bdf4`;
