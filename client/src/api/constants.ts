@@ -1,4 +1,4 @@
-export const API_KEY = "626d1a4075d4420ba78e619dabb3468c";
+export const API_KEY = "505df71636b543e692e5a3d1f74dab71";
 
 export const OSM_MAP_BASE_URL =
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
